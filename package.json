@@ -1,0 +1,23 @@
+{
+  "name": "changelog-maker",
+  "version": "1.0.0",
+  "description": "Changelog maker. Takes commit messages and generates a gitlog.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TacticsCH/changelog-maker.git"
+  },
+  "author": "TacticsCH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TacticsCH/changelog-maker/issues"
+  },
+  "homepage": "https://github.com/TacticsCH/changelog-maker#readme",
+  "dependencies": {
+    "request": "^2.88.2",
+    "superagent": "^6.1.0"
+  }
+}
