@@ -8,8 +8,22 @@
     <script src="./changelog.js"></script>
   </head>
   <body>
-    <p id="bodyhtml">
-      <button onclick="sortCommits()">Show changelog</button>
-    </p>
+    <div id="bodyhtml"></div>
+
+    <div>
+      <label>
+        Repository URL
+      </label>
+      <input id="urlhtml" type="text" />
+    </div>
+
+    <div>
+      <label>
+        Number of pages
+      </label>
+      <input id="nbpageshtml" type="number" />
+    </div>
+
+    <button onclick="sortCommits()">Show changelog</button>
   </body>
 </html>
