@@ -1,5 +1,5 @@
-const featureKwList = ['feat:', 'feature:', '[feature]'];
-const fixesKwList = ['fix:', 'hotfix:', '[fix]', '[hotfix]', '[HOTFIX]', 'HOTFIX:'];
+const featureKwList = ['feat', 'feature'];
+const fixesKwList = ['fix', 'hotfix', '\HOTFIX'];
 
 function localStorageManager(pageload) {
   if (pageload == true) {
@@ -36,7 +36,6 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
     repoCommits.push(...jsonCommits);
   };
 
-  // console.log(repoUrl+"?page="+i+dateParameters);
   return repoCommits;
 }
 
@@ -47,18 +46,30 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
 
-  console.log("YOUHOUUUUUU : " + beforeField + " " + afterField);
-
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits", apiField, nbpageField, beforeField, afterField);
-  console.log(rawCommits);
   const commitMessages = rawCommits.map((item) => item.commit.message + " - [" + item.sha.substring(0, 5) + "](" + item.url + ")");
   const featuresRaw = commitMessages.filter((message) => message.match(/(^.{0,10}(feat))/));
   const fixesRaw = commitMessages.filter((message) => message.match(/(^.{0,10}(fix))/));
   const features = [];
   const fixes = [];
 
-  featuresRaw.forEach((commit) => features.push(commit.replace(featureKwList,'* ')));
-  fixesRaw.forEach((commit) => fixes.push(commit.replace(fixesKwList,'* ')));
+  
+
+  featuresRaw.forEach(function callbackFn(commit) { 
+    featureKwList.forEach(function callbackFn(balise) {
+      if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
+        features.push(commit.replace(balise,'* '));
+      } 
+    });
+  });
+
+  fixesRaw.forEach(function callbackFn(commit) { 
+    fixesKwList.forEach(function callbackFn(balise) {
+      if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
+        fixes.push(commit.replace(balise,'* '));
+      } 
+    });
+  });
 
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
   newBody += `<h2>## New features</h2>`;
