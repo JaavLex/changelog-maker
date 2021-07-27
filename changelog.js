@@ -7,20 +7,20 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
 
   if (beforeDate != "" && afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
-  }
+  };
 
   for (let i = 1; i < numberPage; i++) {
-    const repoContent = await(repoUrl+"?page="+i+dateParameters,{
+    const repoContent = await fetch(repoUrl+"?page="+i+dateParameters,{
       method: "GET",
       headers: {
         Authorization: `token ${apiKey}` 
-      }
+      },
     });
-    console.log(repoUrl+"?page="+i+dateParameters);
     const jsonCommits = await repoContent.json();
     repoCommits.push(...jsonCommits);
-  }
+  };
 
+  // console.log(repoUrl+"?page="+i+dateParameters);
   return repoCommits;
 }
 
