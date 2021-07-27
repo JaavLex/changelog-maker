@@ -1,6 +1,22 @@
 const featureKwList = ['feat:', 'feature:', '[feature]'];
 const fixesKwList = ['fix:', 'hotfix:', '[fix]', '[hotfix]', '[HOTFIX]', 'HOTFIX:'];
 
+function localStorageManager(pageload) {
+  if (pageload == true) {
+    document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
+    document.getElementById("nbpageshtml").value = localStorage.getItem('tacticsch-chgmaker-nb-storage');
+    document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
+    document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
+    document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
+  } else {
+    localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
+    localStorage.setItem('tacticsch-chgmaker-nb-storage', document.getElementById("nbpageshtml").value );
+    localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
+    localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
+    localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
+  }
+}
+
 async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
   const repoCommits = [];
   let dateParameters = "";
