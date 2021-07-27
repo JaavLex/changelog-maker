@@ -8,22 +8,42 @@
     <script src="./changelog.js"></script>
   </head>
   <body>
-    <div id="bodyhtml"></div>
-
-    <div>
-      <label>
-        Repository URL
-      </label>
-      <input id="urlhtml" type="text" />
+    <div id="bodyhtml">
+      <center><h1> Input parameters of your changelog</h1></center>
     </div>
+    <center>
+      <table>
+        <tr>
+          <td>Repository URL</td>
+          <td><input id="urlhtml" type="text" value="GinierClasses/holydraw" /></td>
+        </tr>
+        <tr>
+          <td>Number of pages</td>
+          <td><input id="nbpageshtml" type="number" value=30 /></td>
+        </tr>
+        <tr>
+          <td>Api token</td>
+          <td><input id="apitoken" type="text" /></td>
+        </tr>
+        <tr>
+          <td>Commits avant</td>
+          <td><input id="beforedate" type="datetime-local" /></td>
+        </tr>
+        <tr>
+          <td>Commits après</td>
+          <td><input id="afterdate" type="datetime-local" /></td>
+        </tr>
+        <tr>
+          <td><button onclick="sortCommits()">Generate</button></td>
+          <td><button onclick="">Clear</button></td>
+        </tr>
+      </table>
+    </center>
 
-    <div>
-      <label>
-        Number of pages
-      </label>
-      <input id="nbpageshtml" type="number" />
-    </div>
-
-    <button onclick="sortCommits()">Show changelog</button>
+    <footer>
+      <i>
+        Made with <a href="https://github.com/TacticsCH/changelog-maker">changelog-maker</a>
+      </i>
+    </footer>
   </body>
 </html>
