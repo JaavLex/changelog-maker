@@ -58,7 +58,11 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
 
   if (beforeDate != "" && afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
-  };
+  } else if (afterDate != "") {
+    dateParameters = `&since=${afterDate}&until=${beforeDate}`;
+  } else {
+    dateParameters = `&until=${beforeDate}`;
+  }
 
   for (let i = 1; i < numberPage; i++) {
     const repoContent = await fetch(repoUrl+"&page="+i+dateParameters,{
@@ -67,6 +71,7 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
         Authorization: `token ${apiKey}` 
       },
     });
+    console.log(repoContent.headers);
     const jsonCommits = await repoContent.json();
     repoCommits.push(...jsonCommits);
   };
