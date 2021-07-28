@@ -1,10 +1,8 @@
-// const featureKwList = ['feat', 'feature'];
-// const fixesKwList = ['fix', 'hotfix', '\HOTFIX'];
 let featureKwList = [];
 let fixesKwList = [];
 
 function localStorageManager(pageload) {
-  if (pageload == true) {
+  if (pageload) {
     document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
     document.getElementById("nbpageshtml").value = localStorage.getItem('tacticsch-chgmaker-nb-storage');
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
@@ -63,7 +61,7 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
   };
 
   for (let i = 1; i < numberPage; i++) {
-    const repoContent = await fetch(repoUrl+"?page="+i+dateParameters,{
+    const repoContent = await fetch(repoUrl+"&page="+i+dateParameters,{
       method: "GET",
       headers: {
         Authorization: `token ${apiKey}` 
@@ -83,7 +81,7 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
 
-  const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits", apiField, nbpageField, beforeField, afterField);
+  const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=100", apiField, nbpageField, beforeField, afterField);
   const commitMessages = rawCommits.map((item) => item.commit.message + " - [" + item.sha.substring(0, 5) + "](" + item.url + ")");
   const features = [];
   const fixes = [];
