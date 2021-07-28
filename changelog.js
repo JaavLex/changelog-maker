@@ -72,6 +72,9 @@ async function sortCommits() {
   });
 
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
+  if (beforeField != "" && afterField != "") {
+    newBody += `<h3>### Commits between ${afterField} and ${afterField}</h3>`;
+  };
   newBody += `<h2>## New features</h2>`;
   newBody += features.join("<br><br>");
   newBody += `<h2>## Bug fixes</h2>`;
