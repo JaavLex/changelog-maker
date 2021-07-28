@@ -48,14 +48,10 @@ async function sortCommits() {
 
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits", apiField, nbpageField, beforeField, afterField);
   const commitMessages = rawCommits.map((item) => item.commit.message + " - [" + item.sha.substring(0, 5) + "](" + item.url + ")");
-  const featuresRaw = commitMessages.filter((message) => message.match(/(^.{0,10}(feat))/));
-  const fixesRaw = commitMessages.filter((message) => message.match(/(^.{0,10}(fix))/));
   const features = [];
   const fixes = [];
 
-  
-
-  featuresRaw.forEach(function callbackFn(commit) { 
+  commitMessages.forEach(function callbackFn(commit) { 
     featureKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
         features.push(commit.replace(balise,'* '));
@@ -63,7 +59,7 @@ async function sortCommits() {
     });
   });
 
-  fixesRaw.forEach(function callbackFn(commit) { 
+  commitMessages.forEach(function callbackFn(commit) { 
     fixesKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
         fixes.push(commit.replace(balise,'* '));
