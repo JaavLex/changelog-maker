@@ -1,5 +1,7 @@
-const featureKwList = ['feat', 'feature'];
-const fixesKwList = ['fix', 'hotfix', '\HOTFIX'];
+// const featureKwList = ['feat', 'feature'];
+// const fixesKwList = ['fix', 'hotfix', '\HOTFIX'];
+let featureKwList = [];
+let fixesKwList = [];
 
 function localStorageManager(pageload) {
   if (pageload == true) {
@@ -8,6 +10,16 @@ function localStorageManager(pageload) {
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
+    if (localStorage.getItem('tacticsch-chgmaker-feature-keywords') != null) {
+      featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
+      document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
+      console.log(featureKwList);
+    }
+    if (localStorage.getItem('tacticsch-chgmaker-fix-keywords') != null) {
+      fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
+      document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
+      console.log(fixesKwList);
+    }
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
     localStorage.setItem('tacticsch-chgmaker-nb-storage', document.getElementById("nbpageshtml").value );
@@ -15,6 +27,31 @@ function localStorageManager(pageload) {
     localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
     localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
   }
+}
+
+function keywordAdder(feature) {
+  if (feature) {
+    featureKwList.push(document.getElementById("featkwinput").value);
+    localStorage.setItem('tacticsch-chgmaker-feature-keywords', JSON.stringify(featureKwList) );
+    featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
+    document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
+  } else {
+    fixesKwList.push(document.getElementById("fixkwinput").value);
+    localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
+    fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
+    document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
+  }
+}
+
+function keywordClearer(feature) {
+  if (feature) {
+    localStorage.removeItem('tacticsch-chgmaker-feature-keywords');
+    document.getElementById("featurekwhtml").innerHTML = "";
+  } else {
+    localStorage.removeItem('tacticsch-chgmaker-fix-keywords');
+    document.getElementById("fixkwhtml").innerHTML = "";
+  }
+  
 }
 
 async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {

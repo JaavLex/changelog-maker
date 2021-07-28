@@ -8,6 +8,7 @@
     <script src="./changelog.js"></script>
   </head>
   <body onload="localStorageManager(true)">
+    <center><h1> Input parameters of your changelog</h1></center>
     <center>
       <table>
         <tr>
@@ -31,14 +32,38 @@
           <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
         </tr>
         <tr>
+          <td>
+            <button onclick="keywordAdder(true)">Add feature keyword</button>
+            <button onclick="keywordClearer(true)">Clear feature keywords</button>
+          </td>
+          <td><input id="featkwinput" type="text" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="featurekwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(false)">Add fix keyword</button>
+            <button onclick="keywordClearer(false)">Clear fix keywords</button>
+          </td>
+          <td><input id="fixkwinput" type="text" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="fixkwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
           <td><button onclick="sortCommits()">Generate</button></td>
           <td><button onclick="">Clear</button></td>
         </tr>
       </table>
     </center>
-    <div id="bodyhtml">
-      <center><h1> Input parameters of your changelog</h1></center>
-    </div>
+    <hr>
+    <div id="bodyhtml"></div>
+    <hr>
     <footer>
       <i>
         Made with <a href="https://github.com/TacticsCH/changelog-maker">changelog-maker</a>
