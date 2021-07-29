@@ -6,7 +6,6 @@ let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 function localStorageManager(pageload) {
   if (pageload) {
     document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
-    document.getElementById("nbpageshtml").value = localStorage.getItem('tacticsch-chgmaker-nb-storage');
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
@@ -28,7 +27,6 @@ function localStorageManager(pageload) {
     }
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-    localStorage.setItem('tacticsch-chgmaker-nb-storage', document.getElementById("nbpageshtml").value );
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
     localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
     localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
@@ -67,20 +65,19 @@ function keywordClearer(feature) {
 
 function clearFields() {
   document.getElementById("urlhtml").value = "";
-  document.getElementById("nbpageshtml").value = "";
   document.getElementById("apitoken").value = "";
   document.getElementById("beforedate").value = "";
   document.getElementById("afterdate").value = "";
   localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-  localStorage.setItem('tacticsch-chgmaker-nb-storage', document.getElementById("nbpageshtml").value );
   localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
   localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
   localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
 }
 
-async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
+async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   const repoCommits = [];
   let dateParameters = "";
+  let pageNumber = 0;
 
   if (beforeDate != "" && afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
@@ -90,14 +87,27 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
     dateParameters = `&until=${beforeDate}`;
   }
 
-  for (let i = 1; i < numberPage; i++) {
-    const repoContent = await fetch(repoUrl+"&page="+i+dateParameters,{
+  const headersRequest = await fetch(repoUrl+"1",{
+    method: "GET",
+    headers: {
+      Authorization: `token ${apiKey}` 
+    },
+  });
+
+  let headerLink = headersRequest.headers.get("link");
+  if (headerLink) {
+    rgxmatch = headerLink.match(/&page=(\d*)>; rel="last"/);
+    pageNumber = Math.ceil(rgxmatch[1]/nbCommits);
+    console.log(pageNumber);
+  }
+
+  for (let i = 1; i <= pageNumber; i++) {
+    const repoContent = await fetch(repoUrl+nbCommits+"&page="+i+dateParameters,{
       method: "GET",
       headers: {
         Authorization: `token ${apiKey}` 
       },
     });
-    console.log(repoContent.headers);
     const jsonCommits = await repoContent.json();
     repoCommits.push(...jsonCommits);
   };
@@ -107,15 +117,14 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
 
 async function sortCommits() {
   const urlField = document.getElementById("urlhtml").value.toString();
-  const nbpageField = document.getElementById("nbpageshtml").value.toString();
   const apiField = document.getElementById("apitoken").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
 
   document.getElementById("bodyhtml").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
 
-  const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=100", apiField, nbpageField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => item.commit.message + " - [" + item.sha.substring(0, 5) + "](" + item.url + ")");
+  const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
+  const commitMessages = rawCommits.map((item) => item.commit.message.split("\n")[0] + "- [" + item.sha.substring(0, 8) + "](" + item.url + ")");
   const features = [];
   const fixes = [];
 
