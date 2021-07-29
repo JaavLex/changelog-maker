@@ -63,7 +63,19 @@ function keywordClearer(feature) {
     localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
     document.getElementById("fixkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + fixesKwList.join("<br>* ") + "<br>-------------<br>";
   }
-  
+}
+
+function clearFields() {
+  document.getElementById("urlhtml").value = "";
+  document.getElementById("nbpageshtml").value = "";
+  document.getElementById("apitoken").value = "";
+  document.getElementById("beforedate").value = "";
+  document.getElementById("afterdate").value = "";
+  localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
+  localStorage.setItem('tacticsch-chgmaker-nb-storage', document.getElementById("nbpageshtml").value );
+  localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
+  localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
+  localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
 }
 
 async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
