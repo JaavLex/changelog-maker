@@ -12,15 +12,15 @@
       <table>
         <tr>
           <td>Repository URL</td>
-          <td><input id="urlhtml" type="text" onchange="localStorageManager(false)" /></td>
+          <td><input id="urlhtml" type="text" onchange="localStorageManager(false)" placeholder="TacticsCH/changelog-maker" /></td>
         </tr>
         <tr>
           <td>Number of pages</td>
-          <td><input id="nbpageshtml" type="number" onchange="localStorageManager(false)" /></td>
+          <td><input id="nbpageshtml" type="number" onchange="localStorageManager(false)" placeholder="30" /></td>
         </tr>
         <tr>
           <td>API token</td>
-          <td><input id="apitoken" type="text" onchange="localStorageManager(false)" /></td>
+          <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /></td>
         </tr>
         <tr>
           <td>Commits since</td>
@@ -35,7 +35,7 @@
             <button onclick="keywordAdder(true)">Add feature keyword</button>
             <button onclick="keywordClearer(true)">Clear feature keywords</button>
           </td>
-          <td><input id="featkwinput" type="text" /></td>
+          <td><input id="featkwinput" type="text" placeholder="functionality" /></td>
         </tr>
         <tr>
           <td>
@@ -47,7 +47,7 @@
             <button onclick="keywordAdder(false)">Add fix keyword</button>
             <button onclick="keywordClearer(false)">Clear fix keywords</button>
           </td>
-          <td><input id="fixkwinput" type="text" /></td>
+          <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
         </tr>
         <tr>
           <td>
