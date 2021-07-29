@@ -77,7 +77,7 @@ function clearFields() {
 async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   const repoCommits = [];
   let dateParameters = "";
-  let pageNumber = 0;
+  let totalPage = 0;
 
   if (beforeDate != "" && afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
@@ -97,11 +97,10 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   let headerLink = headersRequest.headers.get("link");
   if (headerLink) {
     rgxmatch = headerLink.match(/&page=(\d*)>; rel="last"/);
-    pageNumber = Math.ceil(rgxmatch[1]/nbCommits);
-    console.log(pageNumber);
+    totalPage = Math.ceil(rgxmatch[1]/nbCommits);
   }
 
-  for (let i = 1; i <= pageNumber; i++) {
+  for (let i = 1; i <= totalPage; i++) {
     const repoContent = await fetch(repoUrl+nbCommits+"&page="+i+dateParameters,{
       method: "GET",
       headers: {
