@@ -60,7 +60,7 @@ async function getCommits(repoUrl, apiKey, numberPage, beforeDate, afterDate) {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
   } else if (afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
-  } else {
+  } else if (beforeDate != "") {
     dateParameters = `&until=${beforeDate}`;
   }
 
