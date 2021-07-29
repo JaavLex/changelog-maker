@@ -3,8 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>NodeMCU_Lua commits details</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>changelog-maker</title>
     <script src="./changelog.js"></script>
   </head>
   <body onload="localStorageManager(true)">
@@ -20,15 +19,15 @@
           <td><input id="nbpageshtml" type="number" onchange="localStorageManager(false)" /></td>
         </tr>
         <tr>
-          <td>Api token</td>
+          <td>API token</td>
           <td><input id="apitoken" type="text" onchange="localStorageManager(false)" /></td>
         </tr>
         <tr>
-          <td>Commits après</td>
+          <td>Commits since</td>
           <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
         </tr>
         <tr>
-          <td>Commits avant</td>
+          <td>Commits after</td>
           <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /></td>
         </tr>
         <tr>
