@@ -86,6 +86,8 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
 
+  document.getElementById("bodyhtml").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
+
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=100", apiField, nbpageField, beforeField, afterField);
   const commitMessages = rawCommits.map((item) => item.commit.message + " - [" + item.sha.substring(0, 5) + "](" + item.url + ")");
   const features = [];
