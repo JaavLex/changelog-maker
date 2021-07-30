@@ -115,30 +115,31 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 }
 
 async function sortCommits() {
+  document.getElementById("bodyhtml").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
+
   const urlField = document.getElementById("urlhtml").value.toString();
   const apiField = document.getElementById("apitoken").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
-
-  document.getElementById("bodyhtml").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
-
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => item.commit.message.split("\n")[0] + "- [" + item.sha.substring(0, 8) + "](" + item.url + ")");
+  const commitMessages = rawCommits.map((item) => item.commit.message.split("\n")[0] + "- [[" + item.sha.substring(0, 8) + "](" + item.url + ")]");
   const features = [];
   const fixes = [];
 
+  // new RegExp(`^\[?${balise}[\]|:]`, "g")
+
   commitMessages.forEach(function callbackFn(commit) { 
     featureKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
-        features.push(commit.replace(balise,'* '));
+      if (commit.match(new RegExp(`^\\[?${balise}[\\]|:]`, "g"))) {
+        features.push(commit.replace(new RegExp(`^\\[?${balise}[\\]|:]`),'* '));
       } 
     });
   });
 
   commitMessages.forEach(function callbackFn(commit) { 
     fixesKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(^.{0,10}(${balise}).{0,1})`, "g"))) {
-        fixes.push(commit.replace(balise,'* '));
+      if (commit.match(new RegExp(`^\\[?${balise}[\\]|:]`, "g"))) {
+        fixes.push(commit.replace(new RegExp(`^\\[?${balise}[\\]|:]`),'* '));
       } 
     });
   });
@@ -146,9 +147,9 @@ async function sortCommits() {
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
   if (beforeField != "" && afterField != "") {
     newBody += `<h3>### Commits between ${beforeField} and ${afterField}</h3>`;
-  } else if (afterDate != "") {
+  } else if (afterField != "") {
     newBody += `<h3>### Commits before ${beforeField}</h3>`;
-  } else if (beforeDate != "") {
+  } else if (beforeField != "") {
     newBody += `<h3>### Commits after ${afterField}</h3>`;
   }
   newBody += `<h2>## New features</h2>`;
