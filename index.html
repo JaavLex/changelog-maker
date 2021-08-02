@@ -28,8 +28,8 @@
         </tr>
         <tr>
           <td>
-            <button onclick="keywordAdder(true)">+</button>
-            <button onclick="keywordClearer(true)">x</button>
+            <button onclick="keywordAdder(1)">+</button>
+            <button onclick="keywordClearer(1)">x</button>
           </td>
           <td><input id="featkwinput" type="text" placeholder="functionality" /></td>
         </tr>
@@ -40,14 +40,26 @@
         </tr>
         <tr>
           <td>
-            <button onclick="keywordAdder(false)">+</button>
-            <button onclick="keywordClearer(false)">x</button>
+            <button onclick="keywordAdder(2)">+</button>
+            <button onclick="keywordClearer(2)">x</button>
           </td>
           <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
         </tr>
         <tr>
           <td>
             <pre><div id="fixkwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(3)">+</button>
+            <button onclick="keywordClearer(3)">x</button>
+          </td>
+          <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="refkwhtml"></div></pre>
           </td>
         </tr>
         <tr>

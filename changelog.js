@@ -1,7 +1,9 @@
 let featureKwList = [];
 let fixesKwList = [];
+let refactorKwList = [];
 let defaultfeatlist = ['feat', 'FEAT', 'feature', 'FEATURE'];
 let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
+let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
 
 function localStorageManager(pageload) {
   if (pageload) {
@@ -9,6 +11,7 @@ function localStorageManager(pageload) {
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
+
     if (localStorage.getItem('tacticsch-chgmaker-feature-keywords') != null) {
       featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
       document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
@@ -17,6 +20,7 @@ function localStorageManager(pageload) {
       featureKwList = defaultfeatlist;
       document.getElementById("featurekwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + featureKwList.join("<br>* ") + "<br>-------------<br>";
     }
+
     if (localStorage.getItem('tacticsch-chgmaker-fix-keywords') != null) {
       fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
       document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
@@ -24,6 +28,15 @@ function localStorageManager(pageload) {
     } else {
       fixesKwList = defaultfixlist;
       document.getElementById("fixkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + fixesKwList.join("<br>* ") + "<br>-------------<br>";
+    }
+
+    if (localStorage.getItem('tacticsch-chgmaker-ref-keywords') != null) {
+      refactorKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-ref-keywords'));
+      document.getElementById("refkwhtml").innerHTML = "* " + refactorKwList.join("<br>* ");
+      console.log(refactorKwList);
+    } else {
+      refactorKwList = defaultreflist;
+      document.getElementById("refkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + refactorKwList.join("<br>* ") + "<br>-------------<br>";
     }
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
@@ -33,33 +46,44 @@ function localStorageManager(pageload) {
   }
 }
 
-function keywordAdder(feature) {
-  if (feature) {
+function keywordAdder(commitType) {
+  if (commitType == 1) {
     featureKwList = defaultfeatlist;
     featureKwList.push(document.getElementById("featkwinput").value);
     localStorage.setItem('tacticsch-chgmaker-feature-keywords', JSON.stringify(featureKwList) );
     featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
     document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
-  } else {
+  } else if (commitType == 2) {
     fixesKwList = defaultfixlist;
     fixesKwList.push(document.getElementById("fixkwinput").value);
     localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
     fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
     document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
+  } else {
+    refactorKwList = defaultreflist;
+    refactorKwList.push(document.getElementById("refkwinput").value);
+    localStorage.setItem('tacticsch-chgmaker-ref-keywords', JSON.stringify(refactorKwList) );
+    refactorKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-ref-keywords'));
+    document.getElementById("refkwhtml").innerHTML = "* " + refactorKwList.join("<br>* ");
   }
 }
 
-function keywordClearer(feature) {
-  if (feature) {
+function keywordClearer(commitType) {
+  if (commitType == 1) {
     localStorage.removeItem('tacticsch-chgmaker-feature-keywords');
     featureKwList = defaultfeatlist;
     localStorage.setItem('tacticsch-chgmaker-feature-keywords', JSON.stringify(featureKwList) );
     document.getElementById("featurekwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + featureKwList.join("<br>* ") + "<br>-------------<br>";
-  } else {
+  } else if (commitType == 2) {
     localStorage.removeItem('tacticsch-chgmaker-fix-keywords');
     fixesKwList = defaultfixlist;
     localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
     document.getElementById("fixkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + fixesKwList.join("<br>* ") + "<br>-------------<br>";
+  } else {
+    localStorage.removeItem('tacticsch-chgmaker-ref-keywordss');
+    refactorKwList = defaultreflist;
+    localStorage.setItem('tacticsch-chgmaker-ref-keywords', JSON.stringify(refactorKwList) );
+    document.getElementById("refkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + refactorKwList.join("<br>* ") + "<br>-------------<br>";
   }
 }
 
@@ -125,6 +149,7 @@ async function sortCommits() {
   const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.url + ")] - " + item.commit.message.split("\n")[0]);
   const features = [];
   const fixes = [];
+  const refs = [];
 
   // new RegExp(`^\[?${balise}[\]|:]`, "g")
 
@@ -144,6 +169,14 @@ async function sortCommits() {
     });
   });
 
+  commitMessages.forEach(function callbackFn(commit) { 
+    refactorKwList.forEach(function callbackFn(balise) {
+      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+        refs.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"), ''));
+      } 
+    });
+  });
+
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
   if (beforeField != "" && afterField != "") {
     newBody += `<h3>### Commits between ${beforeField} and ${afterField}</h3>`;
@@ -156,6 +189,8 @@ async function sortCommits() {
   newBody += features.join("<br><br>");
   newBody += `<h2>## Bug fixes</h2>`;
   newBody += fixes.join("<br><br>");
+  newBody += `<h2>## Code Refactors</h2>`;
+  newBody += refs.join("<br><br>");
   document.getElementById("bodyhtml").innerHTML = newBody;
 }
 
