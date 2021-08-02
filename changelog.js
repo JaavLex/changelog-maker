@@ -1,6 +1,7 @@
 let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
+let otherKwlist = [];
 let defaultfeatlist = ['feat', 'FEAT', 'feature', 'FEATURE'];
 let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
@@ -164,6 +165,7 @@ async function sortCommits() {
   const features = [];
   const fixes = [];
   const refs = [];
+  const others = [];
 
   // new RegExp(`^\[?${balise}[\]|:]`, "g")
 
@@ -191,6 +193,22 @@ async function sortCommits() {
     });
   });
 
+  otherKwlist = otherKwlist.concat(featureKwList);
+  otherKwlist = otherKwlist.concat(fixesKwList);
+  otherKwlist = otherKwlist.concat(refactorKwList);
+
+  commitMessages.forEach(function callbackFn(commit) {
+    let noMatch = 0; 
+    for (let i = 0; i < otherKwlist.length; i++) {
+      if (!commit.match(new RegExp(`(?!\\)\\] - )\\[?${otherKwlist[i]}[\\]|:]`, "g"))) {
+        noMatch++;
+      }
+    }
+    if (noMatch === otherKwlist.length) {
+      others.push(commit);
+    }
+  });
+
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
   if (beforeField != "" && afterField != "") {
     newBody += `<h3>### Commits between ${beforeField} and ${afterField}</h3>`;
@@ -205,6 +223,8 @@ async function sortCommits() {
   newBody += fixes.join("<br><br>");
   newBody += `<h2>## Code Refactors</h2>`;
   newBody += refs.join("<br><br>");
+  newBody += `<h2>## Other types of commits</h2>`;
+  newBody += others.join("<br><br>");
   document.getElementById("bodyhtml").innerHTML = newBody;
 }
 
