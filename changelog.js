@@ -122,7 +122,7 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => item.commit.message.split("\n")[0] + "- [[" + item.sha.substring(0, 8) + "](" + item.url + ")]");
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.url + ")] - " + item.commit.message.split("\n")[0]);
   const features = [];
   const fixes = [];
 
@@ -130,16 +130,16 @@ async function sortCommits() {
 
   commitMessages.forEach(function callbackFn(commit) { 
     featureKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`^\\[?${balise}[\\]|:]`, "g"))) {
-        features.push(commit.replace(new RegExp(`^\\[?${balise}[\\]|:]`),'* '));
+      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+        features.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
       } 
     });
   });
 
   commitMessages.forEach(function callbackFn(commit) { 
     fixesKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`^\\[?${balise}[\\]|:]`, "g"))) {
-        fixes.push(commit.replace(new RegExp(`^\\[?${balise}[\\]|:]`),'* '));
+      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+        fixes.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
       } 
     });
   });
