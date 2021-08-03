@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width">
     <title>changelog-maker</title>
     <script src="./changelog.js"></script>
+    <link rel="stylesheet" href="changelog.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   <body onload="localStorageManager(true)">
     <center><h1> Input parameters of your changelog</h1></center>
@@ -107,7 +109,18 @@
       </form>
     </center>
     <hr>
-    <div id="bodyhtml"></div>
+    <hr>
+    <div class="row">
+      <div class="column">
+        <h6>Markdown</h6>
+        <pre><div id="bodyhtml"></div></pre>
+      </div>
+      <div class="column">
+        <h6>HTML</h6>
+        <div id="content_md"></div>
+      </div>
+    </div>
+    <div id="loader"></div>
     <hr>
     <footer>
       <i>

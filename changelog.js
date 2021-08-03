@@ -149,7 +149,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 }
 
 async function sortCommits() {
-  document.getElementById("bodyhtml").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
+  document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
 
   const urlField = document.getElementById("urlhtml").value.toString();
   const apiField = document.getElementById("apitoken").value.toString();
@@ -224,21 +224,26 @@ async function sortCommits() {
     }
   });
 
-  let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
+  let newBody = '# Changelog - ' + urlField + "\n\n";
   if (beforeField != "" && afterField != "") {
-    newBody += `<h3>> Commits between ${beforeField} and ${afterField}</h3>`;
+    newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
   } else if (afterField != "") {
-    newBody += `<h3>> Commits since ${afterField}</h3>`;
+    newBody += `> Commits since ${beforeField}\n\n`;
   } else if (beforeField != "") {
-    newBody += `<h3>> Commits until ${beforeField}</h3>`;
+    newBody += `> Commits until ${afterField}\n\n`;
   }
-  newBody += `<h2>## New features</h2>`;
-  newBody += features.join("<br><br>");
-  newBody += `<h2>## Bug fixes</h2>`;
-  newBody += fixes.join("<br><br>");
-  newBody += `<h2>## Code Refactors</h2>`;
-  newBody += refs.join("<br><br>");
-  newBody += `<h2>## Other types of commits</h2>`;
-  newBody += others.join("<br><br>");
+  newBody += `## New features\n\n`;
+  newBody += features.join("\n\n");
+  newBody += `## Bug fixes\n\n`;
+  newBody += fixes.join("\n\n");
+  newBody += `## Code Refactors\n\n`;
+  newBody += refs.join("\n\n");
+  newBody += `## Other types of commits\n\n`;
+  newBody += others.join("\n\n");
+  document.getElementById("loader").innerHTML = '';
   document.getElementById("bodyhtml").innerHTML = newBody;
+  console.log("MARKED");
+  document.getElementById("content_md").innerHTML = marked(newBody);
 }
+
+
