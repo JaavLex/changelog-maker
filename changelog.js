@@ -158,7 +158,7 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] -" + item.commit.message.split("\n")[0]);
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0]);
   const features = [];
   const fixes = [];
   const refs = [];
@@ -168,7 +168,7 @@ async function sortCommits() {
     featureKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
         if (document.getElementsByName('yesNoBalises')[1].checked) {
-          features.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+          features.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
         } else {
           features.push(commit);
         }
@@ -180,7 +180,7 @@ async function sortCommits() {
     fixesKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
         if (document.getElementsByName('yesNoBalises')[1].checked) {
-          fixes.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+          fixes.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
         } else {
           fixes.push(commit);
         }
@@ -192,7 +192,7 @@ async function sortCommits() {
     refactorKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
         if (document.getElementsByName('yesNoBalises')[1].checked) {
-          refs.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+          refs.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
         } else {
           refs.push(commit);
         }
