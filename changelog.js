@@ -155,8 +155,8 @@ async function sortCommits() {
 
   const urlField = document.getElementById("urlhtml").value.toString();
   const apiField = document.getElementById("apitoken").value.toString();
-  const beforeField = document.getElementById("beforedate").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
+  const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
   const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0]);
   const features = [];
@@ -227,11 +227,11 @@ async function sortCommits() {
 
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
   if (beforeField != "" && afterField != "") {
-    newBody += `<h3>### Commits between ${beforeField} and ${afterField}</h3>`;
+    newBody += `<h3>> Commits between ${beforeField} and ${afterField}</h3>`;
   } else if (afterField != "") {
-    newBody += `<h3>### Commits before ${beforeField}</h3>`;
+    newBody += `<h3>> Commits since ${afterField}</h3>`;
   } else if (beforeField != "") {
-    newBody += `<h3>### Commits after ${afterField}</h3>`;
+    newBody += `<h3>> Commits until ${beforeField}</h3>`;
   }
   newBody += `<h2>## New features</h2>`;
   newBody += features.join("<br><br>");
