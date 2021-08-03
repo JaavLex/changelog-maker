@@ -235,13 +235,7 @@ async function sortCommits() {
       }
     }
     if (noMatch === othersSelectionList.length) {
-      if (document.getElementsByName('yesNoMerges')[1].checked) {
-        if (!commit.match(new RegExp(`(?!\\)\\] - )[Mm]erge`, "g"))) {
-          othersRaw.push(commit);
-        }
-      } else {
-        othersRaw.push(commit);
-      }
+      othersRaw.push(commit);
     }
   });
 
@@ -253,7 +247,13 @@ async function sortCommits() {
         } else {
           others.push(commit);
         }
-      } 
+      } else if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+        if (document.getElementsByName('yesNoMerges')[0].checked) {
+          others.push(commit)
+        }
+      } else {
+        others.push(commit)
+      }
     });
   });
 
