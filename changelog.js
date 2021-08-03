@@ -167,7 +167,7 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     featureKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yes_no')[1].checked) {
+        if (document.getElementsByName('yesNoBalises')[1].checked) {
           features.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
         } else {
           features.push(commit);
@@ -179,7 +179,7 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     fixesKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yes_no')[1].checked) {
+        if (document.getElementsByName('yesNoBalises')[1].checked) {
           fixes.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
         } else {
           fixes.push(commit);
@@ -191,7 +191,7 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     refactorKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yes_no')[1].checked) {
+        if (document.getElementsByName('yesNoBalises')[1].checked) {
           refs.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
         } else {
           refs.push(commit);
@@ -202,7 +202,10 @@ async function sortCommits() {
 
   otherKwlist = otherKwlist.concat(featureKwList);
   otherKwlist = otherKwlist.concat(fixesKwList);
-  otherKwlist = otherKwlist.concat(refactorKwList);
+  otherKwlist = otherKwlist.concat(refactorKwList);    
+  if (document.getElementsByName('yesNoMerges')[1].checked) {
+    otherKwlist.concat(["Merge", "merge", "MERGE"]);
+  }
 
   commitMessages.forEach(function callbackFn(commit) {
     let noMatch = 0; 
@@ -212,7 +215,13 @@ async function sortCommits() {
       }
     }
     if (noMatch === otherKwlist.length) {
-      others.push(commit);
+      if (document.getElementsByName('yesNoMerges')[1].checked) {
+        if (!commit.match(new RegExp(`(?!\\)\\] - )[Mm]erge`, "g"))) {
+          others.push(commit);
+        }
+      } else {
+        others.push(commit);
+      }
     }
   });
 
