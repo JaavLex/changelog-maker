@@ -246,4 +246,8 @@ async function sortCommits() {
   document.getElementById("content_md").innerHTML = marked(newBody);
 }
 
-
+document.addEventListener("DOMContentLoaded", async function(event) {
+  // Your code to run since DOM is loaded and ready
+  const response = await fetch('/package.json').then(response => response.json());
+  document.getElementById("version").innerHTML = `v${response.version}`
+});
