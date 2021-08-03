@@ -167,7 +167,11 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     featureKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        features.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+        if (document.getElementsByName('yes_no')[1].checked) {
+          features.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+        } else {
+          features.push(commit);
+        }
       } 
     });
   });
@@ -175,7 +179,11 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     fixesKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        fixes.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+        if (document.getElementsByName('yes_no')[1].checked) {
+          fixes.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+        } else {
+          fixes.push(commit);
+        }
       } 
     });
   });
@@ -183,7 +191,11 @@ async function sortCommits() {
   commitMessages.forEach(function callbackFn(commit) { 
     refactorKwList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        refs.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"), ''));
+        if (document.getElementsByName('yes_no')[1].checked) {
+          refs.push(commit.replace(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"),''));
+        } else {
+          refs.push(commit);
+        }
       } 
     });
   });
