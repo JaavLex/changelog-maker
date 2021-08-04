@@ -156,7 +156,7 @@ async function sortCommits() {
   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.author.login + " | " + item.commit.message.split("\n")[0]);
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " | " + item.author.login);
   const features = [];
   const fixes = [];
   const refs = [];
@@ -234,11 +234,11 @@ async function sortCommits() {
   }
   newBody += `## New features\n\n`;
   newBody += features.join("\n\n");
-  newBody += `## Bug fixes\n\n`;
+  newBody += `\n\n## Bug fixes\n\n`;
   newBody += fixes.join("\n\n");
-  newBody += `## Code Refactors\n\n`;
+  newBody += `\n\n## Code Refactors\n\n`;
   newBody += refs.join("\n\n");
-  newBody += `## Other types of commits\n\n`;
+  newBody += `\n\n## Other types of commits\n\n`;
   newBody += others.join("\n\n");
   document.getElementById("loader").innerHTML = '';
   document.getElementById("bodyhtml").innerHTML = newBody;
