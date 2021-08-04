@@ -142,7 +142,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     dateParameters = `&until=${beforeDate}`;
   }
 
-  const headersRequest = await fetch(repoUrl+"1",{
+  const headersRequest = await fetch(repoUrl+"1"+dateParameters,{
     method: "GET",
     headers: {
       Authorization: `token ${apiKey}` 
@@ -162,6 +162,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
         Authorization: `token ${apiKey}` 
       },
     });
+    console.log("Loading...");
     const jsonCommits = await repoContent.json();
     repoCommits.push(...jsonCommits);
   };
