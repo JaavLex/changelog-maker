@@ -50,35 +50,26 @@ function localStorageManager(pageload) {
   }
 }
 
+function addKeywordLocalStorage(localStorageField, keywordList, defaultList, htmlField, inputField) {
+  keywordList = defaultList;
+  keywordList.push(document.getElementById(inputField).value);
+  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+  keywordList = JSON.parse(localStorage.getItem(localStorageField));
+  document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+}
+
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
-      featureKwList = defaultfeatlist;
-      featureKwList.push(document.getElementById("featkwinput").value);
-      localStorage.setItem('tacticsch-chgmaker-feature-keywords', JSON.stringify(featureKwList) );
-      featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
-      document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
+      addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml", "featkwinput");
       break;
     case 2:
-      fixesKwList = defaultfixlist;
-      fixesKwList.push(document.getElementById("fixkwinput").value);
-      localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
-      fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
-      document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
-      break;
+      addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml", "fixkwinput");
     case 3:
-      refactorKwList = defaultreflist;
-      refactorKwList.push(document.getElementById("refkwinput").value);
-      localStorage.setItem('tacticsch-chgmaker-ref-keywords', JSON.stringify(refactorKwList) );
-      refactorKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-ref-keywords'));
-      document.getElementById("refkwhtml").innerHTML = "* " + refactorKwList.join("<br>* ");
+      addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml", "refkwinput");
       break;
     case 4:
-      othersKwList = defaultotherslist;
-      othersKwList.push(document.getElementById("otherskwinput").value);
-      localStorage.setItem('tacticsch-chgmaker-others-keywords', JSON.stringify(othersKwList) );
-      othersKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-others-keywords'));
-      document.getElementById("otherskwhtml").innerHTML = "* " + othersKwList.join("<br>* ");
+      addKeywordLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml", "otherskwinput");
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -86,31 +77,26 @@ function keywordAdder(commitType) {
   }
 }
 
+function clearKeywordLocalStorage(localStorageField, keywordList, defaultList, htmlField) {
+  localStorage.removeItem(localStorageField);
+  keywordList = defaultList;
+  localStorage.setItem(localStorageField, JSON.stringify(featureKwList) );
+  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+}
+
 function keywordClearer(commitType) {
   switch (commitType) {
     case 1:
-      localStorage.removeItem('tacticsch-chgmaker-feature-keywords');
-      featureKwList = defaultfeatlist;
-      localStorage.setItem('tacticsch-chgmaker-feature-keywords', JSON.stringify(featureKwList) );
-      document.getElementById("featurekwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + featureKwList.join("<br>* ") + "<br>-------------<br>";
+      clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml");
       break;
     case 2:
-      localStorage.removeItem('tacticsch-chgmaker-fix-keywords');
-      fixesKwList = defaultfixlist;
-      localStorage.setItem('tacticsch-chgmaker-fix-keywords', JSON.stringify(fixesKwList) );
-      document.getElementById("fixkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + fixesKwList.join("<br>* ") + "<br>-------------<br>";
+      clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml");
       break;
     case 3:
-      localStorage.removeItem('tacticsch-chgmaker-ref-keywords');
-      refactorKwList = defaultreflist;
-      localStorage.setItem('tacticsch-chgmaker-ref-keywords', JSON.stringify(refactorKwList) );
-      document.getElementById("refkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + refactorKwList.join("<br>* ") + "<br>-------------<br>";
+      clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml");
       break;
     case 4:
-      localStorage.removeItem('tacticsch-chgmaker-others-keywords');
-      othersKwList = defaultotherslist;
-      localStorage.setItem('tacticsch-chgmaker-others-keywords', JSON.stringify(othersKwList) );
-      document.getElementById("otherskwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + othersKwList.join("<br>* ") + "<br>-------------<br>";
+      clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml");
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -185,41 +171,23 @@ async function sortCommits() {
   const others = [];
   const othersRaw = [];
 
-  commitMessages.forEach(function callbackFn(commit) { 
-    featureKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yesNoBalises')[1].checked) {
-          features.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-        } else {
-          features.push(commit);
-        }
-      } 
+  function baliseRemover(keywordList, finalList) {
+    commitMessages.forEach(function callbackFn(commit) { 
+      keywordList.forEach(function callbackFn(balise) {
+        if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+          if (document.getElementsByName('yesNoBalises')[1].checked) {
+            finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+          } else {
+            finalList.push(commit);
+          }
+        } 
+      });
     });
-  });
+  }
 
-  commitMessages.forEach(function callbackFn(commit) { 
-    fixesKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yesNoBalises')[1].checked) {
-          fixes.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-        } else {
-          fixes.push(commit);
-        }
-      } 
-    });
-  });
-
-  commitMessages.forEach(function callbackFn(commit) { 
-    refactorKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yesNoBalises')[1].checked) {
-          refs.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-        } else {
-          refs.push(commit);
-        }
-      } 
-    });
-  });
+  baliseRemover(featureKwList, features);
+  baliseRemover(fixesKwList, fixes);
+  baliseRemover(refactorKwList, refs);
 
   othersSelectionList = othersSelectionList.concat(featureKwList);
   othersSelectionList = othersSelectionList.concat(fixesKwList);
@@ -280,5 +248,3 @@ async function sortCommits() {
   newBody += others.join("<br><br>");
   document.getElementById("bodyhtml").innerHTML = newBody;
 }
-
-
