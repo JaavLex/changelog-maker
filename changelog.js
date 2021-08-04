@@ -8,40 +8,26 @@ let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
 let defaultotherslist = ['bump', 'BUMP'];
 
+function loadListLocalStorage(localStorageField, keywordList, defaultList, htmlField) {
+  if (localStorage.getItem(localStorageField) != null) {
+    keywordList = JSON.parse(localStorage.getItem(localStorageField));
+    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+  } else {
+    keywordList = defaultList;
+    document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+  }
+}
+
 function localStorageManager(pageload) {
   if (pageload) {
     document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
-    if (localStorage.getItem('tacticsch-chgmaker-feature-keywords') != null) {
-      featureKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-feature-keywords'));
-      document.getElementById("featurekwhtml").innerHTML = "* " + featureKwList.join("<br>* ");
-    } else {
-      featureKwList = defaultfeatlist;
-      document.getElementById("featurekwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + featureKwList.join("<br>* ") + "<br>-------------<br>";
-    }
-    if (localStorage.getItem('tacticsch-chgmaker-fix-keywords') != null) {
-      fixesKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-fix-keywords'));
-      document.getElementById("fixkwhtml").innerHTML = "* " + fixesKwList.join("<br>* ");
-    } else {
-      fixesKwList = defaultfixlist;
-      document.getElementById("fixkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + fixesKwList.join("<br>* ") + "<br>-------------<br>";
-    }
-    if (localStorage.getItem('tacticsch-chgmaker-ref-keywords') != null) {
-      refactorKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-ref-keywords'));
-      document.getElementById("refkwhtml").innerHTML = "* " + refactorKwList.join("<br>* ");
-    } else {
-      refactorKwList = defaultreflist;
-      document.getElementById("refkwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + refactorKwList.join("<br>* ") + "<br>-------------<br>";
-    }
-    if (localStorage.getItem('tacticsch-chgmaker-others-keywords') != null) {
-      othersKwList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-others-keywords'));
-      document.getElementById("otherskwhtml").innerHTML = "* " + othersKwList.join("<br>* ");
-    } else {
-      othersKwList = defaultotherslist;
-      document.getElementById("otherskwhtml").innerHTML = "-- DEFAULT --<br>" + "* " + othersKwList.join("<br>* ") + "<br>-------------<br>";
-    }
+    loadListLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml");
+    loadListLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml");
+    loadListLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml");
+    loadListLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml");
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
