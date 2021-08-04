@@ -65,6 +65,7 @@ function keywordAdder(commitType) {
       break;
     case 2:
       addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml", "fixkwinput");
+      break;
     case 3:
       addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml", "refkwinput");
       break;
