@@ -8,13 +8,17 @@ let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
 let defaultotherslist = ['bump', 'BUMP'];
 
-function loadListLocalStorage(localStorageField, keywordList, defaultList, htmlField) {
+function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
     keywordList = JSON.parse(localStorage.getItem(localStorageField));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    return keywordList;
   } else {
     keywordList = defaultList;
+    console.log(keywordList);
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+    localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+    return keywordList;
   }
 }
 
@@ -24,10 +28,10 @@ function localStorageManager(pageload) {
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
-    loadListLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml");
-    loadListLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml");
-    loadListLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml");
-    loadListLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml");
+    featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
+    fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
+    refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+    othersKwList = loadListLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
@@ -42,21 +46,22 @@ function addKeywordLocalStorage(localStorageField, keywordList, defaultList, htm
   localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
   keywordList = JSON.parse(localStorage.getItem(localStorageField));
   document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+  return keywordList;
 }
 
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
-      addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml", "featkwinput");
+      featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
       break;
     case 2:
-      addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml", "fixkwinput");
+      fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput");
       break;
     case 3:
-      addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml", "refkwinput");
+      refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput");
       break;
     case 4:
-      addKeywordLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml", "otherskwinput");
+      othersKwList = addKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml", "otherskwinput");
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -64,26 +69,27 @@ function keywordAdder(commitType) {
   }
 }
 
-function clearKeywordLocalStorage(localStorageField, keywordList, defaultList, htmlField) {
+function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
   localStorage.removeItem(localStorageField);
   keywordList = defaultList;
-  localStorage.setItem(localStorageField, JSON.stringify(featureKwList) );
+  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
   document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+  return keywordList;
 }
 
 function keywordClearer(commitType) {
   switch (commitType) {
     case 1:
-      clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', featureKwList, defaultfeatlist, "featurekwhtml");
+      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
       break;
     case 2:
-      clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', fixesKwList, defaultfixlist, "fixkwhtml");
+      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
       break;
     case 3:
-      clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', refactorKwList, defaultreflist, "refkwhtml");
+      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
       break;
     case 4:
-      clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', othersKwList, defaultotherslist, "otherskwhtml");
+      othersKwList = clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -135,7 +141,6 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
         Authorization: `token ${apiKey}` 
       },
     });
-    console.log("Loading...");
     const jsonCommits = await repoContent.json();
     repoCommits.push(...jsonCommits);
   };
@@ -158,8 +163,8 @@ async function sortCommits() {
   const others = [];
   const othersRaw = [];
 
-  function baliseRemover(keywordList, finalList) {
-    commitMessages.forEach(function callbackFn(commit) { 
+  function baliseRemover(commitList, keywordList, finalList) {
+    commitList.forEach(function callbackFn(commit) { 
       keywordList.forEach(function callbackFn(balise) {
         if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
           if (document.getElementsByName('yesNoBalises')[1].checked) {
@@ -172,9 +177,11 @@ async function sortCommits() {
     });
   }
 
-  baliseRemover(featureKwList, features);
-  baliseRemover(fixesKwList, fixes);
-  baliseRemover(refactorKwList, refs);
+  console.log(featureKwList);
+
+  baliseRemover(commitMessages, featureKwList, features);
+  baliseRemover(commitMessages, fixesKwList, fixes);
+  baliseRemover(commitMessages, refactorKwList, refs);
 
   othersSelectionList = othersSelectionList.concat(featureKwList);
   othersSelectionList = othersSelectionList.concat(fixesKwList);
