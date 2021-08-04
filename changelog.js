@@ -241,21 +241,25 @@ async function sortCommits() {
   });
 
   othersRaw.forEach(function callbackFn(commit) { 
-    othersKwList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-        if (document.getElementsByName('yesNoBalisesOthers')[1].checked) {
-          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+    if (document.getElementsByName('yesNoBalisesOthers')[1].checked) {
+      othersKwList.forEach(function callbackFn(balise) {
+        if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+          if (document.getElementsByName('yesNoMerges')[0].checked) {
+            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+          }
         } else {
-          others.push(commit);
+          others.push(commit)
         }
-      } else if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+      });
+    } else {
+      if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
         if (document.getElementsByName('yesNoMerges')[0].checked) {
           others.push(commit)
         }
       } else {
         others.push(commit)
       }
-    });
+    }
   });
 
   let newBody = '<pre><h1># Changelog - ' + urlField + "</h1>";
