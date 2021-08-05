@@ -5,3 +5,49 @@
 .column {
   flex: 50%;
 }
+
+body {
+  font-family:Arial, Helvetica, sans-serif;
+  background-color: darkgray;
+  color: rgb(255, 255, 255);
+}
+
+form {
+  border-width: 1pt;
+  border-style:ridge;
+}
+
+button, input[type=submit]{
+  font-size: 15px;
+  text-decoration: none;
+  background-color: rgb(148, 145, 145);
+  color: rgb(221, 221, 221);
+  border: 2px solid #333;
+  text-align: center;
+  position: relative;
+  transition: all .35s;
+}
+
+button span, input[type=submit] span{
+  position: relative;
+  z-index: 2;
+}
+
+button:after, input[type=submit]:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #00ff2a41;
+  transition: all .35s;
+}
+
+button:hover, input[type=submit]:hover{
+  color: rgb(22, 30, 100);
+}
+
+button:hover:after, input[type=submit]:hover:after{
+  width: 100%;
+}
