@@ -202,10 +202,10 @@ async function sortCommits() {
   othersRaw.forEach(function callbackFn(commit) { 
     if (document.getElementsByName('yesNoBalisesOthers')[1].checked) {
       othersKwList.forEach(function callbackFn(balise) {
-        if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+          if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
           if (document.getElementsByName('yesNoMerges')[0].checked) {
             others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-          }
+          } 
         } else {
           others.push(commit)
         }
@@ -215,9 +215,9 @@ async function sortCommits() {
         if (document.getElementsByName('yesNoMerges')[0].checked) {
           others.push(commit)
         }
-      } else {
+        } else {
         others.push(commit)
-      }
+          }
     }
   });
 
@@ -243,6 +243,6 @@ async function sortCommits() {
 }
 
 document.addEventListener("DOMContentLoaded", async function(event) {
-  const response = await fetch('/package.json').then(response => response.json());
+  const response = await fetch('package.json').then(response => response.json());
   document.getElementById("version").innerHTML = `v${response.version}`
 });
