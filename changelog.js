@@ -228,9 +228,9 @@ async function sortCommits() {
   if (beforeField != "" && afterField != "") {
     newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
   } else if (afterField != "") {
-    newBody += `> Commits since ${beforeField}\n\n`;
+    newBody += `> Commits since ${afterField}\n\n`;
   } else if (beforeField != "") {
-    newBody += `> Commits until ${afterField}\n\n`;
+    newBody += `> Commits until ${beforeField}\n\n`;
   }
   newBody += `## New features\n\n`;
   newBody += features.join("\n\n");
