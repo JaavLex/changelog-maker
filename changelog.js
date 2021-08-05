@@ -15,7 +15,6 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
     return keywordList;
   } else {
     keywordList = defaultList;
-    console.log(keywordList);
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
     localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
     return keywordList;
@@ -177,8 +176,6 @@ async function sortCommits() {
     });
   }
 
-  console.log(featureKwList);
-
   baliseRemover(commitMessages, featureKwList, features);
   baliseRemover(commitMessages, fixesKwList, fixes);
   baliseRemover(commitMessages, refactorKwList, refs);
@@ -242,12 +239,10 @@ async function sortCommits() {
   newBody += others.join("\n\n");
   document.getElementById("loader").innerHTML = '';
   document.getElementById("bodyhtml").innerHTML = newBody;
-  console.log("MARKED");
   document.getElementById("content_md").innerHTML = marked(newBody);
 }
 
 document.addEventListener("DOMContentLoaded", async function(event) {
-  // Your code to run since DOM is loaded and ready
   const response = await fetch('/package.json').then(response => response.json());
   document.getElementById("version").innerHTML = `v${response.version}`
 });
