@@ -198,8 +198,9 @@ async function sortCommits() {
     if (noMatch === othersSelectionList.length) {
       othersRaw.push(commit);
     }
-  });
+  })
 
+  // DOES NOT WORK - NEED TO REWRITE THIS PIECE OF CODE //
   othersRaw.forEach(function callbackFn(commit) { 
     if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
       othersKwList.forEach(function callbackFn(balise) {
