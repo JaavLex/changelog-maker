@@ -39,7 +39,7 @@ function localStorageManager(pageload) {
   }
 }
 
-function addKeywordLocalStorage(localStorageField, keywordList, defaultList, htmlField, inputField) {
+function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField) {
   keywordList = defaultList;
   keywordList.push(document.getElementById(inputField).value);
   localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
