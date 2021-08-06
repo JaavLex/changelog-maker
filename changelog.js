@@ -133,6 +133,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     totalPage = Math.ceil(rgxmatch[1]/nbCommits);
   }
 
+  // Could optimize by converting to JSON after getting all pages //
   for (let i = 1; i <= totalPage; i++) {
     const repoContent = await fetch(repoUrl+nbCommits+"&page="+i+dateParameters,{
       method: "GET",
@@ -155,7 +156,7 @@ async function sortCommits() {
   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " | " + item.author.login);
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " | " + item.commit.author.name);
   const features = [];
   const fixes = [];
   const refs = [];
@@ -200,24 +201,26 @@ async function sortCommits() {
   });
 
   othersRaw.forEach(function callbackFn(commit) { 
-    if (document.getElementsByName('yesNoBalisesOthers')[1].checked) {
+    if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
       othersKwList.forEach(function callbackFn(balise) {
+        if (document.getElementsByName('yesNoMerges')[0].checked) {
           if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-          if (document.getElementsByName('yesNoMerges')[0].checked) {
             others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
           } 
         } else {
-          others.push(commit)
+          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
         }
       });
     } else {
-      if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+      othersKwList.forEach(function callbackFn(balise) {
         if (document.getElementsByName('yesNoMerges')[0].checked) {
-          others.push(commit)
-        }
+          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
         } else {
-        others.push(commit)
+          if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
           }
+        }
+      });
     }
   });
 
