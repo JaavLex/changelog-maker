@@ -7,43 +7,108 @@ let defaultfeatlist = ['feat', 'FEAT', 'feature', 'FEATURE'];
 let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
 let defaultotherslist = ['bump', 'BUMP'];
+let options = loadUserOptions() || {};
+const groups = {
+  "feat": defaultfeatlist,
+  "bug": defaultfixlist,
+  "ref": defaultreflist,
+  "other": defaultotherslist,
+}
 
-function loadListLocalStorage(localStorageField, defaultList, htmlField) {
-  if (localStorage.getItem(localStorageField) != null) {
-    keywordList = JSON.parse(localStorage.getItem(localStorageField));
-    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
-    return keywordList;
-  } else {
-    keywordList = defaultList;
-    document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
-    localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
-    return keywordList;
+function saveUserOptions() {
+  let inputs = document.getElementsByClassName("options");
+  for (const i of inputs) {
+    if (i.type != "radio") {
+      options[i.id] = i.value;
+    }
   }
+  options["groups"] = groups;
+  console.log(options);
+  localStorage.setItem('tacticsch-chgmaker', JSON.stringify(options))
+}
+
+function loadUserOptions() {
+  return JSON.parse(localStorage.getItem('tacticsch-chgmaker'));
+}
+
+// function loadListLocalStorage(localStorageField, defaultList, htmlField) {
+//   if (localStorage.getItem(localStorageField) != null) {
+//     keywordList = JSON.parse(localStorage.getItem(localStorageField));
+//     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+//     return keywordList;
+//   } else {
+//     keywordList = defaultList;
+//     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+//     localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+//     return keywordList;
+//   }
+// }
+
+function loadListLocalStorage(htmlField) {
+  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + options.groups.feat.join("<br>* ") + "<br>-------------<br>";
+}
+
+function buildGroupForm() {
+  const previousTR = document.getElementById('trIncludeMerge');
+  var newRow = document.createElement('tr');
+  // TODO: Add foreach
+
+  // Buttons part - TODO: Still need to add onclick
+  var buttonsCell = document.createElement('td');
+  var buttonAdd = document.createElement('button');
+  var buttonClear = document.createElement('button');
+  buttonAdd.innerHTML = "+"
+  buttonClear.innerHTML = "x"
+  buttonsCell.appendChild(buttonAdd);
+  buttonsCell.appendChild(buttonClear);
+  newRow.appendChild(buttonsCell);
+
+  // Input part
+  var inputCell = document.createElement('td');
+  var inputText = document.createElement('input');
+  inputText.type = "text";
+  inputCell.appendChild(inputText);
+  newRow.appendChild(inputCell); 
+
+  previousTR.parentNode.insertBefore(newRow, previousTR.nextSibling);
+  //previousTR.parentNode.insertBefore(newRow, previousTR.nextSibling);
 }
 
 function localStorageManager(pageload) {
+  buildGroupForm()
   if (pageload) {
-    document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
-    document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
-    document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
-    document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
-    featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
-    fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
-    refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
-    othersKwList = loadListLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
+    document.getElementById("urlhtml").value = options.urlhtml;
+    document.getElementById("apitoken").value = options.apitoken;
+    document.getElementById("beforedate").value = options.beforedate;
+    document.getElementById("afterdate").value = options.afterdate;
+    loadListLocalStorage("featurekwhtml");
+    
+    // fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
+    // refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+    // othersKwList = loadListLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
+    
   } else {
-    localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-    localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
-    localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
-    localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
+    saveUserOptions();
   }
 }
 
+// function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField) {
+//   keywordList = defaultList;
+//   keywordList.push(document.getElementById(inputField).value);
+//   localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+//   keywordList = JSON.parse(localStorage.getItem(localStorageField));
+//   document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+//   return keywordList;
+// }
+
 function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField) {
+
+
+
   keywordList = defaultList;
   keywordList.push(document.getElementById(inputField).value);
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
-  keywordList = JSON.parse(localStorage.getItem(localStorageField));
+  localStorage.setItem('tacticsch-chgmaker-keywords', JSON.stringify(keywordList) );
+  keywordList = JSON.parse(localStorage.getItem('tacticsch-chgmaker-keywords'));
   document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
   return keywordList;
 }
@@ -51,6 +116,7 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
+      // featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
       featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
       break;
     case 2:
@@ -68,43 +134,39 @@ function keywordAdder(commitType) {
   }
 }
 
-function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
-  localStorage.removeItem(localStorageField);
-  keywordList = defaultList;
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
-  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
-  return keywordList;
-}
+// function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
+//   localStorage.removeItem(localStorageField);
+//   keywordList = defaultList;
+//   localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+//   document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+//   return keywordList;
+// }
 
-function keywordClearer(commitType) {
-  switch (commitType) {
-    case 1:
-      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
-      break;
-    case 2:
-      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
-      break;
-    case 3:
-      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
-      break;
-    case 4:
-      othersKwList = clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
-      break;
-    default:
-      console.log("ERROR: Unknown commit type");
-      break;
-  }
-}
+// function keywordClearer(commitType) {
+//   switch (commitType) {
+//     case 1:
+//       featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
+//       break;
+//     case 2:
+//       fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
+//       break;
+//     case 3:
+//       refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+//       break;
+//     case 4:
+//       othersKwList = clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
+//       break;
+//     default:
+//       console.log("ERROR: Unknown commit type");
+//       break;
+//   }
+// }
 
 function clearFields() {
   document.getElementById("urlhtml").value = "";
   document.getElementById("apitoken").value = "";
   document.getElementById("beforedate").value = "";
   document.getElementById("afterdate").value = "";
-  localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-  localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
-  localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
-  localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
 }
 
 async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
