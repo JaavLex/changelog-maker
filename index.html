@@ -11,8 +11,8 @@
   <body onload="localStorageManager(true)">
     <center><h1> Input parameters of your changelog</h1></center>
     <center>
-      <form action="#" onsubmit="sortCommits()">
-        <table>
+      <table>
+        <form name="params" action="#" onsubmit="sortCommits()"></form>
           <tr>
             <td>Repository URL</td>
             <td><input id="urlhtml" type="text" onchange="localStorageManager(false)" placeholder="JaavLex/changelog-maker" /></td>
@@ -54,59 +54,59 @@
             </td>
           </tr>
           <tr>
-            <td>
-              <button onclick="keywordAdder(1)">+</button>
-              <button onclick="keywordClearer(1)">x</button>
-            </td>
-            <td><input id="featkwinput" type="text" placeholder="functionality" /></td>
-          </tr>
-          <tr>
-            <td>
-              <pre><div id="featurekwhtml"></div></pre>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button onclick="keywordAdder(2)">+</button>
-              <button onclick="keywordClearer(2)">x</button>
-            </td>
-            <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
-          </tr>
-          <tr>
-            <td>
-              <pre><div id="fixkwhtml"></div></pre>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button onclick="keywordAdder(3)">+</button>
-              <button onclick="keywordClearer(3)">x</button>
-            </td>
-            <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
-          </tr>
-          <tr>
-            <td>
-              <pre><div id="refkwhtml"></div></pre>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <button onclick="keywordAdder(4)">+</button>
-              <button onclick="keywordClearer(4)">x</button>
-            </td>
-            <td><input id="otherskwinput" type="text" placeholder="miscellaneous" /></td>
-          </tr>
-          <tr>
-            <td>
-              <pre><div id="otherskwhtml"></div></pre>
-            </td>
-          </tr>
-          <tr>
             <td><button onclick="clearFields()">x Clear</button></td>
             <td><input type="submit" value="✓ Finish"></input></td>
           </tr>
-        </table>
-      </form>
+        </form>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(1)">+</button>
+            <button onclick="keywordClearer(1)">x</button>
+          </td>
+          <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="featurekwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(2)">+</button>
+            <button onclick="keywordClearer(2)">x</button>
+          </td>
+          <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="fixkwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(3)">+</button>
+            <button onclick="keywordClearer(3)">x</button>
+          </td>
+          <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="refkwhtml"></div></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onclick="keywordAdder(4)">+</button>
+            <button onclick="keywordClearer(4)">x</button>
+          </td>
+          <td><input id="otherskwinput" type="text" placeholder="miscellaneous" /></td>
+        </tr>
+        <tr>
+          <td>
+            <pre><div id="otherskwhtml"></div></pre>
+          </td>
+        </tr>
+      </table>
     </center>
     <hr>
     <div class="row">
