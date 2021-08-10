@@ -2,9 +2,9 @@ let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
 let othersSelectionList = [];
-let defaultfeatlist = ['feat', 'FEAT', 'feature', 'FEATURE'];
-let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
-let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
+let defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
+let defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
+let defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
 
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
@@ -169,12 +169,17 @@ async function sortCommits() {
   } else {
     document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
 
+    function quotemeta (str) {
+      return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
+    }
+
     function baliseRemover(commitList, keywordList, finalList) {
       commitList.forEach(function callbackFn(commit) { 
-        keywordList.forEach(function callbackFn(balise) {
-          if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+        keywordList.forEach(function callbackFn(balise) { 
+
+          if (commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'))) {
             if (document.getElementsByName('yesNoBalises')[1].checked) {
-              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'),''));
             } else {
               finalList.push(commit);
             }
@@ -194,7 +199,7 @@ async function sortCommits() {
     commitMessages.forEach(function callbackFn(commit) {
       let noMatch = 0; 
       for (let i = 0; i < othersSelectionList.length; i++) {
-        if (!commit.match(new RegExp(`(?!\\)\\] - )\\[?${othersSelectionList[i]}[\\]|:]`, "g"))) {
+        if (!commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(othersSelectionList[i])}`, 'i'))) {
           noMatch++;
         }
       }
