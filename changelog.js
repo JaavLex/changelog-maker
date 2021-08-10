@@ -1,12 +1,10 @@
 let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
-let othersKwList = [];
 let othersSelectionList = [];
 let defaultfeatlist = ['feat', 'FEAT', 'feature', 'FEATURE'];
 let defaultfixlist = ['fix', 'FIX', 'hotfix', 'HOTFIX'];
 let defaultreflist = ['ref', 'REF', 'refactor', 'REFACTOR'];
-let defaultotherslist = ['bump', 'BUMP'];
 
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
@@ -30,7 +28,6 @@ function localStorageManager(pageload) {
     featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
     fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
     refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
-    othersKwList = loadListLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
@@ -51,16 +48,25 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
-      featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
+      if (document.getElementById("featkwinput").value === "") {
+        alert("Field is empty !");
+      } else {
+        featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
+      }   
       break;
     case 2:
-      fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput");
+      if (document.getElementById("fixkwinput").value === "") {
+        alert("Field is empty !")
+      } else {
+        fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput");
+      }
       break;
     case 3:
-      refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput");
-      break;
-    case 4:
-      othersKwList = addKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml", "otherskwinput");
+      if (document.getElementById("refkwinput").value === "") {
+        alert("Field is empty !")
+      } else {
+        refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput");
+      }
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -86,9 +92,6 @@ function keywordClearer(commitType) {
       break;
     case 3:
       refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
-      break;
-    case 4:
-      othersKwList = clearKeywordLocalStorage('tacticsch-chgmaker-others-keywords', defaultotherslist, "otherskwhtml");
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -201,29 +204,29 @@ async function sortCommits() {
   })
 
   // DOES NOT WORK - NEED TO REWRITE THIS PIECE OF CODE //
-  othersRaw.forEach(function callbackFn(commit) { 
-    if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
-      othersKwList.forEach(function callbackFn(balise) {
-        if (document.getElementsByName('yesNoMerges')[0].checked) {
-          if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-          } 
-        } else {
-          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-        }
-      });
-    } else {
-      othersKwList.forEach(function callbackFn(balise) {
-        if (document.getElementsByName('yesNoMerges')[0].checked) {
-          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-        } else {
-          if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-          }
-        }
-      });
-    }
-  });
+  // othersRaw.forEach(function callbackFn(commit) { 
+  //   if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
+  //     othersKwList.forEach(function callbackFn(balise) {
+  //       if (document.getElementsByName('yesNoMerges')[0].checked) {
+  //         if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+  //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+  //         } 
+  //       } else {
+  //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+  //       }
+  //     });
+  //   } else {
+  //     othersKwList.forEach(function callbackFn(balise) {
+  //       if (document.getElementsByName('yesNoMerges')[0].checked) {
+  //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+  //       } else {
+  //         if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+  //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
 
   let newBody = '# Changelog - ' + urlField + "\n\n";
   if (beforeField != "" && afterField != "") {
