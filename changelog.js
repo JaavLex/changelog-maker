@@ -169,13 +169,17 @@ async function sortCommits() {
   } else {
     document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
 
+    function quotemeta (str) {
+      return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
+    }
+
     function baliseRemover(commitList, keywordList, finalList) {
       commitList.forEach(function callbackFn(commit) { 
         keywordList.forEach(function callbackFn(balise) { 
-          console.log(`COMMIT: ${commit} | REGEX: ${new RegExp(`(?!\\)\\] - ) \\Q${balise}\\E`, 'i')} | BALISE: ${balise} | MATCH: ${commit.match(new RegExp(`(?!\\)\\] - ) \\Q${balise}\\E`, 'i'))}`)
-          if (commit.match(new RegExp(`(?!\\)\\] - ) \\Q${balise}\\E`, 'i'))) {
+
+          if (commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'))) {
             if (document.getElementsByName('yesNoBalises')[1].checked) {
-              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\Q${balise}\\E`, 'i'),''));
+              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'),''));
             } else {
               finalList.push(commit);
             }
@@ -195,7 +199,7 @@ async function sortCommits() {
     commitMessages.forEach(function callbackFn(commit) {
       let noMatch = 0; 
       for (let i = 0; i < othersSelectionList.length; i++) {
-        if (!commit.match(new RegExp(`(?!\\)\\] - ) \\Q${othersSelectionList[i]}\\E`, 'i'))) {
+        if (!commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(othersSelectionList[i])}`, 'i'))) {
           noMatch++;
         }
       }
