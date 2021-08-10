@@ -152,8 +152,6 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 }
 
 async function sortCommits() {
-  document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
-
   const urlField = document.getElementById("urlhtml").value.toString();
   const apiField = document.getElementById("apitoken").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
@@ -166,87 +164,93 @@ async function sortCommits() {
   const others = [];
   const othersRaw = [];
 
-  function baliseRemover(commitList, keywordList, finalList) {
-    commitList.forEach(function callbackFn(commit) { 
-      keywordList.forEach(function callbackFn(balise) {
-        if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
-          if (document.getElementsByName('yesNoBalises')[1].checked) {
-            finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-          } else {
-            finalList.push(commit);
-          }
-        } 
+  if (urlField === "" || apiField === "") {
+    alert("Both URL and API token need to be inputted")
+  } else {
+    document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
+
+    function baliseRemover(commitList, keywordList, finalList) {
+      commitList.forEach(function callbackFn(commit) { 
+        keywordList.forEach(function callbackFn(balise) {
+          if (commit.match(new RegExp(`(?!\\)\\] - )\\[?${balise}[\\]|:]`, "g"))) {
+            if (document.getElementsByName('yesNoBalises')[1].checked) {
+              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+            } else {
+              finalList.push(commit);
+            }
+          } 
+        });
       });
-    });
-  }
-
-  baliseRemover(commitMessages, featureKwList, features);
-  baliseRemover(commitMessages, fixesKwList, fixes);
-  baliseRemover(commitMessages, refactorKwList, refs);
-
-  othersSelectionList = othersSelectionList.concat(featureKwList);
-  othersSelectionList = othersSelectionList.concat(fixesKwList);
-  othersSelectionList = othersSelectionList.concat(refactorKwList);    
-  if (document.getElementsByName('yesNoMerges')[1].checked) {
-    othersSelectionList.concat(["Merge", "merge", "MERGE"]);
-  }
-
-  commitMessages.forEach(function callbackFn(commit) {
-    let noMatch = 0; 
-    for (let i = 0; i < othersSelectionList.length; i++) {
-      if (!commit.match(new RegExp(`(?!\\)\\] - )\\[?${othersSelectionList[i]}[\\]|:]`, "g"))) {
-        noMatch++;
+    }
+  
+    baliseRemover(commitMessages, featureKwList, features);
+    baliseRemover(commitMessages, fixesKwList, fixes);
+    baliseRemover(commitMessages, refactorKwList, refs);
+  
+    othersSelectionList = othersSelectionList.concat(featureKwList);
+    othersSelectionList = othersSelectionList.concat(fixesKwList);
+    othersSelectionList = othersSelectionList.concat(refactorKwList);    
+    if (document.getElementsByName('yesNoMerges')[1].checked) {
+      othersSelectionList.concat(["Merge", "merge", "MERGE"]);
+    }
+  
+    commitMessages.forEach(function callbackFn(commit) {
+      let noMatch = 0; 
+      for (let i = 0; i < othersSelectionList.length; i++) {
+        if (!commit.match(new RegExp(`(?!\\)\\] - )\\[?${othersSelectionList[i]}[\\]|:]`, "g"))) {
+          noMatch++;
+        }
       }
+      if (noMatch === othersSelectionList.length) {
+        othersRaw.push(commit);
+      }
+    })
+  
+    // DOES NOT WORK - NEED TO REWRITE THIS PIECE OF CODE //
+    // othersRaw.forEach(function callbackFn(commit) { 
+    //   if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
+    //     othersKwList.forEach(function callbackFn(balise) {
+    //       if (document.getElementsByName('yesNoMerges')[0].checked) {
+    //         if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+    //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+    //         } 
+    //       } else {
+    //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+    //       }
+    //     });
+    //   } else {
+    //     othersKwList.forEach(function callbackFn(balise) {
+    //       if (document.getElementsByName('yesNoMerges')[0].checked) {
+    //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+    //       } else {
+    //         if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
+    //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
+  
+    let newBody = '# Changelog - ' + urlField + "\n\n";
+    if (beforeField != "" && afterField != "") {
+      newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
+    } else if (afterField != "") {
+      newBody += `> Commits since ${afterField}\n\n`;
+    } else if (beforeField != "") {
+      newBody += `> Commits until ${beforeField}\n\n`;
     }
-    if (noMatch === othersSelectionList.length) {
-      othersRaw.push(commit);
-    }
-  })
-
-  // DOES NOT WORK - NEED TO REWRITE THIS PIECE OF CODE //
-  // othersRaw.forEach(function callbackFn(commit) { 
-  //   if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
-  //     othersKwList.forEach(function callbackFn(balise) {
-  //       if (document.getElementsByName('yesNoMerges')[0].checked) {
-  //         if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-  //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-  //         } 
-  //       } else {
-  //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-  //       }
-  //     });
-  //   } else {
-  //     othersKwList.forEach(function callbackFn(balise) {
-  //       if (document.getElementsByName('yesNoMerges')[0].checked) {
-  //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-  //       } else {
-  //         if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-  //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-  //         }
-  //       }
-  //     });
-  //   }
-  // });
-
-  let newBody = '# Changelog - ' + urlField + "\n\n";
-  if (beforeField != "" && afterField != "") {
-    newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
-  } else if (afterField != "") {
-    newBody += `> Commits since ${afterField}\n\n`;
-  } else if (beforeField != "") {
-    newBody += `> Commits until ${beforeField}\n\n`;
+    newBody += `## New features\n\n`;
+    newBody += features.join("\n\n");
+    newBody += `\n\n## Bug fixes\n\n`;
+    newBody += fixes.join("\n\n");
+    newBody += `\n\n## Code Refactors\n\n`;
+    newBody += refs.join("\n\n");
+    newBody += `\n\n## Other types of commits\n\n`;
+    newBody += others.join("\n\n");
+    document.getElementById("loader").innerHTML = '';
+    document.getElementById("bodyhtml").innerHTML = newBody;
+    document.getElementById("content_md").innerHTML = marked(newBody);
   }
-  newBody += `## New features\n\n`;
-  newBody += features.join("\n\n");
-  newBody += `\n\n## Bug fixes\n\n`;
-  newBody += fixes.join("\n\n");
-  newBody += `\n\n## Code Refactors\n\n`;
-  newBody += refs.join("\n\n");
-  newBody += `\n\n## Other types of commits\n\n`;
-  newBody += others.join("\n\n");
-  document.getElementById("loader").innerHTML = '';
-  document.getElementById("bodyhtml").innerHTML = newBody;
-  document.getElementById("content_md").innerHTML = marked(newBody);
 }
 
 document.addEventListener("DOMContentLoaded", async function(event) {
