@@ -209,11 +209,11 @@ async function sortCommits() {
     urlField = urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))[2];
   }
   const apiField = document.getElementById("apitoken").value.toString();
-  const afterField = document.getElementById("afterdate").value.toString();
+   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
   // Already sets a formatted commit message
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ [" + item.commit.author.name + "](" + item.author.html_url + ") ― 📅 ⇒ " + dateFormatting(item.commit.author.date));
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ [" + item.commit.author.name + "](" + (item.author && item.author.html_url) + ")" + " ― 📅 ⇒ " + dateFormatting(item.commit.author.date));
   const features = [];
   const fixes = [];
   const refs = [];
