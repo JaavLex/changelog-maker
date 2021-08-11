@@ -295,13 +295,13 @@ async function sortCommits() {
       newBody += `> Commits until ${dateFormatting(beforeField)}\n\n`;
     }
     newBody += `## New features\n\n`;
-    newBody += features.join("\n");
+    newBody += features.join("\n\n");
     newBody += `\n\n## Bug fixes\n\n`;
-    newBody += fixes.join("\n");
+    newBody += fixes.join("\n\n");
     newBody += `\n\n## Code Refactors\n\n`;
-    newBody += refs.join("\n");
+    newBody += refs.join("\n\n");
     newBody += `\n\n## Other types of commits\n\n`;
-    newBody += others.join("\n");
+    newBody += others.join("\n\n");
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
     if (document.getElementsByName('MdOrHtml')[0].checked) {
