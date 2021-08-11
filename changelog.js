@@ -211,17 +211,13 @@ async function sortCommits() {
     othersRaw.forEach(function callbackFn(commit) {
       if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
-          if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, 'g'))) {
-            others.push(commit);
-          }
+          !commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, 'g')) && others.push(commit);
         } else {
           others.push(commit);
         }
       } else {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
-          if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, "g"))) {
-            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
-          }
+          !commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, "g")) && others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
         } else {
           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
         }
