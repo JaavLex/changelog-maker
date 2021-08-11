@@ -62,6 +62,14 @@
         </td>
       </tr>
       <tr>
+        <td>
+          Generate Markdown or HTML
+        </td>
+        <td>
+          <input type="radio" name="MdOrHtml" checked>Markdown</input> <input type="radio" name="MdOrHtml">HTML</input>
+        </td>
+      </tr>
+      <tr>
         <td><button onclick="clearFields()">x Clear</button></td>
         <td><button onclick="sortCommits()">✓ Finish</button></td>
       </tr>
@@ -121,12 +129,8 @@
   <hr>
   <div class="row">
     <div class="column">
-      <h6>Markdown</h6>
+      <h6>Generated Changelog</h6>
       <pre><div id="bodyhtml"></div></pre>
-    </div>
-    <div class="column">
-      <h6>HTML</h6>
-      <div id="content_md"></div>
     </div>
   </div>
   </div>

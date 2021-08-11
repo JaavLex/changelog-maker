@@ -245,8 +245,11 @@ async function sortCommits() {
     newBody += `\n\n## Other types of commits\n\n`;
     newBody += others.join("\n\n");
     document.getElementById("loader").innerHTML = '';
-    document.getElementById("bodyhtml").innerHTML = newBody;
-    document.getElementById("content_md").innerHTML = marked(newBody);
+    if (document.getElementsByName('MdOrHtml')[0].checked) {
+      document.getElementById("bodyhtml").innerHTML = newBody;
+    } else {
+      document.getElementById("bodyhtml").innerHTML = marked(newBody);
+    }
   }
 }
 
