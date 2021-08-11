@@ -286,11 +286,11 @@ async function sortCommits() {
     // formats all the commits into a changelog (in markdown)
     let newBody = '# Changelog - ' + urlField + "\n\n";
     if (beforeField != "" && afterField != "") {
-      newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
+      newBody += `> Commits between ${dateFormatting(beforeField)} and ${dateFormatting(afterField)}\n\n`;
     } else if (afterField != "") {
-      newBody += `> Commits since ${afterField}\n\n`;
+      newBody += `> Commits since ${dateFormatting(afterField)}\n\n`;
     } else if (beforeField != "") {
-      newBody += `> Commits until ${beforeField}\n\n`;
+      newBody += `> Commits until ${dateFormatting(beforeField)}\n\n`;
     }
     newBody += `## New features\n\n`;
     newBody += features.join("\n");
