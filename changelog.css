@@ -55,3 +55,10 @@ button:hover:after, input[type=submit]:hover:after{
 #urlhtml, #apitoken {
   width: 350px;
 }
+
+#tutoriallink {
+  text-decoration: none;
+  font-size: 10pt;
+  background-color:rgb(129, 129, 129);
+  border-radius: 10px;
+}
