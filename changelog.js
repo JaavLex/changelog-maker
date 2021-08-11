@@ -7,6 +7,7 @@ let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
 let othersSelectionList = [];
+let currentOutput = "";
 
 // will search previously inputted balises list values in the browser's Local Storage
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
@@ -137,6 +138,18 @@ function clearFields() {
   localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
   localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
   localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
+}
+
+function copyToClipboard() {
+  if (currentOutput != "") {
+    var dump = document.createElement("textarea");
+    document.body.appendChild(dump);
+    dump.value = currentOutput;
+    dump.select();
+    document.execCommand("copy");
+    document.body.removeChild(dump);
+    alert("Mardkown has been copied to your clipboard");
+  }
 }
 
 // API searching and returning for a repository's commit
@@ -296,6 +309,7 @@ async function sortCommits() {
     } else {
       document.getElementById("bodyhtml").innerHTML = marked(newBody);
     }
+    currentOutput = newBody;
   }
 }
 
