@@ -36,13 +36,17 @@ function localStorageManager(pageload) {
   }
 }
 
-function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField) {
-  keywordList = defaultList;
-  keywordList.push(document.getElementById(inputField).value);
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList));
-  keywordList = JSON.parse(localStorage.getItem(localStorageField));
-  document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
-  return keywordList;
+function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField, checker) {
+  if (checker.includes(document.getElementById(inputField).value.toLowerCase())) {
+    alert("Cannot input the same value twice.");
+  } else {
+    keywordList = defaultList;
+    keywordList.push(document.getElementById(inputField).value.toLowerCase());
+    localStorage.setItem(localStorageField, JSON.stringify(keywordList));
+    keywordList = JSON.parse(localStorage.getItem(localStorageField));
+    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    return keywordList;
+  }
 }
 
 function keywordAdder(commitType) {
@@ -51,21 +55,21 @@ function keywordAdder(commitType) {
       if (document.getElementById("featkwinput").value === "") {
         alert("Field is empty !");
       } else {
-        featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
+        featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput", featureKwList);
       }
       break;
     case 2:
       if (document.getElementById("fixkwinput").value === "") {
         alert("Field is empty !")
       } else {
-        fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput");
+        fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput", fixesKwList);
       }
       break;
     case 3:
       if (document.getElementById("refkwinput").value === "") {
         alert("Field is empty !")
       } else {
-        refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput");
+        refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput", refactorKwList);
       }
       break;
     default:
