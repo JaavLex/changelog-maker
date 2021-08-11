@@ -26,7 +26,8 @@
       <tr>
         <td>API token</td>
         <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i> <a
-              href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token" id="tutoriallink">
+              href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+              id="tutoriallink">
               🔗 How to generate one ?</a></i></td>
       </tr>
       <tr>
@@ -71,17 +72,22 @@
         </td>
       </tr>
       <tr>
-        <td><button onclick="clearFields()">x Clear</button></td>
-        <td><button onclick="sortCommits()">✓ Finish</button></td>
+        <td><button onclick="clearFields()">x Clear all fields</button></td>
+        <td><button onclick="sortCommits()">✓ Generate your changelog</button></td>
       </tr>
       </form>
+      <tr>
+        <td>
+          <h3>Commit categories keyword lists</h3>
+        </td>
+      </tr>
       <tr>
         <td>Features keyword list</td>
       </tr>
       <tr>
         <td>
-          <button onclick="keywordAdder(1)">+</button>
-          <button onclick="keywordClearer(1)">x</button>
+          <button onclick="keywordAdder(1)">Add +</button>
+          <button onclick="keywordClearer(1)">Set to default x</button>
         </td>
         <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
       </tr>
@@ -95,8 +101,8 @@
       </tr>
       <tr>
         <td>
-          <button onclick="keywordAdder(2)">+</button>
-          <button onclick="keywordClearer(2)">x</button>
+          <button onclick="keywordAdder(2)">Add +</button>
+          <button onclick="keywordClearer(2)">Set to default x</button>
         </td>
         <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
       </tr>
@@ -110,8 +116,8 @@
       </tr>
       <tr>
         <td>
-          <button onclick="keywordAdder(3)">+</button>
-          <button onclick="keywordClearer(3)">x</button>
+          <button onclick="keywordAdder(3)">Add +</button>
+          <button onclick="keywordClearer(3)">Set to default x</button>
         </td>
         <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
       </tr>
