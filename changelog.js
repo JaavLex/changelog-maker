@@ -186,7 +186,11 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 
 // main app function. sorts all commits received by getCommits() function based on user's options.
 async function sortCommits() {
-  const urlField = document.getElementById("urlhtml").value.toString();
+  let urlField = document.getElementById("urlhtml").value.toString();
+  // if is a url converts it to something usable
+  if (urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))) {
+    urlField = urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))[2];
+  }
   const apiField = document.getElementById("apitoken").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
