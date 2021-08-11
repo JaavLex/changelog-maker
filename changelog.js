@@ -14,7 +14,7 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   } else {
     keywordList = defaultList;
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
-    localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+    localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     return keywordList;
   }
 }
@@ -29,17 +29,17 @@ function localStorageManager(pageload) {
     fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
     refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
   } else {
-    localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-    localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
-    localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
-    localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
+    localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);
+    localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
+    localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
+    localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
   }
 }
 
 function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField) {
   keywordList = defaultList;
   keywordList.push(document.getElementById(inputField).value);
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+  localStorage.setItem(localStorageField, JSON.stringify(keywordList));
   keywordList = JSON.parse(localStorage.getItem(localStorageField));
   document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
   return keywordList;
@@ -52,7 +52,7 @@ function keywordAdder(commitType) {
         alert("Field is empty !");
       } else {
         featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput");
-      }   
+      }
       break;
     case 2:
       if (document.getElementById("fixkwinput").value === "") {
@@ -77,7 +77,7 @@ function keywordAdder(commitType) {
 function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
   localStorage.removeItem(localStorageField);
   keywordList = defaultList;
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList) );
+  localStorage.setItem(localStorageField, JSON.stringify(keywordList));
   document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
   return keywordList;
 }
@@ -104,10 +104,10 @@ function clearFields() {
   document.getElementById("apitoken").value = "";
   document.getElementById("beforedate").value = "";
   document.getElementById("afterdate").value = "";
-  localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value );
-  localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value );
-  localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value );
-  localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value );
+  localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);
+  localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
+  localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
+  localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
 }
 
 async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
@@ -123,25 +123,25 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     dateParameters = `&until=${beforeDate}`;
   }
 
-  const headersRequest = await fetch(repoUrl+"1"+dateParameters,{
+  const headersRequest = await fetch(repoUrl + "1" + dateParameters, {
     method: "GET",
     headers: {
-      Authorization: `token ${apiKey}` 
+      Authorization: `token ${apiKey}`
     },
   });
 
   let headerLink = headersRequest.headers.get("link");
   if (headerLink) {
     rgxmatch = headerLink.match(/&page=(\d*)>; rel="last"/);
-    totalPage = Math.ceil(rgxmatch[1]/nbCommits);
+    totalPage = Math.ceil(rgxmatch[1] / nbCommits);
   }
 
   // Could optimize by converting to JSON after getting all pages //
   for (let i = 1; i <= totalPage; i++) {
-    const repoContent = await fetch(repoUrl+nbCommits+"&page="+i+dateParameters,{
+    const repoContent = await fetch(repoUrl + nbCommits + "&page=" + i + dateParameters, {
       method: "GET",
       headers: {
-        Authorization: `token ${apiKey}` 
+        Authorization: `token ${apiKey}`
       },
     });
     const jsonCommits = await repoContent.json();
@@ -169,35 +169,35 @@ async function sortCommits() {
   } else {
     document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
 
-    function quotemeta (str) {
+    function quotemeta(str) {
       return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
     }
 
     function baliseRemover(commitList, keywordList, finalList) {
-      commitList.forEach(function callbackFn(commit) { 
-        keywordList.forEach(function callbackFn(balise) { 
+      commitList.forEach(function callbackFn(commit) {
+        keywordList.forEach(function callbackFn(balise) {
 
           if (commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'))) {
             if (document.getElementsByName('yesNoBalises')[1].checked) {
-              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'),''));
+              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'), ''));
             } else {
               finalList.push(commit);
             }
-          } 
+          }
         });
       });
     }
-  
+
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
     baliseRemover(commitMessages, refactorKwList, refs);
 
     othersSelectionList = othersSelectionList.concat(featureKwList);
     othersSelectionList = othersSelectionList.concat(fixesKwList);
-    othersSelectionList = othersSelectionList.concat(refactorKwList);   
-  
+    othersSelectionList = othersSelectionList.concat(refactorKwList);
+
     commitMessages.forEach(function callbackFn(commit) {
-      let noMatch = 0; 
+      let noMatch = 0;
       for (let i = 0; i < othersSelectionList.length; i++) {
         if (!commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(othersSelectionList[i])}`, 'i'))) {
           noMatch++;
@@ -213,46 +213,21 @@ async function sortCommits() {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
           if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, 'g'))) {
             others.push(commit);
-          }    
+          }
         } else {
           others.push(commit);
         }
-      } else { 
+      } else {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
           if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, "g"))) {
-            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'),''));
-          }    
+            others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
+          }
         } else {
-          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'),''));
+          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
         }
       }
     });
-  
-    // DOES NOT WORK - NEED TO REWRITE THIS PIECE OF CODE //
-    // othersRaw.forEach(function callbackFn(commit) { 
-    //   if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
-    //     othersKwList.forEach(function callbackFn(balise) {
-    //       if (document.getElementsByName('yesNoMerges')[0].checked) {
-    //         if (commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-    //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-    //         } 
-    //       } else {
-    //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-    //       }
-    //     });
-    //   } else {
-    //     othersKwList.forEach(function callbackFn(balise) {
-    //       if (document.getElementsByName('yesNoMerges')[0].checked) {
-    //         others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-    //       } else {
-    //         if (!commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\[merge\]]`, "g"))) {
-    //           others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?${balise}[\\]|:]`, "g"),''));
-    //         }
-    //       }
-    //     });
-    //   }
-    // });
-  
+
     let newBody = '# Changelog - ' + urlField + "\n\n";
     if (beforeField != "" && afterField != "") {
       newBody += `> Commits between ${beforeField} and ${afterField}\n\n`;
@@ -275,7 +250,7 @@ async function sortCommits() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", async function(event) {
+document.addEventListener("DOMContentLoaded", async function (event) {
   const response = await fetch('package.json').then(response => response.json());
   document.getElementById("version").innerHTML = `v${response.version}`
 });

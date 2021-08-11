@@ -1,127 +1,134 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>changelog-maker</title>
-    <script src="./changelog.js"></script>
-    <link rel="stylesheet" href="changelog.css" />
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  </head>
-  <body onload="localStorageManager(true)">
-    <center><h1> Input parameters of your changelog</h1></center>
-    <center>
-      <table>
-        <form name="params" action="#" onsubmit="sortCommits()"></form>
-          <tr>
-            <td>Repository Location</td>
-            <td><input id="urlhtml" type="text" onchange="localStorageManager(false)" placeholder="JaavLex/changelog-maker" /></td>
-          </tr>
-          <tr>
-            <td>API token</td>
-            <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i><a href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"> How to generate one ? </a></i></td>
-          </tr>
-          <tr>
-            <td>Commits before</td>
-            <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /></td>
-          </tr>
-          <tr>
-            <td>Commits after</td>
-            <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
-          </tr>
-          <tr>
-            <td>
-              Show balises
-            </td>
-            <td>
-              <input type="radio" name="yesNoBalises">Yes</input> <input type="radio" name="yesNoBalises" checked>No</input>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Show balises on others
-            </td>
-            <td>
-              <input type="radio" name="yesNoBalisesOthers" checked>Yes</input> <input type="radio" name="yesNoBalisesOthers">No</input>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              Include Merges
-            </td>
-            <td>
-              <input type="radio" name="yesNoMerges">Yes</input> <input type="radio" name="yesNoMerges" checked>No</input>
-            </td>
-          </tr>
-          <tr>
-            <td><button onclick="clearFields()">x Clear</button></td>
-            <td><button onclick="sortCommits()">✓ Finish</button></td>            
-            <!-- <td><input type="submit" value="✓ Finish"></input></td> -->
-          </tr>
-        </form>
-        <tr>
-          <td>Features keyword list</td>
-        </tr>
-        <tr>
-          <td>
-            <button onclick="keywordAdder(1)">+</button>
-            <button onclick="keywordClearer(1)">x</button>
-          </td>
-          <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
-        </tr>
-        <tr>
-          <td>
-            <pre><div id="featurekwhtml"></div></pre>
-          </td>
-        </tr>
-        <tr>
-          <td>Fixes keyword list</td>
-        </tr>
-        <tr>
-          <td>
-            <button onclick="keywordAdder(2)">+</button>
-            <button onclick="keywordClearer(2)">x</button>
-          </td>
-          <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
-        </tr>
-        <tr>
-          <td>
-            <pre><div id="fixkwhtml"></div></pre>
-          </td>
-        </tr>
-        <tr>
-          <td>Refactor keyword list</td>
-        </tr>
-        <tr>
-          <td>
-            <button onclick="keywordAdder(3)">+</button>
-            <button onclick="keywordClearer(3)">x</button>
-          </td>
-          <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
-        </tr>
-        <tr>
-          <td>
-            <pre><div id="refkwhtml"></div></pre>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <pre><div id="otherskwhtml"></div></pre>
-          </td>
-        </tr>
-      </table>
-    </center>
-    <hr>
-    <div class="row">
-      <div class="column">
-        <h6>Markdown</h6>
-        <pre><div id="bodyhtml"></div></pre>
-      </div>
-      <div class="column">
-        <h6>HTML</h6>
-        <div id="content_md"></div>
-      </div>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>changelog-maker</title>
+  <script src="./changelog.js"></script>
+  <link rel="stylesheet" href="changelog.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body onload="localStorageManager(true)">
+  <center>
+    <h1> Input parameters of your changelog</h1>
+  </center>
+  <center>
+    <table>
+      <form name="params" action="#" onsubmit="sortCommits()"></form>
+      <tr>
+        <td>Repository Location</td>
+        <td><input id="urlhtml" type="text" onchange="localStorageManager(false)"
+            placeholder="JaavLex/changelog-maker" /></td>
+      </tr>
+      <tr>
+        <td>API token</td>
+        <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i><a
+              href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">
+              How to generate one ? </a></i></td>
+      </tr>
+      <tr>
+        <td>Commits before</td>
+        <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /></td>
+      </tr>
+      <tr>
+        <td>Commits after</td>
+        <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
+      </tr>
+      <tr>
+        <td>
+          Show balises
+        </td>
+        <td>
+          <input type="radio" name="yesNoBalises">Yes</input> <input type="radio" name="yesNoBalises" checked>No</input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Show balises on others
+        </td>
+        <td>
+          <input type="radio" name="yesNoBalisesOthers" checked>Yes</input> <input type="radio"
+            name="yesNoBalisesOthers">No</input>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Include Merges
+        </td>
+        <td>
+          <input type="radio" name="yesNoMerges">Yes</input> <input type="radio" name="yesNoMerges" checked>No</input>
+        </td>
+      </tr>
+      <tr>
+        <td><button onclick="clearFields()">x Clear</button></td>
+        <td><button onclick="sortCommits()">✓ Finish</button></td>
+      </tr>
+      </form>
+      <tr>
+        <td>Features keyword list</td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="keywordAdder(1)">+</button>
+          <button onclick="keywordClearer(1)">x</button>
+        </td>
+        <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="featurekwhtml"></div></pre>
+        </td>
+      </tr>
+      <tr>
+        <td>Fixes keyword list</td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="keywordAdder(2)">+</button>
+          <button onclick="keywordClearer(2)">x</button>
+        </td>
+        <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="fixkwhtml"></div></pre>
+        </td>
+      </tr>
+      <tr>
+        <td>Refactor keyword list</td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="keywordAdder(3)">+</button>
+          <button onclick="keywordClearer(3)">x</button>
+        </td>
+        <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="refkwhtml"></div></pre>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="otherskwhtml"></div></pre>
+        </td>
+      </tr>
+    </table>
+  </center>
+  <hr>
+  <div class="row">
+    <div class="column">
+      <h6>Markdown</h6>
+      <pre><div id="bodyhtml"></div></pre>
     </div>
+    <div class="column">
+      <h6>HTML</h6>
+      <div id="content_md"></div>
+    </div>
+  </div>
   </div>
   <div id="loader"></div>
   <hr>
