@@ -23,10 +23,12 @@ form {
 
 button, input[type=submit]{
   font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
   text-decoration: none;
   background-color: rgb(148, 145, 145);
   color: rgb(221, 221, 221);
-  border: 2px solid #333;
+  border: 1px solid #333;
+  border-radius: 25px;
   text-align: center;
   position: relative;
   transition: all .35s;
@@ -45,11 +47,13 @@ button:after, input[type=submit]:after{
   width: 0;
   height: 100%;
   background: #00ff2a41;
+  border-radius: 25px;
   transition: all .35s;
 }
 
 button:hover, input[type=submit]:hover{
-  color: rgb(22, 30, 100);
+  color: rgb(0, 0, 0);
+  font-style: bold;
 }
 
 button:hover:after, input[type=submit]:hover:after{
