@@ -149,7 +149,7 @@ async function sortCommits() {
   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " | " + item.commit.author.name + " | " + item.commit.author.date);
+  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ " + item.commit.author.name + " ― 📅 ⇒ " + item.commit.author.date);
   const features = [];
   const fixes = [];
   const refs = [];
