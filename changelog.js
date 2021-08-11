@@ -37,8 +37,8 @@ function localStorageManager(pageload) {
 }
 
 function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField, checker) {
-  if (checker.includes(document.getElementById(inputField).value.toLowerCase())) {
-    alert("Cannot input the same value twice.");
+  if (checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
+    alert("Wrong value ! Is either empty, or already in the list !");
   } else {
     keywordList = defaultList;
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
@@ -52,25 +52,13 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
-      if (document.getElementById("featkwinput").value === "") {
-        alert("Field is empty !");
-      } else {
-        featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput", featureKwList);
-      }
+      featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput", featureKwList);
       break;
     case 2:
-      if (document.getElementById("fixkwinput").value === "") {
-        alert("Field is empty !")
-      } else {
-        fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput", fixesKwList);
-      }
+      fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput", fixesKwList);
       break;
     case 3:
-      if (document.getElementById("refkwinput").value === "") {
-        alert("Field is empty !")
-      } else {
-        refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput", refactorKwList);
-      }
+      refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput", refactorKwList);
       break;
     default:
       console.log("ERROR: Unknown commit type");
