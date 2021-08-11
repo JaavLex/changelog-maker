@@ -1,10 +1,10 @@
+let defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
+let defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
+let defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
 let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
 let othersSelectionList = [];
-let defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
-let defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
-let defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
 
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
@@ -19,6 +19,18 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   }
 }
 
+function loadRadioLocalStorage(localStorageField, radio) {
+  if (localStorage.getItem(localStorageField) != null) {
+    localStorage.getItem(localStorageField) == "true" ? radio[0].checked = true : radio[1].checked = true;
+  }
+}
+
+function saveRadioLocalStorage(localStorageField, radio) {
+  for (let i = 0; i < radio.length; i++) {
+    radio[i].checked && localStorage.setItem(localStorageField, radio[i].value);
+  }
+}
+
 function localStorageManager(pageload) {
   if (pageload) {
     document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
@@ -28,11 +40,19 @@ function localStorageManager(pageload) {
     featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
     fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
     refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+    loadRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
+    loadRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
+    loadRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesNoMerges"));
+    loadRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("MdOrHtml"));
   } else {
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
     localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
     localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
+    saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
+    saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
+    saveRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesNoMerges"));
+    saveRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("MdOrHtml"));
   }
 }
 
