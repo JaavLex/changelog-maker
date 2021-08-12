@@ -165,6 +165,20 @@ function copyToClipboard() {
   }
 }
 
+function clearDateField(beforeOrAfter) {
+  switch (beforeOrAfter) {
+    case 1:
+        document.getElementById("beforedate").value = "";
+      break;
+    case 2:
+        document.getElementById("afterdate").value = "";
+      break;
+    default:
+      console.log("ERROR: Unknown date type");
+      break;
+  }
+}
+
 // API searching and returning for a repository's commit
 async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   const repoCommits = [];
