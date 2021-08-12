@@ -173,7 +173,12 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     headers: {
       Authorization: `token ${apiKey}`
     },
-  });
+  })
+  
+  if (headersRequest.status != 200) {
+    alert("URL/Location is not valid.");
+    throw new Error("URL/Location is not valid.");
+  }
 
   // trims the links given by the request in order to only get the number of pages
   let headerLink = headersRequest.headers.get("link");
