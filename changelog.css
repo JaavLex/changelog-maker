@@ -76,7 +76,10 @@ input[type=text]:focus, input[type=datetime-local]:focus {
 }
 
 p {
-  line-height: 0px;
+  line-height: 15px;
+  font-family: monospace;
+  font-weight: bold;
+}
 
 pre {
 	width: auto;                   
