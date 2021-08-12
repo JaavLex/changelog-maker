@@ -12,6 +12,7 @@ form {
 }
 
 button, input[type=submit]{
+  cursor: pointer;
   font-size: 15px;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
   text-decoration: none;
@@ -101,4 +102,26 @@ pre {
   border-radius: 100px;
   border-style: solid;
   border-width: 1px;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  cursor: pointer;
+  padding: 5px;
+  width: 80%;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+#collapsiblecontent {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
 }

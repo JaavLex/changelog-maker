@@ -141,6 +141,17 @@ function clearFields() {
   localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
 }
 
+function openCloseCollapsible() {
+  let collapsible = document.getElementById("collapsiblecontent"); 
+  if (collapsible.style.maxHeight) {
+    collapsible.style.maxHeight = null;
+    document.getElementById("collarrow").innerHTML = "⇐";
+  } else {
+    collapsible.style.maxHeight = collapsible.scrollHeight + "px";
+    document.getElementById("collarrow").innerHTML = "⇓";
+  }
+}
+
 function copyToClipboard() {
   if (currentOutput != "") {
     var dump = document.createElement("textarea");

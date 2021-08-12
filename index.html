@@ -86,59 +86,64 @@
       <h3>Commit categories keyword lists</h3>
     </center>
     <center>
-    <table>
-      <tr>
-        <td>Features keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(1)">➕ Add</button>
-          <button onclick="keywordClearer(1)">❌ Set to default</button>
-        </td>
-        <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="featurekwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>Fixes keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(2)">➕ Add</button>
-          <button onclick="keywordClearer(2)">❌ Set to default</button>
-        </td>
-        <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="fixkwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>Refactor keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(3)">➕ Add</button>
-          <button onclick="keywordClearer(3)">❌ Set to default</button>
-        </td>
-        <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="refkwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="otherskwhtml"></div></pre>
-        </td>
-      </tr>
-    </table>
+      <button type="button" class="collapsible" onclick="openCloseCollapsible()">🔧 See keyword lists <b id="collarrow">⇐</b></button>
     </center>
+    <div id="collapsiblecontent">
+      <center>
+        <table>
+          <tr>
+            <td>Features keyword list</td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordAdder(1)">➕ Add</button>
+              <button onclick="keywordClearer(1)">❌ Set to default</button>
+            </td>
+            <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
+          </tr>
+          <tr>
+            <td>
+              <pre><div id="featurekwhtml"></div></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>Fixes keyword list</td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordAdder(2)">➕ Add</button>
+              <button onclick="keywordClearer(2)">❌ Set to default</button>
+            </td>
+            <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
+          </tr>
+          <tr>
+            <td>
+              <pre><div id="fixkwhtml"></div></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>Refactor keyword list</td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordAdder(3)">➕ Add</button>
+              <button onclick="keywordClearer(3)">❌ Set to default</button>
+            </td>
+            <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+          </tr>
+          <tr>
+            <td>
+              <pre><div id="refkwhtml"></div></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <pre><div id="otherskwhtml"></div></pre>
+            </td>
+          </tr>
+        </table>
+        </center>
+    </div>
   </div>
   <hr>
   <div class="row">
@@ -161,5 +166,4 @@
     </i>
   </footer>
 </body>
-
 </html>
