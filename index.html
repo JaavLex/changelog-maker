@@ -13,131 +13,133 @@
 <body onload="localStorageManager(true)">
   <center>
     <h1>📃 changelog-maker 📃</h1>
-    <h2>✏ Input parameters of your changelog</h2>
   </center>
-  <center>
+  <div id="form-box">
+    <center>
+      <h2>✏ Input parameters of your changelog</h2>
+      <table>
+        <form name="params" action="#" onsubmit="sortCommits()"></form>
+        <tr>
+          <td>Repository Location/URL</td>
+          <td><input id="urlhtml" type="text" onchange="localStorageManager(false)"
+              placeholder="JaavLex/changelog-maker" /></td>
+        </tr>
+        <tr>
+          <td>API token</td>
+          <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i> <a
+                href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"
+                target="_blank" id="tutoriallink">
+                🔗 How to generate one ?</a></i></td>
+        </tr>
+        <tr>
+          <td>Commits before</td>
+          <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /></td>
+        </tr>
+        <tr>
+          <td>Commits after</td>
+          <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
+        </tr>
+        <tr>
+          <td>
+            Show balises
+          </td>
+          <td onclick="localStorageManager(false)">
+            <input type="radio" name="yesNoBalises" value="true">Yes</input> <input type="radio" name="yesNoBalises"
+              value="false">No</input>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Show balises on others
+          </td>
+          <td onclick="localStorageManager(false)">
+            <input type="radio" name="yesNoBalisesOthers" value="true">Yes</input> <input type="radio"
+              name="yesNoBalisesOthers" value="false">No</input>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Include Merges
+          </td>
+          <td onclick="localStorageManager(false)">
+            <input type="radio" name="yesNoMerges" value="true">Yes</input> <input type="radio" name="yesNoMerges"
+              value="false">No</input>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Generate Markdown or HTML
+          </td>
+          <td onclick="localStorageManager(false)">
+            <input type="radio" name="MdOrHtml" value="true">Markdown</input> <input type="radio" name="MdOrHtml"
+              value="false">HTML</input>
+          </td>
+        </tr>
+        <tr>
+          <td><button onclick="clearFields()">❌ Clear all fields</button></td>
+          <td><button onclick="sortCommits()">✅ Generate your changelog</button></td>
+        </tr>
+        </form>
+      </table>
+    </center>
+    <center>
+      <h3>Commit categories keyword lists</h3>
+    </center>
+    <center>
     <table>
-      <form name="params" action="#" onsubmit="sortCommits()"></form>
       <tr>
-        <td>Repository Location/URL</td>
-        <td><input id="urlhtml" type="text" onchange="localStorageManager(false)"
-            placeholder="JaavLex/changelog-maker" /></td>
-      </tr>
-      <tr>
-        <td>API token</td>
-        <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i> <a
-              href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"
-              target="_blank" id="tutoriallink">
-              🔗 How to generate one ?</a></i></td>
-      </tr>
-      <tr>
-        <td>Commits before</td>
-        <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /></td>
-      </tr>
-      <tr>
-        <td>Commits after</td>
-        <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /></td>
+        <td>Features keyword list</td>
       </tr>
       <tr>
         <td>
-          Show balises
+          <button onclick="keywordAdder(1)">➕ Add</button>
+          <button onclick="keywordClearer(1)">❌ Set to default</button>
         </td>
-        <td onclick="localStorageManager(false)">
-          <input type="radio" name="yesNoBalises" value="true">Yes</input> <input type="radio" name="yesNoBalises"
-            value="false">No</input>
-        </td>
+        <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
       </tr>
       <tr>
         <td>
-          Show balises on others
-        </td>
-        <td onclick="localStorageManager(false)">
-          <input type="radio" name="yesNoBalisesOthers" value="true">Yes</input> <input type="radio"
-            name="yesNoBalisesOthers" value="false">No</input>
+          <pre><div id="featurekwhtml"></div></pre>
         </td>
       </tr>
       <tr>
+        <td>Fixes keyword list</td>
+      </tr>
+      <tr>
         <td>
-          Include Merges
+          <button onclick="keywordAdder(2)">➕ Add</button>
+          <button onclick="keywordClearer(2)">❌ Set to default</button>
         </td>
-        <td onclick="localStorageManager(false)">
-          <input type="radio" name="yesNoMerges" value="true">Yes</input> <input type="radio" name="yesNoMerges"
-            value="false">No</input>
+        <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="fixkwhtml"></div></pre>
+        </td>
+      </tr>
+      <tr>
+        <td>Refactor keyword list</td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="keywordAdder(3)">➕ Add</button>
+          <button onclick="keywordClearer(3)">❌ Set to default</button>
+        </td>
+        <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+      </tr>
+      <tr>
+        <td>
+          <pre><div id="refkwhtml"></div></pre>
         </td>
       </tr>
       <tr>
         <td>
-          Generate Markdown or HTML
-        </td>
-        <td onclick="localStorageManager(false)">
-          <input type="radio" name="MdOrHtml" value="true">Markdown</input> <input type="radio" name="MdOrHtml"
-            value="false">HTML</input>
+          <pre><div id="otherskwhtml"></div></pre>
         </td>
       </tr>
-      <tr>
-        <td><button onclick="clearFields()">❌ Clear all fields</button></td>
-        <td><button onclick="sortCommits()">✅ Generate your changelog</button></td>
-      </tr>
-      </form>
     </table>
-  </center>
-  <center>
-    <h3>Commit categories keyword lists</h3>
-  </center>
-  <center>
-  <table>
-    <tr>
-      <td>Features keyword list</td>
-    </tr>
-    <tr>
-      <td>
-        <button onclick="keywordAdder(1)">➕ Add</button>
-        <button onclick="keywordClearer(1)">❌ Set to default</button>
-      </td>
-      <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
-    </tr>
-    <tr>
-      <td>
-        <pre><div id="featurekwhtml"></div></pre>
-      </td>
-    </tr>
-    <tr>
-      <td>Fixes keyword list</td>
-    </tr>
-    <tr>
-      <td>
-        <button onclick="keywordAdder(2)">➕ Add</button>
-        <button onclick="keywordClearer(2)">❌ Set to default</button>
-      </td>
-      <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
-    </tr>
-    <tr>
-      <td>
-        <pre><div id="fixkwhtml"></div></pre>
-      </td>
-    </tr>
-    <tr>
-      <td>Refactor keyword list</td>
-    </tr>
-    <tr>
-      <td>
-        <button onclick="keywordAdder(3)">➕ Add</button>
-        <button onclick="keywordClearer(3)">❌ Set to default</button>
-      </td>
-      <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
-    </tr>
-    <tr>
-      <td>
-        <pre><div id="refkwhtml"></div></pre>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <pre><div id="otherskwhtml"></div></pre>
-      </td>
-    </tr>
-  </table>
-  </center>
+    </center>
+  </div>
   <hr>
   <div class="row">
     <div class="column">

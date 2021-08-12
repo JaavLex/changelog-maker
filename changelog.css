@@ -1,7 +1,5 @@
 body {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
-  background-color: darkgray;
-  color: rgb(255, 255, 255);
 }
 
 h1 {
@@ -93,4 +91,14 @@ pre {
 
 #bodyhtml {
   padding: 10px;
+}
+
+#form-box {
+  background-color: rgb(211, 211, 211);
+  width: 900px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 1px;
 }
