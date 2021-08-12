@@ -303,19 +303,19 @@ async function sortCommits() {
     }
     // checks if found these types of commits and adds them to the changelog afterwards
     if (features.length > 0) {
-      newBody += `## New features ✨\n\n`;
+      newBody += `## ✨ New features\n\n`;
       newBody += features.join("\n\n");
     };
     if (fixes.length > 0) {
-      newBody += `\n\n## Bug fixes 🐛\n\n`;
+      newBody += `\n\n## 🐛 Bug fixes\n\n`;
       newBody += fixes.join("\n\n");
     };
     if (refs.length > 0) {
-      newBody += `\n\n## Code Refactors ♻\n\n`;
+      newBody += `\n\n## ♻ Code Refactors\n\n`;
       newBody += refs.join("\n\n");
     };
     if (others.length > 0) {
-      newBody += `\n\n## Other types of commits 📚\n\n`;
+      newBody += `\n\n## 📚 Other types of commits\n\n`;
       newBody += others.join("\n\n");
     };
     document.getElementById("loader").innerHTML = '';
