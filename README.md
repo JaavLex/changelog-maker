@@ -20,13 +20,17 @@ changelog-maker is a website that generates a changelog based on a **github's** 
 *Mandatory fields (for now are not enforced, but will soon be) are marked by a `*`*
 
 ### Repository Field *
-Here you need to put the repository's location on **github**. However it is **not** the url you need to input but only the user/organization and repository name.
+Here you need to put the repository's location on **github** or the url.
 
 #### Format
 *user/repo*
 
 #### Example
 *JaavLex/changelog-maker*
+
+**OR**
+
+*https://github.com/JaavLex/changelog-maker*
 
 ---
 
@@ -69,39 +73,86 @@ Gives you the option of showing commit balises (balises are what commit types ar
 
 #### "No" result
 ```
-## Features
+## New features ✨
 
 [COMMITHASHHERE] - My commit message 
 
-## Fixes
+## Bug fixes 🐛
 
 [COMMITHASHHERE] - My commit message 2
 ```
 
 #### "Yes" result
 ```
-## Features
+## New features ✨
 
 [COMMITHASHHERE] - feat: My commit message 
 
-## Fixes
+## Bug fixes 🐛
 
 [COMMITHASHHERE] - fix: My commit message 2
 ```
 
 ---
 
-### Show balises on others - **NOT CURRENTLY WORKING**
+### Show balises on others
 Gives you the option of removing balises in the other category. (the other category is where commits that couldn't be sorted will end up)
+
+It will remove by default, the first word of the commit message.
 
 ---
 
-### Include Merges - **NOT CURRENTLY WORKING**
+### Include Merges
 Gives you the option to show merge messages
+
+#### "No" result
+```
+## Other types of commits 📚
+
+[COMMITHASHHERE] - My commit message 2
+[COMMITHASHHERE] - Merge branch 'blablah' ...
+```
+
+#### "Yes" result
+```
+## Other types of commits 📚
+
+[COMMITHASHHERE] - My commit message 2
+```
+
+---
+
+### Generate Markdown or HTML
+Gives you the option to see your changelog in HTML or in Markdown syntax
+
+#### "Markdown" result
+```
+# 📑 Changelog
+
+## New features ✨
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 2
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 3
+```
+
+#### "HTML" result
+
+##### 📑 Changelog
+
+###### New features ✨
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 2
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 3
 
 ---
 
 ### Balises lists
-![image](https://user-images.githubusercontent.com/50820503/128861822-dcea9146-9d6e-4827-aefc-7c6353eff3d1.png)
+![image](https://user-images.githubusercontent.com/50820503/129197054-e4f08e93-0b44-472c-bcc0-c20f812e7718.png)
 
 Commits are sorted based on those lists. You can add some keywords that will sort your commits in a certain category, or reset them.
