@@ -56,10 +56,9 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
 // clears balises keyword lists
 function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
   localStorage.removeItem(localStorageField);
-  keywordList = defaultList;
-  localStorage.setItem(localStorageField, JSON.stringify(keywordList));
-  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
-  return keywordList;
+  localStorage.setItem(localStorageField, JSON.stringify(defaultList));
+  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
+  return defaultList;
 }
 
 // either loads all previously inputted values, or saves them depending wether pageload == true or pageload == false
