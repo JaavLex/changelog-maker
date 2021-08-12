@@ -43,7 +43,8 @@
           Show balises
         </td>
         <td onclick="localStorageManager(false)">
-          <input type="radio" name="yesNoBalises" value="true">Yes</input> <input type="radio" name="yesNoBalises" value="false">No</input>
+          <input type="radio" name="yesNoBalises" value="true">Yes</input> <input type="radio" name="yesNoBalises"
+            value="false">No</input>
         </td>
       </tr>
       <tr>
@@ -60,7 +61,8 @@
           Include Merges
         </td>
         <td onclick="localStorageManager(false)">
-          <input type="radio" name="yesNoMerges" value="true">Yes</input> <input type="radio" name="yesNoMerges" value="false">No</input>
+          <input type="radio" name="yesNoMerges" value="true">Yes</input> <input type="radio" name="yesNoMerges"
+            value="false">No</input>
         </td>
       </tr>
       <tr>
@@ -68,7 +70,8 @@
           Generate Markdown or HTML
         </td>
         <td onclick="localStorageManager(false)">
-          <input type="radio" name="MdOrHtml" value="true">Markdown</input> <input type="radio" name="MdOrHtml" value="false">HTML</input>
+          <input type="radio" name="MdOrHtml" value="true">Markdown</input> <input type="radio" name="MdOrHtml"
+            value="false">HTML</input>
         </td>
       </tr>
       <tr>
@@ -76,69 +79,73 @@
         <td><button onclick="sortCommits()">✅ Generate your changelog</button></td>
       </tr>
       </form>
-      <tr>
-        <td>
-          <h3>Commit categories keyword lists</h3>
-        </td>
-      </tr>
-      <tr>
-        <td>Features keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(1)">➕ Add</button>
-          <button onclick="keywordClearer(1)">❌ Set to default</button>
-        </td>
-        <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="featurekwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>Fixes keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(2)">➕ Add</button>
-          <button onclick="keywordClearer(2)">❌ Set to default</button>
-        </td>
-        <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="fixkwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>Refactor keyword list</td>
-      </tr>
-      <tr>
-        <td>
-          <button onclick="keywordAdder(3)">➕ Add</button>
-          <button onclick="keywordClearer(3)">❌ Set to default</button>
-        </td>
-        <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="refkwhtml"></div></pre>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <pre><div id="otherskwhtml"></div></pre>
-        </td>
-      </tr>
     </table>
+  </center>
+  <center>
+    <h3>Commit categories keyword lists</h3>
+  </center>
+  <center>
+  <table>
+    <tr>
+      <td>Features keyword list</td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="keywordAdder(1)">➕ Add</button>
+        <button onclick="keywordClearer(1)">❌ Set to default</button>
+      </td>
+      <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><div id="featurekwhtml"></div></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>Fixes keyword list</td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="keywordAdder(2)">➕ Add</button>
+        <button onclick="keywordClearer(2)">❌ Set to default</button>
+      </td>
+      <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><div id="fixkwhtml"></div></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>Refactor keyword list</td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="keywordAdder(3)">➕ Add</button>
+        <button onclick="keywordClearer(3)">❌ Set to default</button>
+      </td>
+      <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><div id="refkwhtml"></div></pre>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre><div id="otherskwhtml"></div></pre>
+      </td>
+    </tr>
+  </table>
   </center>
   <hr>
   <div class="row">
     <div class="column">
       <button onclick="copyToClipboard()">📋 Copy MarkDown to clipboard</button>
       <h6>Generated Changelog</h6>
-      <base target="_blank"><div id="bodyhtml"></div></base>
+      <base target="_blank">
+      <div id="bodyhtml"></div>
+      </base>
     </div>
   </div>
   </div>
@@ -146,7 +153,8 @@
   <hr>
   <footer>
     <i>
-      Made with <a href="https://github.com/JaavLex/changelog-maker" target="_blank">changelog-maker</a> - <span id="version"></span>
+      Made with <a href="https://github.com/JaavLex/changelog-maker" target="_blank">changelog-maker</a> - <span
+        id="version"></span>
     </i>
   </footer>
 </body>
