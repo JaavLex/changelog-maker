@@ -49,6 +49,7 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     keywordList = JSON.parse(localStorage.getItem(localStorageField));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    document.getElementById(inputField).value = "";
     return keywordList;
   }
 }
