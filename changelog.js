@@ -16,7 +16,8 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
     return keywordList;
   } else {
-    keywordList = defaultList;
+    let keywordList = [];
+    keywordList = keywordList.concat(defaultList);
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     return keywordList;
@@ -42,7 +43,8 @@ function addKeywordLocalStorage(localStorageField, defaultList, htmlField, input
   if (checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
     alert("Wrong value ! Is either empty, or already in the list !");
   } else {
-    keywordList = defaultList;
+    let keywordList = [];
+    keywordList = keywordList.concat(defaultList);
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     keywordList = JSON.parse(localStorage.getItem(localStorageField));
