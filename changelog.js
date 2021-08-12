@@ -162,7 +162,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   if (beforeDate != "" && afterDate != "") {
     dateParameters = `&since=${afterDate}&until=${beforeDate}`;
   } else if (afterDate != "") {
-    dateParameters = `&since=${afterDate}&until=${beforeDate}`;
+    dateParameters = `&since=${afterDate}`;
   } else if (beforeDate != "") {
     dateParameters = `&until=${beforeDate}`;
   }
