@@ -175,6 +175,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     },
   })
   
+  // if url returns 404, alerts user
   if (headersRequest.status != 200) {
     alert("URL/Location is not valid.");
     throw new Error("URL/Location is not valid.");
@@ -299,14 +300,23 @@ async function sortCommits() {
     } else if (beforeField != "") {
       newBody += `> 🕐 Commits until ${dateFormatting(beforeField)}\n\n`;
     }
-    newBody += `## New features ✨\n\n`;
-    newBody += features.join("\n\n");
-    newBody += `\n\n## Bug fixes 🐛\n\n`;
-    newBody += fixes.join("\n\n");
-    newBody += `\n\n## Code Refactors ♻\n\n`;
-    newBody += refs.join("\n\n");
-    newBody += `\n\n## Other types of commits 📚\n\n`;
-    newBody += others.join("\n\n");
+    // checks if found these types of commits and adds them to the changelog afterwards
+    if (features.length > 0) {
+      newBody += `## New features ✨\n\n`;
+      newBody += features.join("\n\n");
+    };
+    if (fixes.length > 0) {
+      newBody += `\n\n## Bug fixes 🐛\n\n`;
+      newBody += fixes.join("\n\n");
+    };
+    if (refs.length > 0) {
+      newBody += `\n\n## Code Refactors ♻\n\n`;
+      newBody += refs.join("\n\n");
+    };
+    if (others.length > 0) {
+      newBody += `\n\n## Other types of commits 📚\n\n`;
+      newBody += others.join("\n\n");
+    };
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
     if (document.getElementsByName('MdOrHtml')[0].checked) {
