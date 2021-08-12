@@ -286,21 +286,21 @@ async function sortCommits() {
     });
 
     // formats all the commits into a changelog (in markdown)
-    let newBody = '# Changelog - ' + urlField + "\n\n";
+    let newBody = '# 📑 Changelog - ' + urlField + "\n\n";
     if (beforeField != "" && afterField != "") {
-      newBody += `> Commits between ${dateFormatting(beforeField)} and ${dateFormatting(afterField)}\n\n`;
+      newBody += `> 🕐 Commits between ${dateFormatting(beforeField)} and ${dateFormatting(afterField)}\n\n`;
     } else if (afterField != "") {
-      newBody += `> Commits since ${dateFormatting(afterField)}\n\n`;
+      newBody += `> 🕐 Commits since ${dateFormatting(afterField)}\n\n`;
     } else if (beforeField != "") {
-      newBody += `> Commits until ${dateFormatting(beforeField)}\n\n`;
+      newBody += `> 🕐 Commits until ${dateFormatting(beforeField)}\n\n`;
     }
-    newBody += `## New features\n\n`;
+    newBody += `## New features ✨\n\n`;
     newBody += features.join("\n\n");
-    newBody += `\n\n## Bug fixes\n\n`;
+    newBody += `\n\n## Bug fixes 🐛\n\n`;
     newBody += fixes.join("\n\n");
-    newBody += `\n\n## Code Refactors\n\n`;
+    newBody += `\n\n## Code Refactors ♻\n\n`;
     newBody += refs.join("\n\n");
-    newBody += `\n\n## Other types of commits\n\n`;
+    newBody += `\n\n## Other types of commits 📚\n\n`;
     newBody += others.join("\n\n");
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
