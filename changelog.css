@@ -96,7 +96,7 @@ pre {
 
 #form-box {
   background-color: rgb(211, 211, 211);
-  width: 900px;
+  max-width: 900px;
   margin: auto;
   padding: 10px;
   border-radius: 100px;
