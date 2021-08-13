@@ -96,13 +96,12 @@
           <tr>
             <td>
               <button onclick="keywordAdder(1)">➕ Add</button>
-              <button onclick="keywordClearer(1)">❌ Set to default</button>
             </td>
             <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
           </tr>
           <tr>
             <td>
-              <button onclick="keywordRemover(1)">❌ Remove keyword</button>
+              <button onclick="keywordRemover(1)">❌ Remove</button>
             </td>
             <td><input name="featkwremove" id="featkwremove" type="text" placeholder="feat:" /></td>
           </tr>
@@ -112,18 +111,22 @@
             </td>
           </tr>
           <tr>
+            <td>
+              <button onclick="keywordClearer(1)">❌ Set list to default</button>
+            </td>
+          </tr>
+          <tr>
             <td><h4>Fixes keyword list</h4></td>
           </tr>
           <tr>
             <td>
               <button onclick="keywordAdder(2)">➕ Add</button>
-              <button onclick="keywordClearer(2)">❌ Set to default</button>
             </td>
             <td><input id="fixkwinput" type="text" placeholder="bugfix" /></td>
           </tr>
           <tr>
             <td>
-              <button onclick="keywordRemover(2)">❌ Remove keyword</button>
+              <button onclick="keywordRemover(2)">❌ Remove</button>
             </td>
             <td><input name="fixkwremove" id="fixkwremove" type="text" placeholder="fix:" /></td>
           </tr>
@@ -133,24 +136,33 @@
             </td>
           </tr>
           <tr>
+            <td>
+              <button onclick="keywordClearer(2)">❌ Set list to default</button>
+            </td>
+          </tr>
+          <tr>
             <td><h4>Refactor keyword list</h4></td>
           </tr>
           <tr>
             <td>
               <button onclick="keywordAdder(3)">➕ Add</button>
-              <button onclick="keywordClearer(3)">❌ Set to default</button>
             </td>
             <td><input id="refkwinput" type="text" placeholder="refactoring" /></td>
           </tr>
           <tr>
             <td>
-              <button onclick="keywordRemover(3)">❌ Remove keyword</button>
+              <button onclick="keywordRemover(3)">❌ Remove</button>
             </td>
             <td><input name="refkwremove" id="refkwremove" type="text" placeholder="ref:" /></td>
           </tr>
           <tr>
             <td>
               <pre><div id="refkwhtml"></div></pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordClearer(3)">❌ Set list to default</button>
             </td>
           </tr>
           <tr>
