@@ -20,24 +20,40 @@
       <table>
         <form name="params" action="#" onsubmit="sortCommits()"></form>
         <tr>
-          <td>Repository Location/URL</td>
-          <td><input id="urlhtml" type="text" onchange="localStorageManager(false)"
-              placeholder="JaavLex/changelog-maker" /></td>
+          <td>
+            Repository Location/URL
+          </td>
+          <td>
+            <input id="urlhtml" type="text" onchange="localStorageManager(false)"
+              placeholder="JaavLex/changelog-maker" />
+            </td>
         </tr>
         <tr>
-          <td>API token</td>
-          <td><input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i> <a
+          <td>
+            API token
+          </td>
+          <td>
+            <input id="apitoken" type="text" onchange="localStorageManager(false)" placeholder="ghp_ABCD1234" /><i> <a
                 href="https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token"
                 target="_blank" id="tutoriallink">
-                🔗 How to generate one ?</a></i></td>
+                🔗 How to generate one ?</a></i>
+          </td>
         </tr>
         <tr>
-          <td>Commits before</td>
-          <td><input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(1)">❌ Clear</button></td>
+          <td>
+            Commits before
+          </td>
+          <td>
+            <input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(1)">❌ Clear</button>
+          </td>
         </tr>
         <tr>
-          <td>Commits after</td>
-          <td><input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(2)">❌ Clear</button></td>
+          <td>
+            Commits after
+          </td>
+          <td>
+            <input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(2)">❌ Clear</button>
+          </td>
         </tr>
         <tr>
           <td>
@@ -76,8 +92,12 @@
           </td>
         </tr>
         <tr>
-          <td><button onclick="clearFields()">❌ Clear all fields</button></td>
-          <td><button onclick="sortCommits()">✅ Generate your changelog</button></td>
+          <td>
+            <button onclick="clearFields()">❌ Clear all fields</button>
+          </td>
+          <td>
+            <button onclick="sortCommits()">✅ Generate your changelog</button>
+          </td>
         </tr>
         </form>
       </table>
@@ -91,23 +111,31 @@
         <h3>Commit categories keyword lists</h3>
         <table>
           <tr>
-            <td><h4>Features keyword list</h4></td>
+            <td>
+              <h4>Features keyword list</h4>
+            </td>
           </tr>
           <tr>
             <td>
               <button onclick="keywordAdder(1)">➕ Add</button>
             </td>
-            <td><input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" /></td>
+            <td>
+              <input name="featkwinput" id="featkwinput" type="text" placeholder="functionality" />
+            </td>
           </tr>
           <tr>
             <td>
               <button onclick="keywordRemover(1)">❌ Remove</button>
             </td>
-            <td><input name="featkwremove" id="featkwremove" type="text" placeholder="feat:" /></td>
+            <td>
+              <input name="featkwremove" id="featkwremove" type="text" placeholder="feat:" />
+            </td>
           </tr>
           <tr>
             <td>
-              <pre><div id="featurekwhtml"></div></pre>
+              <pre>
+                <div id="featurekwhtml"></div>
+              </pre>
             </td>
           </tr>
           <tr>
@@ -116,7 +144,9 @@
             </td>
           </tr>
           <tr>
-            <td><h4>Fixes keyword list</h4></td>
+            <td>
+              <h4>Fixes keyword list</h4>
+            </td>
           </tr>
           <tr>
             <td>
@@ -132,7 +162,9 @@
           </tr>
           <tr>
             <td>
-              <pre><div id="fixkwhtml"></div></pre>
+              <pre>
+                <div id="fixkwhtml"></div>
+              </pre>
             </td>
           </tr>
           <tr>
@@ -141,7 +173,9 @@
             </td>
           </tr>
           <tr>
-            <td><h4>Refactor keyword list</h4></td>
+            <td>
+              <h4>Refactor keyword list</h4>
+            </td>
           </tr>
           <tr>
             <td>
@@ -157,17 +191,14 @@
           </tr>
           <tr>
             <td>
-              <pre><div id="refkwhtml"></div></pre>
+              <pre>
+                <div id="refkwhtml"></div>
+              </pre>
             </td>
           </tr>
           <tr>
             <td>
               <button onclick="keywordClearer(3)">❌ Set list to default</button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <pre><div id="otherskwhtml"></div></pre>
             </td>
           </tr>
         </table>
@@ -186,7 +217,7 @@
     </div>
   </div>
   </div>
-  <div id="loader"></div>
+  <div id="loader" />
   <hr>
   <footer>
     <i>
