@@ -65,6 +65,24 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
   return defaultList;
 }
 
+// removes a keyword from a list
+function removeKeywordLocalStorage(localStorageField, htmlField, inputField, checker) {
+  if (!checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
+    alert("Wrong value ! Is either empty, or not in the list !");
+  } else {
+    let fieldvalue = document.getElementById(inputField).value.toLowerCase();
+    let keywordList = [];
+    keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
+    if (keywordList.indexOf(fieldvalue) !== -1) {
+      keywordList.splice(keywordList.indexOf(fieldvalue), 1);
+    }
+    localStorage.setItem(localStorageField, JSON.stringify(keywordList));
+    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    document.getElementById(inputField).value = "";
+    return keywordList;
+  }
+}
+
 // either loads all previously inputted values, or saves them depending wether pageload == true or pageload == false
 function localStorageManager(pageload) {
   if (pageload) {
@@ -125,6 +143,24 @@ function keywordClearer(commitType) {
       break;
     case 3:
       refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+      break;
+    default:
+      console.log("ERROR: Unknown commit type");
+      break;
+  }
+}
+
+// balises keyword removing function
+function keywordRemover(commitType) {
+  switch (commitType) {
+    case 1:
+      featureKwList = removeKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', "featurekwhtml", "featkwremove", featureKwList);
+      break;
+    case 2:
+      fixesKwList = removeKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', "fixkwhtml", "fixkwremove", fixesKwList);
+      break;
+    case 3:
+      refactorKwList = removeKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', "refkwhtml", "refkwremove", refactorKwList);
       break;
     default:
       console.log("ERROR: Unknown commit type");
