@@ -268,9 +268,9 @@ async function sortCommits() {
       commitList.forEach(function callbackFn(commit) {
         keywordList.forEach(function callbackFn(balise) {
 
-          if (commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'))) {
+          if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'))) {
             if (document.getElementsByName('yesNoBalises')[1].checked) {
-              finalList.push(commit.replace(new RegExp(`(?!\\)\\] - ) ${quotemeta(balise)}`, 'i'), ''));
+              finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), ''));
             } else {
               finalList.push(commit);
             }
@@ -292,7 +292,7 @@ async function sortCommits() {
     commitMessages.forEach(function callbackFn(commit) {
       let noMatch = 0;
       for (let i = 0; i < othersSelectionList.length; i++) {
-        if (!commit.match(new RegExp(`(?!\\)\\] - ) ${quotemeta(othersSelectionList[i])}`, 'i'))) {
+        if (!commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(othersSelectionList[i])} `, 'i'))) {
           noMatch++;
         }
       }
@@ -305,15 +305,15 @@ async function sortCommits() {
     othersRaw.forEach(function callbackFn(commit) {
       if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
-          !commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, 'g')) && others.push(commit);
+          !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, 'g')) && others.push(commit);
         } else {
           others.push(commit);
         }
       } else {
         if (document.getElementsByName('yesNoMerges')[1].checked) {
-          !commit.match(new RegExp(`(?!\\)\\] - )[[Mm]erge|\\[merge\\]]`, "g")) && others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
+          !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
         } else {
-          others.push(commit.replace(new RegExp(`(?!\\)\\] - ) \\[?\\w+[:|\\]]?`, 'i'), ''));
+          others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
         }
       }
     });
