@@ -42,6 +42,8 @@ function saveRadioLocalStorage(localStorageField, radio) {
 function addKeywordLocalStorage(localStorageField, htmlField, inputField, checker) {
   if (checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
     alert("Wrong value ! Is either empty, or already in the list !");
+    keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
+    return keywordList;
   } else {
     let keywordList = [];
     keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
@@ -69,6 +71,8 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
 function removeKeywordLocalStorage(localStorageField, htmlField, inputField, checker) {
   if (!checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
     alert("Wrong value ! Is either empty, or not in the list !");
+    keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
+    return keywordList;
   } else {
     let fieldvalue = document.getElementById(inputField).value.toLowerCase();
     let keywordList = [];
