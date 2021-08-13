@@ -97,6 +97,9 @@ function localStorageManager(pageload) {
     document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
     document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
     document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
+    document.getElementById("feattitle").value = localStorage.getItem('tacticsch-chgmaker-feat-title-storage');
+    document.getElementById("fixtitle").value = localStorage.getItem('tacticsch-chgmaker-fix-title-storage');
+    document.getElementById("reftitle").value = localStorage.getItem('tacticsch-chgmaker-ref-title-storage');
     // balises list local storage value loading
     featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
     fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
@@ -112,6 +115,9 @@ function localStorageManager(pageload) {
     localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
     localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
     localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
+    localStorage.setItem('tacticsch-chgmaker-feat-title-storage', document.getElementById("feattitle").value);
+    localStorage.setItem('tacticsch-chgmaker-fix-title-storage', document.getElementById("fixtitle").value);
+    localStorage.setItem('tacticsch-chgmaker-ref-title-storage', document.getElementById("reftitle").value);
     // radio button options local storage value saving
     saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
     saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
@@ -377,15 +383,27 @@ async function sortCommits() {
     }
     // checks if found these types of commits and adds them to the changelog afterwards
     if (features.length > 0) {
-      newBody += `## ✨ New features\n\n`;
+      if (document.getElementById("feattitle").value != "") {
+        newBody += `## ${document.getElementById("feattitle").value}\n\n`;
+      } else {
+        newBody += `## ✨ New features\n\n`;
+      }
       newBody += features.join("\n\n");
     };
     if (fixes.length > 0) {
-      newBody += `\n\n## 🐛 Bug fixes\n\n`;
+      if (document.getElementById("fixtitle").value != "") {
+        newBody += `\n\n## ${document.getElementById("fixtitle").value}\n\n`;
+      } else {
+        newBody += `\n\n## 🐛 Bug fixes\n\n`;
+      }
       newBody += fixes.join("\n\n");
     };
     if (refs.length > 0) {
-      newBody += `\n\n## ♻ Code Refactors\n\n`;
+      if (document.getElementById("reftitle").value != "") {
+        newBody += `\n\n## ${document.getElementById("reftitle").value}\n\n`;
+      } else {
+        newBody += `\n\n## ♻ Code Refactors\n\n`;
+      }
       newBody += refs.join("\n\n");
     };
     if (others.length > 0) {
