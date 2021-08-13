@@ -39,15 +39,14 @@ function saveRadioLocalStorage(localStorageField, radio) {
 }
 
 // saves balises keyword lists
-function addKeywordLocalStorage(localStorageField, defaultList, htmlField, inputField, checker) {
+function addKeywordLocalStorage(localStorageField, htmlField, inputField, checker) {
   if (checker.includes(document.getElementById(inputField).value.toLowerCase()) || document.getElementById(inputField).value === "") {
     alert("Wrong value ! Is either empty, or already in the list !");
   } else {
     let keywordList = [];
-    keywordList = keywordList.concat(defaultList);
+    keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
-    keywordList = JSON.parse(localStorage.getItem(localStorageField));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
     document.getElementById(inputField).value = "";
     return keywordList;
@@ -97,13 +96,13 @@ function localStorageManager(pageload) {
 function keywordAdder(commitType) {
   switch (commitType) {
     case 1:
-      featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "featkwinput", featureKwList);
+      featureKwList = addKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', "featurekwhtml", "featkwinput", featureKwList);
       break;
     case 2:
-      fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixkwinput", fixesKwList);
+      fixesKwList = addKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', "fixkwhtml", "fixkwinput", fixesKwList);
       break;
     case 3:
-      refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "refkwinput", refactorKwList);
+      refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', "refkwhtml", "refkwinput", refactorKwList);
       break;
     default:
       console.log("ERROR: Unknown commit type");
