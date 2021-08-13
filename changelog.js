@@ -340,6 +340,9 @@ async function sortCommits() {
       }
     })
 
+    // Reset list
+    othersSelectionList = [];
+
     // pushes commits into others, gives the option to ommit merges or to remove the first word of the commit (in most case, the balise)
     othersRaw.forEach(function callbackFn(commit) {
       if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
