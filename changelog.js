@@ -49,6 +49,8 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
     document.getElementById(inputField).value = "";
+    let collapsible = document.getElementById("collapsiblecontent"); 
+    collapsible.style.maxHeight = collapsible.scrollHeight + "px";
     return keywordList;
   }
 }
@@ -58,6 +60,8 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
   localStorage.removeItem(localStorageField);
   localStorage.setItem(localStorageField, JSON.stringify(defaultList));
   document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
+  let collapsible = document.getElementById("collapsiblecontent"); 
+  collapsible.style.maxHeight = collapsible.scrollHeight + "px";
   return defaultList;
 }
 
