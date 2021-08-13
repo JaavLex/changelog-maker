@@ -186,11 +186,11 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 
   // sets the string necessary to set datefield parameters in the request
   if (beforeDate != "" && afterDate != "") {
-    dateParameters = `&since=${afterDate}&until=${beforeDate}`;
+    dateParameters = `&since=${afterDate}Z&until=${beforeDate}Z`;
   } else if (afterDate != "") {
-    dateParameters = `&since=${afterDate}`;
+    dateParameters = `&since=${afterDate}Z`;
   } else if (beforeDate != "") {
-    dateParameters = `&until=${beforeDate}`;
+    dateParameters = `&until=${beforeDate}Z`;
   }
 
   // searches for the numbers of pages in the repository's API page. needs an API token key (taken from the form).
