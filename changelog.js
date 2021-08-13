@@ -28,6 +28,8 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
 function loadRadioLocalStorage(localStorageField, radio) {
   if (localStorage.getItem(localStorageField) != null) {
     localStorage.getItem(localStorageField) == "true" ? radio[0].checked = true : radio[1].checked = true;
+  } else {
+    radio[1].checked = true;
   }
 }
 
