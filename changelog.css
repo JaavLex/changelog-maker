@@ -80,16 +80,6 @@ p {
   font-weight: bold;
 }
 
-pre {
-	width: auto;
-  line-height: 20px;                   
-	white-space: pre-wrap;             
-	white-space: -moz-pre-wrap !important;
-	white-space: -pre-wrap; 
-	white-space: -o-pre-wrap; 
-	word-wrap: break-word; 
-}
-
 #bodyhtml {
   padding: 10px;
 }
@@ -124,4 +114,14 @@ pre {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
+}
+
+#md-body {
+	width: auto;
+  line-height: 20px;                   
+	white-space: pre-wrap;             
+	white-space: -moz-pre-wrap !important;
+	white-space: -pre-wrap; 
+	white-space: -o-pre-wrap; 
+	word-wrap: break-word; 
 }

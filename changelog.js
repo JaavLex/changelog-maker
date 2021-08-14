@@ -413,7 +413,7 @@ async function sortCommits() {
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
     if (document.getElementsByName('MdOrHtml')[0].checked) {
-      document.getElementById("bodyhtml").innerHTML = `<pre>${newBody}</pre>`;
+      document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>`;
     } else {
       document.getElementById("bodyhtml").innerHTML = marked(newBody);
     }
