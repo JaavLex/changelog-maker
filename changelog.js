@@ -52,7 +52,9 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
     return keywordList;
   } else {
     let keywordList = [];
-    keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
+    if (JSON.parse(localStorage.getItem(localStorageField)).length > 0) {
+      keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
+    } 
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
@@ -321,11 +323,15 @@ function dateFormatting(date) {
   return new Date(date).toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'});
 }
 
+// \s all special characters in a string in order to input that into a regex
+function quotemeta(str) {
+  return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
+}
+
 // removes commit balises based on user's list of keywords, and at the same time sorts them into the right category
 function baliseRemover(commitList, keywordList, finalList) {
   commitList.forEach(function callbackFn(commit) {
     keywordList.forEach(function callbackFn(balise) {
-
       if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'))) {
         if (document.getElementsByName('yesNoBalises')[1].checked) {
           finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), ''));
@@ -365,11 +371,6 @@ async function sortCommits() {
     alert("Both URL and API token need to be inputted")
     document.getElementById("loader").innerHTML = '';
   } else {
-    // \s all special characters in a string in order to input that into a regex
-    function quotemeta(str) {
-      return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
-    }
-
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
     baliseRemover(commitMessages, refactorKwList, refs);
