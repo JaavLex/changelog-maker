@@ -89,7 +89,7 @@ p {
   max-width: 900px;
   margin: auto;
   padding: 10px;
-  border-radius: 100px;
+  border-radius: 65px;
   border-style: solid;
   border-width: 1px;
 }
@@ -127,8 +127,18 @@ p {
 }
 
 #list-table {
-  width: 100%ß;
+  width: 100%;
   border-width: 1px;
   border-style: dotted;
   border-radius: 25px;
+}
+
+.html-list {
+  background-color: rgba(129, 129, 129, 0.507);
+  color:rgb(221, 221, 221);
+  font-family: monospace;
+  border-radius: 5px;
+  border: 1px solid #333;
+  padding: 5px;
+  margin: 5px;
 }
