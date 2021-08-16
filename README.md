@@ -4,7 +4,9 @@
 Javascript
 
 ## Current version
-![version](https://img.shields.io/github/v/tag/JaavLex/changelog-maker)
+ Tag Version - ![version](https://img.shields.io/github/v/tag/JaavLex/changelog-maker)
+ 
+ App Version - ![version](https://img.shields.io/github/package-json/v/JaavLex/changelog-maker)
 
 ## Latest version's website
 https://jaavlex.github.io/changelog-maker/
@@ -73,22 +75,22 @@ Gives you the option of showing commit balises (balises are what commit types ar
 
 #### "No" result
 ```
-## New features ✨
+## ✨ New features
 
 [COMMITHASHHERE] - My commit message 
 
-## Bug fixes 🐛
+## 🐛 Bug fixes
 
 [COMMITHASHHERE] - My commit message 2
 ```
 
 #### "Yes" result
 ```
-## New features ✨
+## ✨ New features
 
 [COMMITHASHHERE] - feat: My commit message 
 
-## Bug fixes 🐛
+## 🐛 Bug fixes
 
 [COMMITHASHHERE] - fix: My commit message 2
 ```
@@ -107,7 +109,7 @@ Gives you the option to show merge messages
 
 #### "No" result
 ```
-## Other types of commits 📚
+## 📚 Other types of commits
 
 [COMMITHASHHERE] - My commit message 2
 [COMMITHASHHERE] - Merge branch 'blablah' ...
@@ -115,7 +117,7 @@ Gives you the option to show merge messages
 
 #### "Yes" result
 ```
-## Other types of commits 📚
+## 📚 Other types of commits
 
 [COMMITHASHHERE] - My commit message 2
 ```
@@ -129,7 +131,7 @@ Gives you the option to see your changelog in HTML or in Markdown syntax
 ```
 # 📑 Changelog
 
-## New features ✨
+## ✨ New features
 
 [[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
 
@@ -142,7 +144,7 @@ Gives you the option to see your changelog in HTML or in Markdown syntax
 
 ##### 📑 Changelog
 
-###### New features ✨
+###### ✨ New features
 
 [[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
 
@@ -153,6 +155,39 @@ Gives you the option to see your changelog in HTML or in Markdown syntax
 ---
 
 ### Balises lists
-![image](https://user-images.githubusercontent.com/50820503/129197054-e4f08e93-0b44-472c-bcc0-c20f812e7718.png)
+![image](https://user-images.githubusercontent.com/50820503/129583211-eb9bee4c-fa21-46dc-939f-559c7aacc89e.png)
 
 Commits are sorted based on those lists. You can add some keywords that will sort your commits in a certain category, or reset them.
+
+You can also **Change the title of a category**
+
+#### Default example
+
+```
+# 📑 Changelog
+
+## ✨ New features 
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
+```
+
+#### Changed title example
+
+
+```
+# 📑 Changelog
+
+## 💯💯💯 AMAZING NEW EXCLUSIVE FEATURES !!!
+
+[[COMMITHASHHERE](COMMITHASHLINKHERE)] - My commit message 1
+```
+
+Or remove a single keyword, just type the keyword **exactly** how it is written in the delete field and click the button to the left of it
+
+#### Custom Lists
+
+There's 2 custom category lists :
+
+![image](https://user-images.githubusercontent.com/50820503/129584079-a397103e-6eb5-40a0-adfa-e6c50311e79e.png)
+
+If you want one more category, just add your keywords. If you don't want them, just leave the list empty and it won't create the category whatsoever
