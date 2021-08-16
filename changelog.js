@@ -17,12 +17,12 @@ let currentOutput = "";
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
     keywordList = JSON.parse(localStorage.getItem(localStorageField));
-    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ") : document.getElementById(htmlField).innerHTML = "-- EMPTY --";
     return keywordList;
   } else {
     let keywordList = [];
     defaultList.length > 0 && (keywordList = keywordList.concat(defaultList));
-    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>" : document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
+    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>" : document.getElementById(htmlField).innerHTML = "-- EMPTY --";
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     return keywordList;
   }
