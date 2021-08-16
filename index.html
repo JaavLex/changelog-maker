@@ -16,7 +16,7 @@
   </center>
   <div id="form-box">
     <center>
-      <h2>✏ Input parameters of your changelog</h2>
+      <h2>✏️ Input parameters of your changelog</h2>
       <table>
         <form name="params" action="#" onsubmit="sortCommits()"></form>
         <tr>
@@ -198,7 +198,7 @@
               Refactor category title
             </td>
             <td>
-              <input name="reftitle" id="reftitle" type="text" onchange="localStorageManager(false)" placeholder="♻ Code Refactor" />
+              <input name="reftitle" id="reftitle" type="text" onchange="localStorageManager(false)" placeholder="♻️ Code Refactor" />
             </td>
           </tr>
           <tr>
@@ -223,6 +223,19 @@
           <tr>
             <td>
               <button onclick="keywordClearer(3)">❌ Set list to default</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>Others keyword list</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Others category title
+            </td>
+            <td>
+              <input name="reftitle" id="reftitle" type="text" onchange="localStorageManager(false)" placeholder="📚 Other commits" />
             </td>
           </tr>
         </table>

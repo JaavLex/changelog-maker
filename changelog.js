@@ -402,12 +402,12 @@ async function sortCommits() {
       if (document.getElementById("reftitle").value != "") {
         newBody += `\n\n## ${document.getElementById("reftitle").value}\n\n`;
       } else {
-        newBody += `\n\n## ♻ Code Refactors\n\n`;
+        newBody += `\n\n## ♻️ Code Refactors\n\n`;
       }
       newBody += refs.join("\n\n");
     };
     if (others.length > 0) {
-      newBody += `\n\n## 📚 Other types of commits\n\n`;
+      newBody += `\n\n## 📚 Other commits\n\n`;
       newBody += others.join("\n\n");
     };
     document.getElementById("loader").innerHTML = '';
