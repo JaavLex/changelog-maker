@@ -60,10 +60,11 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
 }
 
 // clears balises keyword lists
-function clearKeywordLocalStorage(localStorageField, defaultList, htmlField) {
+function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, titleField) {
   localStorage.removeItem(localStorageField);
   localStorage.setItem(localStorageField, JSON.stringify(defaultList));
   document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
+  document.getElementById(titleField).value = "";
   let collapsible = document.getElementById("collapsiblecontent"); 
   collapsible.style.maxHeight = collapsible.scrollHeight + "px";
   return defaultList;
@@ -148,13 +149,16 @@ function keywordAdder(commitType) {
 function keywordClearer(commitType) {
   switch (commitType) {
     case 1:
-      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
+      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "feattitle");
       break;
     case 2:
-      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
+      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixtitle");
       break;
     case 3:
-      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "reftitle");
+      break;
+    case 4:
+      document.getElementById("othertitle").value = "";
       break;
     default:
       console.log("ERROR: Unknown commit type");
