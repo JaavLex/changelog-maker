@@ -323,6 +323,8 @@ function dateFormatting(date) {
 
 // main app function. sorts all commits received by getCommits() function based on user's options.
 async function sortCommits() {
+  document.getElementById("loader").innerHTML = "<center><img src='./loading.svg'></img></center>";
+
   let urlField = document.getElementById("urlhtml").value.toString();
   // if is a url converts it to something usable
   if (urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))) {
@@ -342,11 +344,12 @@ async function sortCommits() {
   const others = [];
   const othersRaw = [];
 
+  
+
   if (urlField === "" || apiField === "") {
     alert("Both URL and API token need to be inputted")
+    document.getElementById("loader").innerHTML = '';
   } else {
-    document.getElementById("loader").innerHTML = "<center><img src='https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/source.gif'></img></center>";
-
     // \s all special characters in a string in order to input that into a regex
     function quotemeta(str) {
       return (str + '').replace(/([\.\\\+\*\?\[\^\]\$\(\)])/g, '\\$1');
