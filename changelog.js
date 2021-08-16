@@ -66,7 +66,7 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
 }
 
 // clears balises keyword lists
-function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, titleField) {
+function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, titleField, titleLocalStorage) {
   localStorage.removeItem(localStorageField);
   if (defaultList.length > 0) {
     localStorage.setItem(localStorageField, JSON.stringify(defaultList));
@@ -75,6 +75,7 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, tit
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
   }
   document.getElementById(titleField).value = "";
+  localStorage.setItem(titleLocalStorage, document.getElementById(titleField).value);
   let collapsible = document.getElementById("collapsiblecontent"); 
   collapsible.style.maxHeight = collapsible.scrollHeight + "px";
   return defaultList;
@@ -171,19 +172,19 @@ function keywordAdder(commitType) {
 function keywordClearer(commitType) {
   switch (commitType) {
     case 1:
-      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "feattitle");
+      featureKwList = clearKeywordLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml", "feattitle", 'tacticsch-chgmaker-feat-title-storage');
       break;
     case 2:
-      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixtitle");
+      fixesKwList = clearKeywordLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml", "fixtitle", 'tacticsch-chgmaker-fix-title-storage');
       break;
     case 3:
-      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "reftitle");
+      refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "reftitle", 'tacticsch-chgmaker-ref-title-storage');
       break;
     case 4:
-      cst1KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml", "cst1title");
+      cst1KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml", "cst1title", 'tacticsch-chgmaker-cst1-title-storage');
       break;
     case 5:
-      cst2KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml", "cst2title");
+      cst2KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml", "cst2title", 'tacticsch-chgmaker-cst2-title-storage');
       break;
     case 6:
       document.getElementById("othertitle").value = "";
