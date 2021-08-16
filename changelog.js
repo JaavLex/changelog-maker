@@ -2,10 +2,14 @@
 let defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
 let defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
 let defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
+let defaultcst1list = [];
+let defaultcst2list = [];
 // keywords balises list
 let featureKwList = [];
 let fixesKwList = [];
 let refactorKwList = [];
+let cst1KwList = [];
+let cst2KwList = [];
 let othersSelectionList = [];
 let currentOutput = "";
 
@@ -17,8 +21,8 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
     return keywordList;
   } else {
     let keywordList = [];
-    keywordList = keywordList.concat(defaultList);
-    document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>";
+    defaultList.length > 0 && (keywordList = keywordList.concat(defaultList));
+    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>" : document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     return keywordList;
   }
@@ -62,8 +66,12 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
 // clears balises keyword lists
 function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, titleField) {
   localStorage.removeItem(localStorageField);
-  localStorage.setItem(localStorageField, JSON.stringify(defaultList));
-  document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
+  if (defaultList.length > 0) {
+    localStorage.setItem(localStorageField, JSON.stringify(defaultList));
+    document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
+  } else {
+    document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
+  }
   document.getElementById(titleField).value = "";
   let collapsible = document.getElementById("collapsiblecontent"); 
   collapsible.style.maxHeight = collapsible.scrollHeight + "px";
@@ -84,7 +92,7 @@ function removeKeywordLocalStorage(localStorageField, htmlField, inputField, che
       keywordList.splice(keywordList.indexOf(fieldvalue), 1);
     }
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
-    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ") : document.getElementById(htmlField).innerHTML = "";
     document.getElementById(inputField).value = "";
     return keywordList;
   }
@@ -101,10 +109,14 @@ function localStorageManager(pageload) {
     document.getElementById("feattitle").value = localStorage.getItem('tacticsch-chgmaker-feat-title-storage');
     document.getElementById("fixtitle").value = localStorage.getItem('tacticsch-chgmaker-fix-title-storage');
     document.getElementById("reftitle").value = localStorage.getItem('tacticsch-chgmaker-ref-title-storage');
+    document.getElementById("cst1title").value = localStorage.getItem('tacticsch-chgmaker-cst1-title-storage');
+    document.getElementById("cst2title").value = localStorage.getItem('tacticsch-chgmaker-cst2-title-storage');
     // balises list local storage value loading
     featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
     fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
     refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
+    cst1KwList = loadListLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml");
+    cst2KwList = loadListLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml");
     // radio button options local storage value loading
     loadRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
     loadRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
@@ -119,6 +131,8 @@ function localStorageManager(pageload) {
     localStorage.setItem('tacticsch-chgmaker-feat-title-storage', document.getElementById("feattitle").value);
     localStorage.setItem('tacticsch-chgmaker-fix-title-storage', document.getElementById("fixtitle").value);
     localStorage.setItem('tacticsch-chgmaker-ref-title-storage', document.getElementById("reftitle").value);
+    localStorage.setItem('tacticsch-chgmaker-cst1-title-storage', document.getElementById("cst1title").value);
+    localStorage.setItem('tacticsch-chgmaker-cst2-title-storage', document.getElementById("cst2title").value);
     // radio button options local storage value saving
     saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
     saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
@@ -139,6 +153,12 @@ function keywordAdder(commitType) {
     case 3:
       refactorKwList = addKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', "refkwhtml", "refkwinput", refactorKwList);
       break;
+    case 4:
+      cst1KwList = addKeywordLocalStorage('tacticsch-chgmaker-cst1-keywords', "cst1kwhtml", "cst1kwinput", cst1KwList);
+      break;
+    case 5:
+      cst2KwList = addKeywordLocalStorage('tacticsch-chgmaker-cst2-keywords', "cst2kwhtml", "cst2kwinput", cst2KwList);
+      break;
     default:
       console.log("ERROR: Unknown commit type");
       break;
@@ -158,6 +178,12 @@ function keywordClearer(commitType) {
       refactorKwList = clearKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml", "reftitle");
       break;
     case 4:
+      cst1KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml", "cst1title");
+      break;
+    case 5:
+      cst2KwList = clearKeywordLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml", "cst2title");
+      break;
+    case 6:
       document.getElementById("othertitle").value = "";
       break;
     default:
@@ -177,6 +203,12 @@ function keywordRemover(commitType) {
       break;
     case 3:
       refactorKwList = removeKeywordLocalStorage('tacticsch-chgmaker-ref-keywords', "refkwhtml", "refkwremove", refactorKwList);
+      break;
+    case 4:
+      cst1KwList = removeKeywordLocalStorage('tacticsch-chgmaker-cst1-keywords', "cst1kwhtml", "cst1kwremove", cst1KwList);
+      break;
+    case 5:
+      cst2KwList = removeKeywordLocalStorage('tacticsch-chgmaker-cst2-keywords', "cst2kwhtml", "cst2kwremove", cst2KwList);
       break;
     default:
       console.log("ERROR: Unknown commit type");
@@ -305,6 +337,8 @@ async function sortCommits() {
   const features = [];
   const fixes = [];
   const refs = [];
+  const cst1 = [];
+  const cst2 = [];
   const others = [];
   const othersRaw = [];
 
@@ -337,11 +371,23 @@ async function sortCommits() {
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
     baliseRemover(commitMessages, refactorKwList, refs);
+    if (cst1KwList.length > 0) {
+      baliseRemover(commitMessages, cst1KwList, cst1);
+    }
+    if (cst2KwList.length > 0) {
+      baliseRemover(commitMessages, cst2KwList, cst2);
+    }
 
     // eliminated keywords, MUSN'T have one of these in order to get sorted into others
     othersSelectionList = othersSelectionList.concat(featureKwList);
     othersSelectionList = othersSelectionList.concat(fixesKwList);
     othersSelectionList = othersSelectionList.concat(refactorKwList);
+    if (cst1KwList.length > 0) {
+      othersSelectionList = othersSelectionList.concat(cst1KwList);
+    }
+    if (cst2KwList.length > 0) {
+      othersSelectionList = othersSelectionList.concat(cst2KwList);
+    }
 
     // checks if doesn't matches previous balises and pushes them into a variable
     commitMessages.forEach(function callbackFn(commit) {
@@ -409,6 +455,22 @@ async function sortCommits() {
         newBody += `\n\n## ♻️ Code Refactors\n\n`;
       }
       newBody += refs.join("\n\n");
+    };
+    if (cst1.length > 0) {
+      if (document.getElementById("cst1title").value != "") {
+        newBody += `\n\n## ${document.getElementById("cst1title").value}\n\n`;
+      } else {
+        newBody += `\n\n## 📘 Custom category 1\n\n`;
+      }
+      newBody += cst1.join("\n\n");
+    };
+    if (cst2.length > 0) {
+      if (document.getElementById("cst2title").value != "") {
+        newBody += `\n\n## ${document.getElementById("cst2title").value}\n\n`;
+      } else {
+        newBody += `\n\n## 📙 Custom category 2\n\n`;
+      }
+      newBody += cst2.join("\n\n");
     };
     if (others.length > 0) {
       if (document.getElementById("othertitle").value != "") {

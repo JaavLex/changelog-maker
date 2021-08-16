@@ -26,7 +26,7 @@
           <td>
             <input id="urlhtml" type="text" onchange="localStorageManager(false)"
               placeholder="JaavLex/changelog-maker" />
-            </td>
+          </td>
         </tr>
         <tr>
           <td>
@@ -44,7 +44,8 @@
             Commits before
           </td>
           <td>
-            <input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(1)">❌ Clear</button>
+            <input id="beforedate" type="datetime-local" onchange="localStorageManager(false)" /> <button
+              onclick="clearDateField(1)">❌ Clear</button>
           </td>
         </tr>
         <tr>
@@ -52,7 +53,8 @@
             Commits after
           </td>
           <td>
-            <input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /> <button onclick="clearDateField(2)">❌ Clear</button>
+            <input id="afterdate" type="datetime-local" onchange="localStorageManager(false)" /> <button
+              onclick="clearDateField(2)">❌ Clear</button>
           </td>
         </tr>
         <tr>
@@ -104,12 +106,13 @@
     </center>
     <hr>
     <center>
-      <button type="button" class="collapsible" onclick="openCloseCollapsible()">🔧 See keyword lists <b id="collarrow">⇐</b></button>
+      <button type="button" class="collapsible" onclick="openCloseCollapsible()">🔧 See keyword lists <b
+          id="collarrow">⇐</b></button>
     </center>
     <div id="collapsiblecontent">
       <center>
         <h3>Commit categories keyword lists</h3>
-        <table>
+        <table id="list-table">
           <tr>
             <td>
               <h4>Features keyword list</h4>
@@ -120,7 +123,8 @@
               Feature category title
             </td>
             <td>
-              <input name="feattitle" id="feattitle" type="text" onchange="localStorageManager(false)" placeholder="✨ New features" />
+              <input name="feattitle" id="feattitle" type="text" onchange="localStorageManager(false)"
+                placeholder="✨ New features" />
             </td>
           </tr>
           <tr>
@@ -142,8 +146,8 @@
           <tr>
             <td>
               <pre>
-                <div id="featurekwhtml"></div>
-              </pre>
+                      <div id="featurekwhtml"></div>
+                    </pre>
             </td>
           </tr>
           <tr>
@@ -161,7 +165,8 @@
               Fix category title
             </td>
             <td>
-              <input name="fixtitle" id="fixtitle" type="text" onchange="localStorageManager(false)" placeholder="🐛 Bug fixes" />
+              <input name="fixtitle" id="fixtitle" type="text" onchange="localStorageManager(false)"
+                placeholder="🐛 Bug fixes" />
             </td>
           </tr>
           <tr>
@@ -179,8 +184,8 @@
           <tr>
             <td>
               <pre>
-                <div id="fixkwhtml"></div>
-              </pre>
+                      <div id="fixkwhtml"></div>
+                    </pre>
             </td>
           </tr>
           <tr>
@@ -198,7 +203,8 @@
               Refactor category title
             </td>
             <td>
-              <input name="reftitle" id="reftitle" type="text" onchange="localStorageManager(false)" placeholder="♻️ Code Refactor" />
+              <input name="reftitle" id="reftitle" type="text" onchange="localStorageManager(false)"
+                placeholder="♻️ Code Refactor" />
             </td>
           </tr>
           <tr>
@@ -216,8 +222,8 @@
           <tr>
             <td>
               <pre>
-                <div id="refkwhtml"></div>
-              </pre>
+                      <div id="refkwhtml"></div>
+                    </pre>
             </td>
           </tr>
           <tr>
@@ -235,16 +241,93 @@
               Others category title
             </td>
             <td>
-              <input name="othertitle" id="othertitle" type="text" onchange="localStorageManager(false)" placeholder="📚 Other commits" />
+              <input name="othertitle" id="othertitle" type="text" onchange="localStorageManager(false)"
+                placeholder="📚 Other commits" />
             </td>
           </tr>
           <tr>
             <td>
-              <button onclick="keywordClearer(4)">❌ Set title to default</button>
+              <button onclick="keywordClearer(6)">❌ Set title to default</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>Custom keyword list 1</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Custom category title 1
+            </td>
+            <td>
+              <input name="cst1title" id="cst1title" type="text" onchange="localStorageManager(false)"
+                placeholder="📘 Custom category 1" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordAdder(4)">➕ Add</button>
+            </td>
+            <td><input id="cst1kwinput" type="text" placeholder="refactoring" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordRemover(4)">❌ Remove</button>
+            </td>
+            <td><input name="cst1kwremove" id="cst1kwremove" type="text" placeholder="ref:" /></td>
+          </tr>
+          <tr>
+            <td>
+              <pre>
+                      <div id="cst1kwhtml"></div>
+                    </pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordClearer(4)">❌ Set list to default</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>Custom keyword list 2</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Custom category title 2
+            </td>
+            <td>
+              <input name="cst2title" id="cst2title" type="text" onchange="localStorageManager(false)"
+                placeholder="📙 Custom category 2" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordAdder(5)">➕ Add</button>
+            </td>
+            <td><input id="cst2kwinput" type="text" placeholder="refactoring" /></td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordRemover(5)">❌ Remove</button>
+            </td>
+            <td><input name="cst2kwremove" id="cst2kwremove" type="text" placeholder="ref:" /></td>
+          </tr>
+          <tr>
+            <td>
+              <pre>
+                      <div id="cst2kwhtml"></div>
+                    </pre>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <button onclick="keywordClearer(5)">❌ Set list to default</button>
             </td>
           </tr>
         </table>
-        </center>
+      </center>
     </div>
   </div>
   <hr>
@@ -268,4 +351,5 @@
     </i>
   </footer>
 </body>
+
 </html>

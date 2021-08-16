@@ -125,3 +125,10 @@ p {
 	white-space: -o-pre-wrap; 
 	word-wrap: break-word; 
 }
+
+#list-table {
+  width: 100%ß;
+  border-width: 1px;
+  border-style: dotted;
+  border-radius: 25px;
+}
