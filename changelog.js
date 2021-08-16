@@ -407,7 +407,11 @@ async function sortCommits() {
       newBody += refs.join("\n\n");
     };
     if (others.length > 0) {
-      newBody += `\n\n## 📚 Other commits\n\n`;
+      if (document.getElementById("othertitle").value != "") {
+        newBody += `\n\n## ${document.getElementById("othertitle").value}\n\n`;
+      } else {
+        newBody += `\n\n## 📚 Other commits\n\n`;
+      }
       newBody += others.join("\n\n");
     };
     document.getElementById("loader").innerHTML = '';
