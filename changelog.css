@@ -57,8 +57,7 @@ button:hover:after, input[type=submit]:hover:after{
 
 #tutoriallink {
   text-decoration: none;
-  font-size: 10pt;
-  background-color:rgb(129, 129, 129);
+  font-size: 8pt;
   border-radius: 10px;
 }
 
