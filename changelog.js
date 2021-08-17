@@ -72,6 +72,7 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, tit
     localStorage.setItem(localStorageField, JSON.stringify(defaultList));
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
   } else {
+    localStorage.setItem(localStorageField, JSON.stringify(defaultList));
     document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
   }
   document.getElementById(titleField).value = "";
