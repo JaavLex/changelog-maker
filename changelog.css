@@ -142,3 +142,27 @@ p {
   padding: 5px;
   margin: 5px;
 }
+
+.generation-button {
+  background-color: rgb(127, 194, 94);
+  color:rgb(53, 53, 53);
+  border-width: 2px;
+}
+
+.clearall-button {
+  background-color: rgb(194, 94, 94);
+  color:rgb(53, 53, 53);
+  border-width: 2px;
+}
+
+.clearall-button:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #a8020241;
+  border-radius: 25px;
+  transition: all .35s;
+}
