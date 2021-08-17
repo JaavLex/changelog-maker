@@ -52,7 +52,7 @@ button:hover:after, input[type=submit]:hover:after{
 }
 
 #urlhtml, #apitoken {
-  width: 350px;
+  width: 100%;
 }
 
 #tutoriallink {
