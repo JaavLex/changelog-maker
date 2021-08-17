@@ -170,3 +170,10 @@ p {
   border-radius: 25px;
   transition: all .35s;
 }
+
+.form-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
