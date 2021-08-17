@@ -293,7 +293,8 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   })
   
   // if url returns 404, alerts user
-  if (headersRequest.status != 200) {
+  if (headersRequest.status == 404) {
+    document.getElementById("loader").innerHTML = "";
     alert("URL/Location is not valid.");
     throw new Error("URL/Location is not valid.");
   }
@@ -369,8 +370,8 @@ async function sortCommits() {
   const othersRaw = [];
 
   if (urlField === "" || apiField === "") {
-    alert("Both URL and API token need to be inputted")
-    document.getElementById("loader").innerHTML = '';
+    document.getElementById("loader").innerHTML = "";
+    alert("Both URL and API token need to be inputted");
   } else {
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
