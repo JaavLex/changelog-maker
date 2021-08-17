@@ -129,13 +129,6 @@ p {
 	word-wrap: break-word; 
 }
 
-#list-table {
-  width: 100%;
-  border-width: 1px;
-  border-style: dotted;
-  border-radius: 25px;
-}
-
 .html-list {
   background-color: rgba(129, 129, 129, 0.507);
   color:rgb(221, 221, 221);
@@ -179,4 +172,35 @@ p {
 
 .clear-buttons {
   font-size: 12px;
+}
+
+/* #list-table {
+  width: 100%;
+  border-width: 1px;
+  border-style: dotted;
+  border-radius: 25px;
+} */
+
+.lists-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.lists-container h4 {
+  font-size: 18px;
+}
+
+.lists-container button {
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.list-table {
+  width: 330px;
+  margin-bottom: 10px;
+  border-style:inset;
+  border-width: 1px;
+  border-radius: 25px;
 }
