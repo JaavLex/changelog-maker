@@ -1,6 +1,6 @@
 {
   "name": "changelog-maker",
-  "version": "1.14.15",
+  "version": "1.15.15",
   "description": "Changelog maker. Takes commit messages and generates a gitlog.",
   "main": "index.js",
   "scripts": {
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TacticsCH/changelog-maker.git"
+    "url": "git+https://github.com/JaavLex/changelog-maker.git"
   },
-  "author": "TacticsCH",
+  "author": "JaavLex",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/TacticsCH/changelog-maker/issues"
+    "url": "https://github.com/JaavLex/changelog-maker/issues"
   },
-  "homepage": "https://github.com/TacticsCH/changelog-maker#readme",
+  "homepage": "https://github.com/JaavLex/changelog-maker#readme",
   "dependencies": {
     "request": "^2.88.2",
     "superagent": "^6.1.0"

@@ -54,12 +54,12 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
     let keywordList = [];
     if (JSON.parse(localStorage.getItem(localStorageField)).length > 0) {
       keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
-    } 
+    }
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
     document.getElementById(inputField).value = "";
-    let collapsible = document.getElementById("collapsiblecontent"); 
+    let collapsible = document.getElementById("collapsiblecontent");
     collapsible.style.maxHeight = collapsible.scrollHeight + "px";
     return keywordList;
   }
@@ -77,7 +77,7 @@ function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, tit
   }
   document.getElementById(titleField).value = "";
   localStorage.setItem(titleLocalStorage, document.getElementById(titleField).value);
-  let collapsible = document.getElementById("collapsiblecontent"); 
+  let collapsible = document.getElementById("collapsiblecontent");
   collapsible.style.maxHeight = collapsible.scrollHeight + "px";
   return defaultList;
 }
@@ -102,6 +102,99 @@ function removeKeywordLocalStorage(localStorageField, htmlField, inputField, che
   }
 }
 
+// Takes user params, check if they are valid, and sets them
+function urlGetParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlExistingParams = [{
+      "param": "url",
+      "field": "urlhtml",
+      "type": "field"
+    },
+    {
+      "param": "apitoken",
+      "field": "apitoken",
+      "type": "field"
+    },
+    {
+      "param": "before",
+      "field": "beforedate",
+      "type": "field"
+    },
+    {
+      "param": "after",
+      "field": "afterdate",
+      "type": "field"
+    },
+    {
+      "param": "balises",
+      "field": "yesnobalises",
+      "type": "radio"
+    },
+    {
+      "param": "balisesother",
+      "field": "yesnobalisesothers",
+      "type": "radio"
+    },
+    {
+      "param": "merges",
+      "field": "yesnomerges",
+      "type": "radio"
+    },
+    {
+      "param": "markdown",
+      "field": "mdorhtml",
+      "type": "radio"
+    },
+    {
+      "param": "feat",
+      "field": "featurekwhtml",
+      "list": featureKwList,
+      "default": defaultfeatlist,
+      "type": "list"
+    },
+    {
+      "param": "fix",
+      "field": "fixkwhtml",
+      "list": fixesKwList,
+      "default": defaultfixlist,
+      "type": "list"
+    },
+    {
+      "param": "ref",
+      "field": "refkwhtml",
+      "list": refactorKwList,
+      "default": defaultreflist,
+      "type": "list"
+    },
+    {
+      "param": "cst1",
+      "field": "cst1kwhtml",
+      "list": cst1KwList,
+      "default": defaultcst1list,
+      "type": "list"
+    },
+    {
+      "param": "cst2",
+      "field": "cst2kwhtml",
+      "list": cst2KwList,
+      "default": defaultcst2list,
+      "type": "list"
+    }
+  ]
+
+  urlExistingParams.forEach(function callbackFn(item) {
+    const field = document.getElementById(item.field);
+    const radio = document.getElementsByName(item.field);
+
+    item.type === "field" && urlParams.has(item.param) && (field.value = urlParams.get(item.param));
+    item.type === "radio" && urlParams.has(item.param) && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
+    if (item.type === "list") {
+      item.param = item.default.concat(urlParams.get(item.param).split(','));
+      field.innerHTML = "* " + item.param.join("<br>* ")
+    }
+  });
+}
+
 // either loads all previously inputted values, or saves them depending wether pageload == true or pageload == false
 function localStorageManager(pageload) {
   if (pageload) {
@@ -122,10 +215,12 @@ function localStorageManager(pageload) {
     cst1KwList = loadListLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml");
     cst2KwList = loadListLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml");
     // radio button options local storage value loading
-    loadRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
-    loadRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
-    loadRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesNoMerges"));
-    loadRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("MdOrHtml"));
+    loadRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesnobalises"));
+    loadRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesnobalisesothers"));
+    loadRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesnomerges"));
+    loadRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("mdorhtml"));
+    // If user sets parameters in URL, set them.
+    urlGetParams()
   } else {
     // date and text fields local storage value saving
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);
@@ -138,10 +233,10 @@ function localStorageManager(pageload) {
     localStorage.setItem('tacticsch-chgmaker-cst1-title-storage', document.getElementById("cst1title").value);
     localStorage.setItem('tacticsch-chgmaker-cst2-title-storage', document.getElementById("cst2title").value);
     // radio button options local storage value saving
-    saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesNoBalises"));
-    saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesNoBalisesOthers"));
-    saveRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesNoMerges"));
-    saveRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("MdOrHtml"));
+    saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesnobalises"));
+    saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesnobalisesothers"));
+    saveRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesnomerges"));
+    saveRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("mdorhtml"));
   }
 }
 
@@ -234,7 +329,7 @@ function clearFields() {
 }
 
 function openCloseCollapsible() {
-  let collapsible = document.getElementById("collapsiblecontent"); 
+  let collapsible = document.getElementById("collapsiblecontent");
   if (collapsible.style.maxHeight) {
     collapsible.style.maxHeight = null;
     document.getElementById("collarrow").innerHTML = "⇐";
@@ -259,10 +354,10 @@ function copyToClipboard() {
 function clearDateField(beforeOrAfter) {
   switch (beforeOrAfter) {
     case 1:
-        document.getElementById("beforedate").value = "";
+      document.getElementById("beforedate").value = "";
       break;
     case 2:
-        document.getElementById("afterdate").value = "";
+      document.getElementById("afterdate").value = "";
       break;
     default:
       console.log("ERROR: Unknown date type");
@@ -292,7 +387,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
       Authorization: `token ${apiKey}`
     },
   })
-  
+
   // if url returns 404, alerts user
   if (headersRequest.status == 404) {
     document.getElementById("loader").innerHTML = "";
@@ -323,7 +418,14 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 }
 
 function dateFormatting(date) {
-  return new Date(date).toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'});
+  return new Date(date).toLocaleString('default', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  });
 }
 
 // \s all special characters in a string in order to input that into a regex
@@ -336,7 +438,7 @@ function baliseRemover(commitList, keywordList, finalList) {
   commitList.forEach(function callbackFn(commit) {
     keywordList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'))) {
-        if (document.getElementsByName('yesNoBalises')[1].checked) {
+        if (document.getElementsByName('yesnobalises')[1].checked) {
           finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), ''));
         } else {
           finalList.push(commit);
@@ -357,7 +459,7 @@ async function sortCommits() {
     urlField = urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))[2];
   }
   const apiField = document.getElementById("apitoken").value.toString();
-   const afterField = document.getElementById("afterdate").value.toString();
+  const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
   // Already sets a formatted commit message
@@ -413,14 +515,14 @@ async function sortCommits() {
 
     // pushes commits into others, gives the option to ommit merges or to remove the first word of the commit (in most case, the balise)
     othersRaw.forEach(function callbackFn(commit) {
-      if (document.getElementsByName('yesNoBalisesOthers')[0].checked) {
-        if (document.getElementsByName('yesNoMerges')[1].checked) {
+      if (document.getElementsByName('yesnobalisesothers')[0].checked) {
+        if (document.getElementsByName('yesnomerges')[1].checked) {
           !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, 'g')) && others.push(commit);
         } else {
           others.push(commit);
         }
       } else {
-        if (document.getElementsByName('yesNoMerges')[1].checked) {
+        if (document.getElementsByName('yesnomerges')[1].checked) {
           !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
         } else {
           others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
@@ -488,7 +590,7 @@ async function sortCommits() {
     };
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
-    if (document.getElementsByName('MdOrHtml')[0].checked) {
+    if (document.getElementsByName('mdorhtml')[0].checked) {
       document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>`;
     } else {
       document.getElementById("bodyhtml").innerHTML = marked(newBody);
