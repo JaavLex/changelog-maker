@@ -186,11 +186,13 @@ function urlGetParams() {
     const field = document.getElementById(item.field);
     const radio = document.getElementsByName(item.field);
 
-    item.type === "field" && urlParams.has(item.param) && (field.value = urlParams.get(item.param));
-    item.type === "radio" && urlParams.has(item.param) && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
-    if (item.type === "list") {
-      item.param = item.default.concat(urlParams.get(item.param).split(','));
-      field.innerHTML = "* " + item.param.join("<br>* ")
+    if (urlParams.has(item.param)) {
+      item.type === "field" && (field.value = urlParams.get(item.param));
+      item.type === "radio" && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
+      if (item.type === "list") {
+        item.param = item.default.concat(urlParams.get(item.param).split(','));
+        field.innerHTML = "* " + item.param.join("<br>* ")
+      }
     }
   });
 }
