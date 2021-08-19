@@ -417,10 +417,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
 
   // searches for the numbers of pages in the repository's API page. needs an API token key (taken from the form).
   const headersRequest = await fetch(repoUrl + "1" + dateParameters, {
-    method: "GET",
-    headers: {
-      Authorization: `token ${apiKey}`
-    },
+    method: "GET"
   })
 
   // if url returns 404, alerts user
@@ -430,6 +427,13 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     throw new Error("URL/Location is not valid.");
   }
 
+  // if url returns 404, alerts user
+  if (headersRequest.status == 403) {
+    document.getElementById("loader").innerHTML = "";
+    alert("You've reached the API's limit rate. Please input a token to generate further changelogs.");
+    throw new Error("API's limit rate has been reached.");
+  }
+
   // trims the links given by the request in order to only get the number of pages
   let headerLink = headersRequest.headers.get("link");
   if (headerLink) {
@@ -437,19 +441,26 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     totalPage = Math.ceil(rgxmatch[1] / nbCommits);
   }
 
-  // gets all commits from a repository. sets date parameters, take an API token, and pushes commits to a variable.
-  for (let i = 1; i <= totalPage; i++) {
-    const repoContent = await fetch(repoUrl + nbCommits + "&page=" + i + dateParameters, {
-      method: "GET",
-      headers: {
-        Authorization: `token ${apiKey}`
-      },
-    });
-    const jsonCommits = await repoContent.json();
-    repoCommits.push(...jsonCommits);
-  };
+  if (totalPage > 5 && document.getElementById("apitoken").value == "") {
+    alert(`ALERT: This request has ${totalPage} pages of commits. All requests of more than 5 pages require a token !`);
+    return false;
+  } else {
+    // gets all commits from a repository. sets date parameters, take an API token, and pushes commits to a variable.
+    for (let i = 1; i <= totalPage; i++) {
+      const tokenrep = document.getElementById("apitoken").value == "" ?  null : `token ${apiKey}`;
+      const repoContent = await fetch(repoUrl + nbCommits + "&page=" + i + dateParameters, {
+        method: "GET",
+        headers: {
+          Authorization: `${tokenrep}`
+        },
+      });
+      console.log(totalPage)
+      const jsonCommits = await repoContent.json();
+      repoCommits.push(...jsonCommits);
+    };
 
-  return repoCommits;
+    return repoCommits;
+  }
 }
 
 function dateFormatting(date) {
@@ -498,7 +509,7 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
   // Already sets a formatted commit message
-  const commitMessages = rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ [" + item.commit.author.name + "](" + (item.author && item.author.html_url) + ")" + " ― 📅 ⇒ " + dateFormatting(item.commit.author.date));
+  const commitMessages = rawCommits != false && rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ [" + item.commit.author.name + "](" + (item.author && item.author.html_url) + ")" + " ― 📅 ⇒ " + dateFormatting(item.commit.author.date));
   const features = [];
   const fixes = [];
   const refs = [];
@@ -507,9 +518,11 @@ async function sortCommits() {
   const others = [];
   const othersRaw = [];
 
-  if (urlField === "" || apiField === "") {
+  if (urlField === "") {
     document.getElementById("loader").innerHTML = "";
-    alert("Both URL and API token need to be inputted");
+    alert("URL needs to be inputted");
+  } else if (rawCommits == false) {
+    document.getElementById("loader").innerHTML = "";
   } else {
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
