@@ -103,8 +103,54 @@ function removeKeywordLocalStorage(localStorageField, htmlField, inputField, che
 }
 
 // Takes user params, check if they are valid, and sets them
-function urlGetParams() {
+function urlGetParams(urlCurrentParams) {
   const urlParams = new URLSearchParams(window.location.search);
+
+  urlCurrentParams.forEach(function callbackFn(item) {
+    const field = document.getElementById(item.field);
+    const radio = document.getElementsByName(item.field);
+
+    if (urlParams.has(item.param)) {
+      item.type === "field" && (field.value = urlParams.get(item.param));
+      item.type === "radio" && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
+      if (item.type === "list") {
+        item.param = item.default.concat(urlParams.get(item.param).split(','));
+        field.innerHTML = "* " + item.param.join("<br>* ")
+      }
+    }
+  });
+}
+
+// Takes field values, converts them to URL params and copies them to clipboard
+function urlSaveParams(urlCurrentParams) {
+  let userSearchParams = "?";
+  var dump = document.createElement("textarea");
+
+  urlCurrentParams.forEach((item) => {
+    const field = document.getElementById(item.field);
+    const radio = document.getElementsByName(item.field);
+    let paramsLister = [];
+    
+    if (item.param !== "apitoken") {
+      item.type === "field" && field.value != "" && (userSearchParams += `${item.param}=${field.value}&`);
+      item.type === "radio" && (radio[0].checked == true ? userSearchParams += `${item.param}=true&` : userSearchParams += `${item.param}=false&`);
+      if (item.type === "list") {
+        item.list.forEach((keyword) => !item.default.includes(keyword) && paramsLister.push(keyword));
+        paramsLister.length > 0 && (userSearchParams += `${item.param}=${paramsLister.join(',')}&`);
+      }
+    }
+  });
+
+  document.body.appendChild(dump);
+  dump.value = location.protocol + '//' + location.host + location.pathname + userSearchParams.slice(0, -1);
+  dump.select();
+  document.execCommand("copy");
+  document.body.removeChild(dump);
+  alert("Link has been copied to your clipboard");
+}
+
+function urlParamsActions(save) {
+  // Search params
   const urlExistingParams = [{
       "param": "url",
       "field": "urlhtml",
@@ -181,20 +227,7 @@ function urlGetParams() {
       "type": "list"
     }
   ]
-
-  urlExistingParams.forEach(function callbackFn(item) {
-    const field = document.getElementById(item.field);
-    const radio = document.getElementsByName(item.field);
-
-    if (urlParams.has(item.param)) {
-      item.type === "field" && (field.value = urlParams.get(item.param));
-      item.type === "radio" && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
-      if (item.type === "list") {
-        item.param = item.default.concat(urlParams.get(item.param).split(','));
-        field.innerHTML = "* " + item.param.join("<br>* ")
-      }
-    }
-  });
+  save ? urlSaveParams(urlExistingParams) : urlGetParams(urlExistingParams);
 }
 
 // either loads all previously inputted values, or saves them depending wether pageload == true or pageload == false
@@ -222,7 +255,7 @@ function localStorageManager(pageload) {
     loadRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesnomerges"));
     loadRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("mdorhtml"));
     // If user sets parameters in URL, set them.
-    urlGetParams()
+    urlParamsActions(false);
   } else {
     // date and text fields local storage value saving
     localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);

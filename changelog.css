@@ -164,6 +164,24 @@ p {
   transition: all .35s;
 }
 
+.copylink-button {
+  background-color: rgb(94, 121, 194);
+  color:rgb(53, 53, 53);
+  border-width: 2px;
+}
+
+.copylink-button:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #0266a841;
+  border-radius: 25px;
+  transition: all .35s;
+}
+
 .form-buttons {
   display: flex;
   justify-content: space-evenly;
