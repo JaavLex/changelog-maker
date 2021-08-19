@@ -454,7 +454,6 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
           Authorization: `${tokenrep}`
         },
       });
-      console.log(totalPage)
       const jsonCommits = await repoContent.json();
       repoCommits.push(...jsonCommits);
     };
