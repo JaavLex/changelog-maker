@@ -564,13 +564,13 @@ async function sortCommits() {
     othersRaw.forEach(function callbackFn(commit) {
       if (document.getElementsByName('yesnobalisesothers')[0].checked) {
         if (document.getElementsByName('yesnomerges')[1].checked) {
-          !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, 'g')) && others.push(commit);
+          !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit);
         } else {
           others.push(commit);
         }
       } else {
         if (document.getElementsByName('yesnomerges')[1].checked) {
-          !commit.match(new RegExp(`(?<=\\)\\] - )[[Mm]erge|\\[merge\\]] `, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
+          !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
         } else {
           others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
         }
