@@ -545,7 +545,7 @@ async function sortCommits() {
     }
 
     // checks if doesn't matches previous balises and pushes them into a variable
-    commitMessages.forEach(function callbackFn(commit) {
+    commitMessages.forEach((commit) => {
       let noMatch = 0;
       for (let i = 0; i < othersSelectionList.length; i++) {
         if (!commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(othersSelectionList[i])} `, 'i'))) {
@@ -561,7 +561,7 @@ async function sortCommits() {
     othersSelectionList = [];
 
     // pushes commits into others, gives the option to ommit merges or to remove the first word of the commit (in most case, the balise)
-    othersRaw.forEach(function callbackFn(commit) {
+    othersRaw.forEach((commit) => {
       if (document.getElementsByName('yesnobalisesothers')[0].checked) {
         if (document.getElementsByName('yesnomerges')[1].checked) {
           !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit);
