@@ -36,6 +36,7 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
     keywordList.length > 0 ? listDisplay(htmlField, keywordList, 0) : listDisplay(htmlField, keywordList);
     return keywordList;
   } else {
+    let keywordList = [];
     defaultList.length > 0 && (keywordList = keywordList.concat(defaultList));
     keywordList.length > 0 ? listDisplay(htmlField, keywordList, 1) : listDisplay(htmlField, keywordList);
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
