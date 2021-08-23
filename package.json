@@ -1,6 +1,6 @@
 {
   "name": "changelog-maker",
-  "version": "1.18.19",
+  "version": "1.18.20",
   "description": "Changelog maker. Takes commit messages and generates a gitlog.",
   "main": "index.js",
   "scripts": {

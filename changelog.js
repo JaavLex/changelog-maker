@@ -1,9 +1,9 @@
 // default balises to set
-let defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
-let defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
-let defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
-let defaultcst1list = [];
-let defaultcst2list = [];
+const defaultfeatlist = ['[feat]', '[feature]', 'feat:', 'feature:'];
+const defaultfixlist = ['[fix]', '[hotfix]', 'fix:', 'hotfix:'];
+const defaultreflist = ['[ref]', '[refactor]', 'ref:', 'refactor:'];
+const defaultcst1list = [];
+const defaultcst2list = [];
 // keywords balises list
 let featureKwList = [];
 let fixesKwList = [];
@@ -11,18 +11,33 @@ let refactorKwList = [];
 let cst1KwList = [];
 let cst2KwList = [];
 let othersSelectionList = [];
-let currentOutput = "";
+let currentChangelogOutput = "";
+
+// Changes display of a list based on his mode
+function listDisplay(htmlField, keywordList, mode) {
+  const listJoining = "* " + keywordList.join("<br>* ");
+  switch (mode) {
+    case 0:
+      document.getElementById(htmlField).innerHTML = listJoining;
+      break;
+    case 1:
+      document.getElementById(htmlField).innerHTML = `-- DEFAULT --<br>${listJoining}<br>-------------<br>`;
+      break;
+    default:
+      document.getElementById(htmlField).innerHTML = `-- DEFAULT --`;
+      break;
+  }
+}
 
 // will search previously inputted balises list values in the browser's Local Storage
 function loadListLocalStorage(localStorageField, defaultList, htmlField) {
   if (localStorage.getItem(localStorageField) != null) {
     keywordList = JSON.parse(localStorage.getItem(localStorageField));
-    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ") : document.getElementById(htmlField).innerHTML = "-- EMPTY --";
+    keywordList.length > 0 ? listDisplay(htmlField, keywordList, 0) : listDisplay(htmlField, keywordList);
     return keywordList;
   } else {
-    let keywordList = [];
     defaultList.length > 0 && (keywordList = keywordList.concat(defaultList));
-    keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + keywordList.join("<br>* ") + "<br>-------------<br>" : document.getElementById(htmlField).innerHTML = "-- EMPTY --";
+    keywordList.length > 0 ? listDisplay(htmlField, keywordList, 1) : listDisplay(htmlField, keywordList);
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     return keywordList;
   }
@@ -30,18 +45,23 @@ function loadListLocalStorage(localStorageField, defaultList, htmlField) {
 
 // searches for previously selected radio button
 function loadRadioLocalStorage(localStorageField, radio) {
-  if (localStorage.getItem(localStorageField) != null) {
-    localStorage.getItem(localStorageField) == "true" ? radio[0].checked = true : radio[1].checked = true;
-  } else {
-    radio[1].checked = true;
-  }
+  localStorage.getItem(localStorageField) != null ? (localStorage.getItem(localStorageField) == "true" ? radio[0].checked = true : radio[1].checked = true) : radio[1].checked = true;
 }
 
 // saves value of checked radio button
 function saveRadioLocalStorage(localStorageField, radio) {
-  for (let i = 0; i < radio.length; i++) {
-    radio[i].checked && localStorage.setItem(localStorageField, radio[i].value);
-  }
+  radio.forEach((item) => item.checked && localStorage.setItem(localStorageField, item.value))
+}
+
+// Augments the size of the collapsible when a modification is made
+function resizeCollapsible() {
+  document.getElementById("collapsiblecontent").style.maxHeight = document.getElementById("collapsiblecontent").scrollHeight + "px";
+}
+
+// Changes list and displays it afterwards
+function setList(localStorageField, htmlField, keywordList, mode) {
+  localStorage.setItem(localStorageField, JSON.stringify(keywordList));
+  listDisplay(htmlField, keywordList, mode);
 }
 
 // saves balises keyword lists
@@ -52,15 +72,11 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
     return keywordList;
   } else {
     let keywordList = [];
-    if (JSON.parse(localStorage.getItem(localStorageField)).length > 0) {
-      keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
-    }
+    JSON.parse(localStorage.getItem(localStorageField)).length > 0 && (keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField))));
     keywordList.push(document.getElementById(inputField).value.toLowerCase());
-    localStorage.setItem(localStorageField, JSON.stringify(keywordList));
-    document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ");
+    setList(localStorageField, htmlField, keywordList, 0);
     document.getElementById(inputField).value = "";
-    let collapsible = document.getElementById("collapsiblecontent");
-    collapsible.style.maxHeight = collapsible.scrollHeight + "px";
+    resizeCollapsible();
     return keywordList;
   }
 }
@@ -68,17 +84,10 @@ function addKeywordLocalStorage(localStorageField, htmlField, inputField, checke
 // clears balises keyword lists
 function clearKeywordLocalStorage(localStorageField, defaultList, htmlField, titleField, titleLocalStorage) {
   localStorage.removeItem(localStorageField);
-  if (defaultList.length > 0) {
-    localStorage.setItem(localStorageField, JSON.stringify(defaultList));
-    document.getElementById(htmlField).innerHTML = "-- DEFAULT --<br>" + "* " + defaultList.join("<br>* ") + "<br>-------------<br>";
-  } else {
-    localStorage.setItem(localStorageField, JSON.stringify(defaultList));
-    document.getElementById(htmlField).innerHTML = "-- DEFAULT --";
-  }
+  defaultList.length > 0 ? setList(localStorageField, htmlField, defaultList, 1) : setList(localStorageField, htmlField, defaultList);
   document.getElementById(titleField).value = "";
   localStorage.setItem(titleLocalStorage, document.getElementById(titleField).value);
-  let collapsible = document.getElementById("collapsiblecontent");
-  collapsible.style.maxHeight = collapsible.scrollHeight + "px";
+  resizeCollapsible();
   return defaultList;
 }
 
@@ -90,11 +99,8 @@ function removeKeywordLocalStorage(localStorageField, htmlField, inputField, che
     return keywordList;
   } else {
     let fieldvalue = document.getElementById(inputField).value.toLowerCase();
-    let keywordList = [];
     keywordList = keywordList.concat(JSON.parse(localStorage.getItem(localStorageField)));
-    if (keywordList.indexOf(fieldvalue) !== -1) {
-      keywordList.splice(keywordList.indexOf(fieldvalue), 1);
-    }
+    keywordList.indexOf(fieldvalue) !== -1 && keywordList.splice(keywordList.indexOf(fieldvalue), 1);
     localStorage.setItem(localStorageField, JSON.stringify(keywordList));
     keywordList.length > 0 ? document.getElementById(htmlField).innerHTML = "* " + keywordList.join("<br>* ") : document.getElementById(htmlField).innerHTML = "";
     document.getElementById(inputField).value = "";
@@ -105,32 +111,40 @@ function removeKeywordLocalStorage(localStorageField, htmlField, inputField, che
 // Takes user params, check if they are valid, and sets them
 function urlGetParams(urlCurrentParams) {
   const urlParams = new URLSearchParams(window.location.search);
-
   urlCurrentParams.forEach(function callbackFn(item) {
     const field = document.getElementById(item.field);
     const radio = document.getElementsByName(item.field);
-
     if (urlParams.has(item.param)) {
       item.type === "field" && (field.value = urlParams.get(item.param));
       item.type === "radio" && (urlParams.get(item.param) == "true" ? radio[0].checked = true : radio[1].checked = true);
       if (item.type === "list") {
         item.param = item.default.concat(urlParams.get(item.param).split(','));
-        field.innerHTML = "* " + item.param.join("<br>* ")
+        field.innerHTML = "* " + item.param.join("<br>* ");
       }
     }
   });
 }
 
+// Copies data to clipboard
+function copyToClipboard(mode, input) {
+  if (mode ? currentChangelogOutput != "" : input != "") {
+    var dump = document.createElement("textarea");
+    document.body.appendChild(dump);
+    dump.value = mode ? currentChangelogOutput : input;
+    dump.select();
+    document.execCommand("copy");
+    document.body.removeChild(dump);
+    alert("Mardkown has been copied to your clipboard");
+  }
+}
+
 // Takes field values, converts them to URL params and copies them to clipboard
 function urlSaveParams(urlCurrentParams) {
   let userSearchParams = "?";
-  var dump = document.createElement("textarea");
-
   urlCurrentParams.forEach((item) => {
     const field = document.getElementById(item.field);
     const radio = document.getElementsByName(item.field);
-    let paramsLister = [];
-    
+    let paramsLister = []; 
     if (item.param !== "apitoken") {
       item.type === "field" && field.value != "" && (userSearchParams += `${item.param}=${field.value}&`);
       item.type === "radio" && (radio[0].checked == true ? userSearchParams += `${item.param}=true&` : userSearchParams += `${item.param}=false&`);
@@ -140,13 +154,7 @@ function urlSaveParams(urlCurrentParams) {
       }
     }
   });
-
-  document.body.appendChild(dump);
-  dump.value = location.protocol + '//' + location.host + location.pathname + userSearchParams.slice(0, -1);
-  dump.select();
-  document.execCommand("copy");
-  document.body.removeChild(dump);
-  alert("Link has been copied to your clipboard");
+  copyToClipboard(false, location.protocol + '//' + location.host + location.pathname + userSearchParams.slice(0, -1))
 }
 
 function urlParamsActions(save) {
@@ -363,6 +371,7 @@ function clearFields() {
   localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
 }
 
+// Logic for opening collapsible
 function openCloseCollapsible() {
   let collapsible = document.getElementById("collapsiblecontent");
   if (collapsible.style.maxHeight) {
@@ -374,18 +383,7 @@ function openCloseCollapsible() {
   }
 }
 
-function copyToClipboard() {
-  if (currentOutput != "") {
-    var dump = document.createElement("textarea");
-    document.body.appendChild(dump);
-    dump.value = currentOutput;
-    dump.select();
-    document.execCommand("copy");
-    document.body.removeChild(dump);
-    alert("Mardkown has been copied to your clipboard");
-  }
-}
-
+// Clears the date fields
 function clearDateField(beforeOrAfter) {
   switch (beforeOrAfter) {
     case 1:
@@ -483,11 +481,7 @@ function baliseRemover(commitList, keywordList, finalList) {
   commitList.forEach(function callbackFn(commit) {
     keywordList.forEach(function callbackFn(balise) {
       if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'))) {
-        if (document.getElementsByName('yesnobalises')[1].checked) {
-          finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), ''));
-        } else {
-          finalList.push(commit);
-        }
+        document.getElementsByName('yesnobalises')[1].checked ? finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), '')) : finalList.push(commit);
       }
     });
   });
@@ -500,9 +494,7 @@ async function sortCommits() {
 
   let urlField = document.getElementById("urlhtml").value.toString();
   // if is a url converts it to something usable
-  if (urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))) {
-    urlField = urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))[2];
-  }
+  urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i')) && (urlField = urlField.match(new RegExp(`(\\.com\\/)(.*)`, 'i'))[2]);
   const apiField = document.getElementById("apitoken").value.toString();
   const afterField = document.getElementById("afterdate").value.toString();
   const beforeField = document.getElementById("beforedate").value.toString();
@@ -526,35 +518,21 @@ async function sortCommits() {
     baliseRemover(commitMessages, featureKwList, features);
     baliseRemover(commitMessages, fixesKwList, fixes);
     baliseRemover(commitMessages, refactorKwList, refs);
-    if (cst1KwList.length > 0) {
-      baliseRemover(commitMessages, cst1KwList, cst1);
-    }
-    if (cst2KwList.length > 0) {
-      baliseRemover(commitMessages, cst2KwList, cst2);
-    }
+    cst1KwList.length > 0 && baliseRemover(commitMessages, cst1KwList, cst1);
+    cst2KwList.length > 0 && baliseRemover(commitMessages, cst2KwList, cst2);
 
     // eliminated keywords, MUSN'T have one of these in order to get sorted into others
     othersSelectionList = othersSelectionList.concat(featureKwList);
     othersSelectionList = othersSelectionList.concat(fixesKwList);
     othersSelectionList = othersSelectionList.concat(refactorKwList);
-    if (cst1KwList.length > 0) {
-      othersSelectionList = othersSelectionList.concat(cst1KwList);
-    }
-    if (cst2KwList.length > 0) {
-      othersSelectionList = othersSelectionList.concat(cst2KwList);
-    }
+    cst1KwList.length > 0 && (othersSelectionList = othersSelectionList.concat(cst1KwList));
+    cst2KwList.length > 0 && (othersSelectionList = othersSelectionList.concat(cst2KwList));
 
     // checks if doesn't matches previous balises and pushes them into a variable
     commitMessages.forEach((commit) => {
       let noMatch = 0;
-      for (let i = 0; i < othersSelectionList.length; i++) {
-        if (!commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(othersSelectionList[i])} `, 'i'))) {
-          noMatch++;
-        }
-      }
-      if (noMatch === othersSelectionList.length) {
-        othersRaw.push(commit);
-      }
+      othersSelectionList.forEach((balise) => !commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i')) && noMatch++)
+      noMatch === othersSelectionList.length && othersRaw.push(commit);
     })
 
     // Reset list
@@ -563,11 +541,7 @@ async function sortCommits() {
     // pushes commits into others, gives the option to ommit merges or to remove the first word of the commit (in most case, the balise)
     othersRaw.forEach((commit) => {
       if (document.getElementsByName('yesnobalisesothers')[0].checked) {
-        if (document.getElementsByName('yesnomerges')[1].checked) {
-          !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit);
-        } else {
-          others.push(commit);
-        }
+        document.getElementsByName('yesnomerges')[1].checked ? (!commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit)) : others.push(commit);
       } else {
         if (document.getElementsByName('yesnomerges')[1].checked) {
           !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
@@ -588,61 +562,33 @@ async function sortCommits() {
     }
     // checks if found these types of commits and adds them to the changelog afterwards
     if (features.length > 0) {
-      if (document.getElementById("feattitle").value != "") {
-        newBody += `## ${document.getElementById("feattitle").value}\n\n`;
-      } else {
-        newBody += `## ✨ New features\n\n`;
-      }
+      document.getElementById("feattitle").value != "" ? newBody += `## ${document.getElementById("feattitle").value}\n\n` : newBody += `## ✨ New features\n\n`;
       newBody += features.join("\n\n");
     };
     if (fixes.length > 0) {
-      if (document.getElementById("fixtitle").value != "") {
-        newBody += `\n\n## ${document.getElementById("fixtitle").value}\n\n`;
-      } else {
-        newBody += `\n\n## 🐛 Bug fixes\n\n`;
-      }
+      document.getElementById("fixtitle").value != "" ? newBody += `\n\n## ${document.getElementById("fixtitle").value}\n\n` : newBody += `\n\n## 🐛 Bug fixes\n\n`;
       newBody += fixes.join("\n\n");
     };
     if (refs.length > 0) {
-      if (document.getElementById("reftitle").value != "") {
-        newBody += `\n\n## ${document.getElementById("reftitle").value}\n\n`;
-      } else {
-        newBody += `\n\n## ♻️ Code Refactors\n\n`;
-      }
+      document.getElementById("reftitle").value != "" ? newBody += `\n\n## ${document.getElementById("reftitle").value}\n\n` : newBody += `\n\n## ♻️ Code Refactors\n\n`;
       newBody += refs.join("\n\n");
     };
     if (cst1.length > 0) {
-      if (document.getElementById("cst1title").value != "") {
-        newBody += `\n\n## ${document.getElementById("cst1title").value}\n\n`;
-      } else {
-        newBody += `\n\n## 📘 Custom category 1\n\n`;
-      }
+      document.getElementById("cst1title").value != "" ? newBody += `\n\n## ${document.getElementById("cst1title").value}\n\n` : newBody += `\n\n## 📘 Custom category 1\n\n`;
       newBody += cst1.join("\n\n");
     };
     if (cst2.length > 0) {
-      if (document.getElementById("cst2title").value != "") {
-        newBody += `\n\n## ${document.getElementById("cst2title").value}\n\n`;
-      } else {
-        newBody += `\n\n## 📙 Custom category 2\n\n`;
-      }
+      document.getElementById("cst2title").value != "" ? newBody += `\n\n## ${document.getElementById("cst2title").value}\n\n` : newBody += `\n\n## 📙 Custom category 2\n\n`;
       newBody += cst2.join("\n\n");
     };
     if (others.length > 0) {
-      if (document.getElementById("othertitle").value != "") {
-        newBody += `\n\n## ${document.getElementById("othertitle").value}\n\n`;
-      } else {
-        newBody += `\n\n## 📚 Other commits\n\n`;
-      }
+      document.getElementById("othertitle").value != "" ? newBody += `\n\n## ${document.getElementById("othertitle").value}\n\n` : newBody += `\n\n## 📚 Other commits\n\n`;
       newBody += others.join("\n\n");
     };
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
-    if (document.getElementsByName('mdorhtml')[0].checked) {
-      document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>`;
-    } else {
-      document.getElementById("bodyhtml").innerHTML = marked(newBody);
-    }
-    currentOutput = newBody;
+    document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = marked(newBody);
+    currentChangelogOutput = newBody;
   }
 }
 
