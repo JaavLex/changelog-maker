@@ -178,48 +178,73 @@ function urlParamsActions(save) {
   save ? urlSaveParams(urlExistingParams) : urlGetParams(urlExistingParams);
 }
 
+function setKwList(list, value) {
+  switch (list) {
+    case 1:
+      featureKwList = value;
+      break;
+    case 2:
+      fixesKwList = value;
+      break;
+    case 3:
+      refactorKwList = value;
+      break;
+    case 4:
+      cst1KwList = value;
+      break;
+    case 5:
+      cst2KwList = value;
+      break;
+  }
+}
+
+function getLocalStorage(type, htmlfield, localstorage, defaultlist, list) {
+  switch (type) {
+    case "field":
+      document.getElementById(htmlfield).value = localStorage.getItem(localstorage);
+      break;
+    case "list":
+      setKwList(list, loadListLocalStorage(localstorage, defaultlist, htmlfield));
+      break;
+    case "radio":
+      loadRadioLocalStorage(localstorage, document.getElementsByName(htmlfield));
+      break;
+  }
+}
+
+function setLocalStorage(type, htmlfield, localstorage) {
+  type == "field" ? localStorage.setItem(localstorage, document.getElementById(htmlfield).value) : saveRadioLocalStorage(localstorage, document.getElementsByName(htmlfield));
+}
+
 // either loads all previously inputted values, or saves them depending wether pageload == true or pageload == false
 function localStorageManager(pageload) {
+  const fieldsStorage = [
+    {"type": "field","htmlfield": "urlhtml", "localstorage": "tacticsch-chgmaker-url-storage"},
+    {"type": "field","htmlfield": "apitoken", "localstorage": "tacticsch-chgmaker-token-storage"},
+    {"type": "field","htmlfield": "beforedate", "localstorage": "tacticsch-chgmaker-before-storage"},
+    {"type": "field","htmlfield": "afterdate", "localstorage": "tacticsch-chgmaker-after-storage"},
+    {"type": "field","htmlfield": "feattitle", "localstorage": "tacticsch-chgmaker-feat-title-storage"},
+    {"type": "field","htmlfield": "fixtitle", "localstorage": "tacticsch-chgmaker-fix-title-storage"},
+    {"type": "field","htmlfield": "reftitle", "localstorage": "tacticsch-chgmaker-ref-title-storage"},
+    {"type": "field","htmlfield": "cst1title", "localstorage": "tacticsch-chgmaker-cst1-title-storage"},
+    {"type": "field","htmlfield": "cst2title", "localstorage": "tacticsch-chgmaker-cst2-title-storage"},
+    {"type": "list", "htmlfield": "featurekwhtml", "localstorage": "tacticsch-chgmaker-feature-keywords", "default": defaultfeatlist, "list": 1},
+    {"type": "list", "htmlfield": "fixkwhtml", "localstorage": "tacticsch-chgmaker-fix-keywords", "default": defaultfixlist, "list": 2},
+    {"type": "list", "htmlfield": "refkwhtml", "localstorage": "tacticsch-chgmaker-ref-keywords", "default": defaultreflist, "list": 3},
+    {"type": "list", "htmlfield": "cst1kwhtml", "localstorage": "tacticsch-chgmaker-cst1-keywords", "default": defaultcst1list, "list": 4},
+    {"type": "list", "htmlfield": "cst2kwhtml", "localstorage": "tacticsch-chgmaker-cst2-keywords", "default": defaultcst2list, "list": 5},
+    {"type": "radio","htmlfield": "yesnobalises", "localstorage": "tacticsch-chgmaker-balises-option"},
+    {"type": "radio","htmlfield": "yesnobalisesothers", "localstorage": "tacticsch-chgmaker-balises-other-option"},
+    {"type": "radio","htmlfield": "yesnomerges", "localstorage": "tacticsch-chgmaker-merges-option"},
+    {"type": "radio","htmlfield": "mdorhtml", "localstorage": "tacticsch-chgmaker-mdhtml-option"}
+  ]
   if (pageload) {
     // date and text fields local storage value loading
-    document.getElementById("urlhtml").value = localStorage.getItem('tacticsch-chgmaker-url-storage');
-    document.getElementById("apitoken").value = localStorage.getItem('tacticsch-chgmaker-token-storage');
-    document.getElementById("beforedate").value = localStorage.getItem('tacticsch-chgmaker-before-storage');
-    document.getElementById("afterdate").value = localStorage.getItem('tacticsch-chgmaker-after-storage');
-    document.getElementById("feattitle").value = localStorage.getItem('tacticsch-chgmaker-feat-title-storage');
-    document.getElementById("fixtitle").value = localStorage.getItem('tacticsch-chgmaker-fix-title-storage');
-    document.getElementById("reftitle").value = localStorage.getItem('tacticsch-chgmaker-ref-title-storage');
-    document.getElementById("cst1title").value = localStorage.getItem('tacticsch-chgmaker-cst1-title-storage');
-    document.getElementById("cst2title").value = localStorage.getItem('tacticsch-chgmaker-cst2-title-storage');
-    // balises list local storage value loading
-    featureKwList = loadListLocalStorage('tacticsch-chgmaker-feature-keywords', defaultfeatlist, "featurekwhtml");
-    fixesKwList = loadListLocalStorage('tacticsch-chgmaker-fix-keywords', defaultfixlist, "fixkwhtml");
-    refactorKwList = loadListLocalStorage('tacticsch-chgmaker-ref-keywords', defaultreflist, "refkwhtml");
-    cst1KwList = loadListLocalStorage('tacticsch-chgmaker-cst1-keywords', defaultcst1list, "cst1kwhtml");
-    cst2KwList = loadListLocalStorage('tacticsch-chgmaker-cst2-keywords', defaultcst2list, "cst2kwhtml");
-    // radio button options local storage value loading
-    loadRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesnobalises"));
-    loadRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesnobalisesothers"));
-    loadRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesnomerges"));
-    loadRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("mdorhtml"));
+    fieldsStorage.forEach((item) => getLocalStorage(item.type, item.htmlfield, item.localstorage, item.default, item.list));
     // If user sets parameters in URL, set them.
     urlParamsActions(false);
   } else {
-    // date and text fields local storage value saving
-    localStorage.setItem('tacticsch-chgmaker-url-storage', document.getElementById("urlhtml").value);
-    localStorage.setItem('tacticsch-chgmaker-token-storage', document.getElementById("apitoken").value);
-    localStorage.setItem('tacticsch-chgmaker-before-storage', document.getElementById("beforedate").value);
-    localStorage.setItem('tacticsch-chgmaker-after-storage', document.getElementById("afterdate").value);
-    localStorage.setItem('tacticsch-chgmaker-feat-title-storage', document.getElementById("feattitle").value);
-    localStorage.setItem('tacticsch-chgmaker-fix-title-storage', document.getElementById("fixtitle").value);
-    localStorage.setItem('tacticsch-chgmaker-ref-title-storage', document.getElementById("reftitle").value);
-    localStorage.setItem('tacticsch-chgmaker-cst1-title-storage', document.getElementById("cst1title").value);
-    localStorage.setItem('tacticsch-chgmaker-cst2-title-storage', document.getElementById("cst2title").value);
-    // radio button options local storage value saving
-    saveRadioLocalStorage('tacticsch-chgmaker-balises-option', document.getElementsByName("yesnobalises"));
-    saveRadioLocalStorage('tacticsch-chgmaker-balises-other-option', document.getElementsByName("yesnobalisesothers"));
-    saveRadioLocalStorage('tacticsch-chgmaker-merges-option', document.getElementsByName("yesnomerges"));
-    saveRadioLocalStorage('tacticsch-chgmaker-mdhtml-option', document.getElementsByName("mdorhtml"));
+    fieldsStorage.forEach((item) => setLocalStorage(item.type, item.htmlfield, item.localstorage));
   }
 }
 
@@ -365,7 +390,7 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
     throw new Error("URL/Location is not valid.");
   }
 
-  // if url returns 404, alerts user
+  // if url returns 403, alerts user
   if (headersRequest.status == 403) {
     document.getElementById("loader").innerHTML = "";
     alert("You've reached the API's limit rate. Please input a token to generate further changelogs.");
