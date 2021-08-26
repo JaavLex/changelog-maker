@@ -18,11 +18,11 @@ button, input[type=submit]{
   text-decoration: none;
   background-color: rgb(148, 145, 145);
   color: rgb(221, 221, 221);
-  border: 1px solid #333;
   border-radius: 25px;
   text-align: center;
   position: relative;
   transition: all .35s;
+  border: none;
 }
 
 button span, input[type=submit] span{
@@ -63,14 +63,41 @@ button:hover:after, input[type=submit]:hover:after{
 
 input[type=text], input[type=datetime-local] {
   border-radius: 8px;
-  border-width: 1px;
-  border-color: none;
+  border: none;
   background-color: rgb(228, 228, 228);
   outline: none;
 }
 
 input[type=text]:focus, input[type=datetime-local]:focus {
   border-width: 2px;
+}
+
+input[type='radio']:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #909490;
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: none;
+}
+
+input[type=radio]:checked:after {
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: #31a0c2;
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: none;
 }
 
 p {
@@ -85,13 +112,11 @@ p {
 }
 
 #form-box {
-  background-color: rgb(211, 211, 211);
+  background-color: rgb(212, 223, 224);
   max-width: 900px;
   margin: auto;
   padding: 10px;
   border-radius: 65px;
-  border-style: solid;
-  border-width: 1px;
 }
 
 /* Style the button that is used to open and close the collapsible content */
@@ -105,6 +130,18 @@ p {
   border: none;
   border-radius: 10px;
   color:rgb(0, 0, 0);
+}
+
+.collapsible:after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(128, 155, 228, 0.253);
+  border-radius: 25px;
+  transition: all .35s;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -135,19 +172,19 @@ p {
   color:rgb(221, 221, 221);
   font-family: monospace;
   border-radius: 5px;
-  border: 1px solid #333;
+  border: none;
   padding: 5px;
   margin: 5px;
 }
 
 .generation-button {
-  background-color: rgb(127, 194, 94);
+  background-color: rgb(142, 218, 104);
   color:rgb(53, 53, 53);
   border-width: 2px;
 }
 
 .clearall-button {
-  background-color: rgb(194, 94, 94);
+  background-color: rgb(218, 112, 112);
   color:rgb(53, 53, 53);
   border-width: 2px;
 }
@@ -159,13 +196,13 @@ p {
   left: 0;
   width: 0;
   height: 100%;
-  background: #a8020241;
+  background: #ec323241;
   border-radius: 25px;
   transition: all .35s;
 }
 
 .copylink-button {
-  background-color: rgb(94, 121, 194);
+  background-color: rgb(128, 155, 228);
   color:rgb(53, 53, 53);
   border-width: 2px;
 }
@@ -177,7 +214,7 @@ p {
   left: 0;
   width: 0;
   height: 100%;
-  background: #0266a841;
+  background: #2e86c021;
   border-radius: 25px;
   transition: all .35s;
 }
@@ -219,7 +256,8 @@ p {
 .list-table {
   width: 330px;
   margin-bottom: 10px;
-  border-style:inset;
+  border-style: solid;
+  border-color: #00000011;
   border-width: 1px;
   border-radius: 25px;
 }
