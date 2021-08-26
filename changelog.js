@@ -160,81 +160,20 @@ function urlSaveParams(urlCurrentParams) {
 
 function urlParamsActions(save) {
   // Search params
-  const urlExistingParams = [{
-      "param": "url",
-      "field": "urlhtml",
-      "type": "field"
-    },
-    {
-      "param": "apitoken",
-      "field": "apitoken",
-      "type": "field"
-    },
-    {
-      "param": "before",
-      "field": "beforedate",
-      "type": "field"
-    },
-    {
-      "param": "after",
-      "field": "afterdate",
-      "type": "field"
-    },
-    {
-      "param": "balises",
-      "field": "yesnobalises",
-      "type": "radio"
-    },
-    {
-      "param": "balisesother",
-      "field": "yesnobalisesothers",
-      "type": "radio"
-    },
-    {
-      "param": "merges",
-      "field": "yesnomerges",
-      "type": "radio"
-    },
-    {
-      "param": "markdown",
-      "field": "mdorhtml",
-      "type": "radio"
-    },
-    {
-      "param": "feat",
-      "field": "featurekwhtml",
-      "list": featureKwList,
-      "default": defaultfeatlist,
-      "type": "list"
-    },
-    {
-      "param": "fix",
-      "field": "fixkwhtml",
-      "list": fixesKwList,
-      "default": defaultfixlist,
-      "type": "list"
-    },
-    {
-      "param": "ref",
-      "field": "refkwhtml",
-      "list": refactorKwList,
-      "default": defaultreflist,
-      "type": "list"
-    },
-    {
-      "param": "cst1",
-      "field": "cst1kwhtml",
-      "list": cst1KwList,
-      "default": defaultcst1list,
-      "type": "list"
-    },
-    {
-      "param": "cst2",
-      "field": "cst2kwhtml",
-      "list": cst2KwList,
-      "default": defaultcst2list,
-      "type": "list"
-    }
+  const urlExistingParams = [
+    {"param": "url", "field": "urlhtml", "type": "field"},
+    {"param": "apitoken", "field": "apitoken", "type": "field"},
+    {"param": "before", "field": "beforedate", "type": "field"},
+    {"param": "after", "field": "afterdate", "type": "field"},
+    {"param": "balises", "field": "yesnobalises", "type": "radio"},
+    {"param": "balisesother", "field": "yesnobalisesothers", "type": "radio"},
+    {"param": "merges", "field": "yesnomerges", "type": "radio"},
+    {"param": "markdown", "field": "mdorhtml", "type": "radio"},
+    {"param": "feat", "field": "featurekwhtml", "list": featureKwList, "default": defaultfeatlist, "type": "list"},
+    {"param": "fix", "field": "fixkwhtml", "list": fixesKwList, "default": defaultfixlist, "type": "list"},
+    {"param": "ref", "field": "refkwhtml", "list": refactorKwList, "default": defaultreflist, "type": "list"},
+    {"param": "cst1","field": "cst1kwhtml","list": cst1KwList,"default": defaultcst1list,"type": "list"},
+    {"param": "cst2", "field": "cst2kwhtml", "list": cst2KwList, "default": defaultcst2list, "type": "list"}
   ]
   save ? urlSaveParams(urlExistingParams) : urlGetParams(urlExistingParams);
 }
@@ -488,6 +427,16 @@ function baliseRemover(commitList, keywordList, finalList) {
   });
 }
 
+function writeSection(list, titlefield, defaulttitle) {
+  let formatSection = "";
+  if (list.length > 0) {
+    document.getElementById(titlefield).value != "" ? formatSection += `## ${document.getElementById(titlefield).value}\n\n` : formatSection += `## ${defaulttitle}\n\n`;
+    formatSection += list.join("\n\n");
+    formatSection += "\n\n";
+  };
+  return formatSection;
+}
+
 // main app function. sorts all commits received by getCommits() function based on user's options.
 async function sortCommits() {
   // Sets loader
@@ -561,31 +510,17 @@ async function sortCommits() {
     } else if (beforeField != "") {
       newBody += `> 🕐 Commits until ${dateFormatting(beforeField)}\n\n`;
     }
-    // checks if found these types of commits and adds them to the changelog afterwards
-    if (features.length > 0) {
-      document.getElementById("feattitle").value != "" ? newBody += `## ${document.getElementById("feattitle").value}\n\n` : newBody += `## ✨ New features\n\n`;
-      newBody += features.join("\n\n");
-    };
-    if (fixes.length > 0) {
-      document.getElementById("fixtitle").value != "" ? newBody += `\n\n## ${document.getElementById("fixtitle").value}\n\n` : newBody += `\n\n## 🐛 Bug fixes\n\n`;
-      newBody += fixes.join("\n\n");
-    };
-    if (refs.length > 0) {
-      document.getElementById("reftitle").value != "" ? newBody += `\n\n## ${document.getElementById("reftitle").value}\n\n` : newBody += `\n\n## ♻️ Code Refactors\n\n`;
-      newBody += refs.join("\n\n");
-    };
-    if (cst1.length > 0) {
-      document.getElementById("cst1title").value != "" ? newBody += `\n\n## ${document.getElementById("cst1title").value}\n\n` : newBody += `\n\n## 📘 Custom category 1\n\n`;
-      newBody += cst1.join("\n\n");
-    };
-    if (cst2.length > 0) {
-      document.getElementById("cst2title").value != "" ? newBody += `\n\n## ${document.getElementById("cst2title").value}\n\n` : newBody += `\n\n## 📙 Custom category 2\n\n`;
-      newBody += cst2.join("\n\n");
-    };
-    if (others.length > 0) {
-      document.getElementById("othertitle").value != "" ? newBody += `\n\n## ${document.getElementById("othertitle").value}\n\n` : newBody += `\n\n## 📚 Other commits\n\n`;
-      newBody += others.join("\n\n");
-    };
+
+    const sectionList = [
+      {"list": features, "titlefield": "feattitle", "defaulttitle": "✨ New features"},
+      {"list": fixes, "titlefield": "fixtitle", "defaulttitle": "🐛 Bug fixes"},
+      {"list": refs, "titlefield": "reftitle", "defaulttitle": "♻️ Code Refactors"},
+      {"list": cst1, "titlefield": "cst1title", "defaulttitle": "📘 Custom category 1"},
+      {"list": cst2, "titlefield": "cst2title", "defaulttitle": "📙 Custom category 2"},
+      {"list": others, "titlefield": "othertitle", "defaulttitle": "📚 Other commits"}
+    ]
+
+    sectionList.forEach((item) => newBody += writeSection(item.list, item.titlefield, item.defaulttitle));
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
     document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = marked(newBody);
