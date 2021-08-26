@@ -548,7 +548,7 @@ async function sortCommits() {
     sectionList.forEach((item) => newBody += writeSection(item.list, item.titlefield, item.defaulttitle));
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
-    document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = marked(newBody);
+    document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button><pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = `<button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button>${marked(newBody)}`;
     currentChangelogOutput = newBody;
   }
 }

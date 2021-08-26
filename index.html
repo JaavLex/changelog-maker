@@ -11,6 +11,12 @@
 </head>
 
 <body onload="localStorageManager(true)">
+  <header>
+    <i>
+      Made with <a href="https://github.com/JaavLex/changelog-maker" target="_blank">changelog-maker</a> - <span
+        id="version"></span>
+    </i>
+  </header>
   <center>
     <h1>📃 changelog-maker 📃</h1>
   </center>
@@ -294,12 +300,8 @@
       </center>
     </div>
   </div>
-  <hr>
   <div class="row">
     <div class="column">
-      <center>
-        <button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button>
-      </center>
       <base target="_blank">
       <div id="loader"></div>
       <div id="bodyhtml"></div>
@@ -307,13 +309,6 @@
     </div>
   </div>
   </div>
-  <hr>
-  <footer>
-    <i>
-      Made with <a href="https://github.com/JaavLex/changelog-maker" target="_blank">changelog-maker</a> - <span
-        id="version"></span>
-    </i>
-  </footer>
 </body>
 
 </html>
