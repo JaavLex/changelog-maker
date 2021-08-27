@@ -178,6 +178,7 @@ function urlParamsActions(save) {
   save ? urlSaveParams(urlExistingParams) : urlGetParams(urlExistingParams);
 }
 
+// Reassigns keyword list value
 function setKwList(list, value) {
   switch (list) {
     case 1:
@@ -198,6 +199,7 @@ function setKwList(list, value) {
   }
 }
 
+// Gets data from local storage
 function getLocalStorage(type, htmlfield, localstorage, defaultlist, list) {
   switch (type) {
     case "field":
@@ -212,6 +214,7 @@ function getLocalStorage(type, htmlfield, localstorage, defaultlist, list) {
   }
 }
 
+// Sets values in local storage
 function setLocalStorage(type, htmlfield, localstorage) {
   type == "field" ? localStorage.setItem(localstorage, document.getElementById(htmlfield).value) : saveRadioLocalStorage(localstorage, document.getElementsByName(htmlfield));
 }
@@ -321,6 +324,12 @@ function keywordRemover(commitType) {
       console.log("ERROR: Unknown commit type");
       break;
   }
+}
+
+// Clears changelog ouput
+function clearOutput() {
+  document.getElementById("bodyhtml").innerHTML = ``
+  currentChangelogOutput = "";
 }
 
 // clears the html form
@@ -544,11 +553,13 @@ async function sortCommits() {
       {"list": cst2, "titlefield": "cst2title", "defaulttitle": "📙 Custom category 2"},
       {"list": others, "titlefield": "othertitle", "defaulttitle": "📚 Other commits"}
     ]
+    const copyOutputButton = '<button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button>';
+    const clearOutputButton = '<button onclick="clearOutput()">🗑 Clear output</button>';
 
     sectionList.forEach((item) => newBody += writeSection(item.list, item.titlefield, item.defaulttitle));
     document.getElementById("loader").innerHTML = '';
     // either shows the commit in raw markdown, or convert it into HTML
-    document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button><pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = `<button onclick="copyToClipboard(true)">📋 Copy MarkDown to clipboard</button>${marked(newBody)}`;
+    document.getElementsByName('mdorhtml')[0].checked ? document.getElementById("bodyhtml").innerHTML = `<center>${copyOutputButton} ${clearOutputButton}</center><pre id="md-body">${newBody}</pre>` : document.getElementById("bodyhtml").innerHTML = `<center>${copyOutputButton} ${clearOutputButton}</center>${marked(newBody)}`;
     currentChangelogOutput = newBody;
   }
 }
