@@ -1,14 +1,21 @@
 body {
+  background-color: rgb(28, 33, 40);
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
 }
 
 h1 {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: white;
 }
 
 form {
   border-width: 1pt;
   border-style:ridge;
+}
+
+header {
+  color: white;
+  font-size: 12px;
 }
 
 button, input[type=submit]{
@@ -37,7 +44,7 @@ button:after, input[type=submit]:after{
   left: 0;
   width: 0;
   height: 100%;
-  background: #00ff2a41;
+  background: #02551041;
   border-radius: 25px;
   transition: all .35s;
 }
@@ -55,17 +62,34 @@ button:hover:after, input[type=submit]:hover:after{
   width: 100%;
 }
 
+a {
+  color: rgba(127, 143, 187, 0.767);
+  text-decoration: none;
+}
+
+a:visited {
+  color: rgb(105, 210, 224);
+}
+
 #tutoriallink {
   text-decoration: none;
   font-size: 8pt;
   border-radius: 10px;
 }
 
+#tutoriallink:visited {
+  color: rgb(35, 73, 177);
+}
+
 input[type=text], input[type=datetime-local] {
-  border-radius: 8px;
+  border-radius: 3px;
   border: none;
-  background-color: rgb(228, 228, 228);
+  background-color: rgb(128, 155, 228);
   outline: none;
+}
+
+::placeholder {
+  color:rgb(88, 88, 88)
 }
 
 input[type=text]:focus, input[type=datetime-local]:focus {
@@ -93,7 +117,7 @@ input[type=radio]:checked:after {
   top: -2px;
   left: -1px;
   position: relative;
-  background-color: #31a0c2;
+  background-color: #429ee9;
   content: '';
   display: inline-block;
   visibility: visible;
@@ -109,14 +133,15 @@ p {
 
 #bodyhtml {
   padding: 10px;
+  color: rgba(255, 255, 255, 0.801);
 }
 
 #form-box {
-  background-color: rgb(212, 223, 224);
+  background-color: rgba(255, 255, 255, 0.877);
   max-width: 900px;
   margin: auto;
   padding: 10px;
-  border-radius: 65px;
+  border-radius: 15px;
 }
 
 /* Style the button that is used to open and close the collapsible content */
@@ -126,9 +151,9 @@ p {
   width: 85%;
   text-align: center;
   font-size: 15px;
-  background-color:rgba(53, 53, 53, 0);
+  background-color:rgba(128, 155, 228, 0.158);
   border: none;
-  border-radius: 10px;
+  border-radius: 25px;
   color:rgb(0, 0, 0);
 }
 
@@ -139,7 +164,7 @@ p {
   left: 0;
   width: 0;
   height: 100%;
-  background: rgba(128, 155, 228, 0.253);
+  background: rgba(128, 155, 228, 0.37);
   border-radius: 25px;
   transition: all .35s;
 }
@@ -168,8 +193,8 @@ p {
 }
 
 .html-list {
-  background-color: rgba(129, 129, 129, 0.507);
-  color:rgb(221, 221, 221);
+  background-color: rgb(128, 155, 228);
+  color:rgb(0, 0, 0);
   font-family: monospace;
   border-radius: 5px;
   border: none;
@@ -178,27 +203,27 @@ p {
 }
 
 .generation-button {
-  background-color: rgb(142, 218, 104);
+  background-color: rgb(128, 228, 151);
   color:rgb(53, 53, 53);
   border-width: 2px;
 }
 
 .clearall-button {
-  background-color: rgb(218, 112, 112);
+  background-color: rgb(228, 128, 157);
   color:rgb(53, 53, 53);
   border-width: 2px;
 }
 
-.clearall-button:after {
+.clearall-button:after, .removebutton:after, .listdefbutton:after {
   position: absolute;
   content: "";
   top: 0;
   left: 0;
   width: 0;
   height: 100%;
-  background: #ec323241;
-  border-radius: 25px;
+  background: #c0000050;
   transition: all .35s;
+  border-radius: 25px;
 }
 
 .copylink-button {
@@ -214,7 +239,7 @@ p {
   left: 0;
   width: 0;
   height: 100%;
-  background: #2e86c021;
+  background: #01263f21;
   border-radius: 25px;
   transition: all .35s;
 }
@@ -225,17 +250,6 @@ p {
   margin-top: 30px;
   margin-bottom: 30px;
 }
-
-.clear-buttons {
-  font-size: 12px;
-}
-
-/* #list-table {
-  width: 100%;
-  border-width: 1px;
-  border-style: dotted;
-  border-radius: 25px;
-} */
 
 .lists-container {
   display: flex;
@@ -249,7 +263,7 @@ p {
 }
 
 .lists-container button {
-  border-radius: 5px;
+  border-radius: 25px;
   font-size: 13px;
 }
 
@@ -257,7 +271,17 @@ p {
   width: 330px;
   margin-bottom: 10px;
   border-style: solid;
-  border-color: #00000011;
+  border-color: rgb(28, 33, 40);
   border-width: 1px;
-  border-radius: 25px;
+  border-radius: 5px;
+}
+
+.addbutton {
+  background-color: rgb(128, 228, 151);
+  color: rgb(0, 0, 0);
+}
+
+.removebutton, .listdefbutton {
+  background-color: rgb(228, 128, 157);
+  color: rgb(0, 0, 0);
 }
