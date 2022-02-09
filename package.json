@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JaavLex/changelog-maker#readme",
   "dependencies": {
+    "marked": "^4.0.12",
     "request": "^2.88.2",
     "superagent": "^6.1.0"
   }
