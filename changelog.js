@@ -239,6 +239,7 @@ function localStorageManager(pageload) {
     {"type": "radio","htmlfield": "yesnobalises", "localstorage": "tacticsch-chgmaker-balises-option"},
     {"type": "radio","htmlfield": "yesnobalisesothers", "localstorage": "tacticsch-chgmaker-balises-other-option"},
     {"type": "radio","htmlfield": "yesnomerges", "localstorage": "tacticsch-chgmaker-merges-option"},
+    {"type": "radio","htmlfield": "yesnohashes", "localstorage": "tacticsch-chgmaker-hashes-option"},
     {"type": "radio","htmlfield": "mdorhtml", "localstorage": "tacticsch-chgmaker-mdhtml-option"}
   ]
   if (pageload) {
@@ -454,8 +455,8 @@ function quotemeta(str) {
 function baliseRemover(commitList, keywordList, finalList) {
   commitList.forEach(function callbackFn(commit) {
     keywordList.forEach(function callbackFn(balise) {
-      if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'))) {
-        document.getElementsByName('yesnobalises')[1].checked ? finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i'), '')) : finalList.push(commit);
+      if (commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)}|^${quotemeta(balise)} `, 'i'))) {
+        document.getElementsByName('yesnobalises')[1].checked ? finalList.push(commit.replace(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)}|^${quotemeta(balise)} `, 'i'), '')) : finalList.push(commit);
       }
     });
   });
@@ -484,7 +485,7 @@ async function sortCommits() {
   const beforeField = document.getElementById("beforedate").value.toString();
   const rawCommits = await getCommits("https://api.github.com/repos/" + urlField + "/commits?per_page=", "100", apiField, beforeField, afterField);
   // Already sets a formatted commit message
-  const commitMessages = rawCommits != false && rawCommits.map((item) => "[[" + item.sha.substring(0, 8) + "](" + item.html_url + ")] - " + item.commit.message.split("\n")[0] + " ● 👤 ⇒ [" + item.commit.author.name + "](" + (item.author && item.author.html_url) + ")" + " ― 📅 ⇒ " + dateFormatting(item.commit.author.date));
+  const commitMessages = rawCommits != false && rawCommits.map((item) => `${document.getElementsByName('yesnohashes')[0].checked ? `[[${item.sha.substring(0, 8)}](${item.html_url})] - ` : ''}${item.commit.message.split("\n")[0]} ● 👤 ⇒ [${item.commit.author.name}](${item.author && item.author.html_url}) ― 📅 ⇒ ${dateFormatting(item.commit.author.date)}`);
   const features = [];
   const fixes = [];
   const refs = [];
@@ -515,7 +516,7 @@ async function sortCommits() {
     // checks if doesn't matches previous balises and pushes them into a variable
     commitMessages.forEach((commit) => {
       let noMatch = 0;
-      othersSelectionList.forEach((balise) => !commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)} `, 'i')) && noMatch++)
+      othersSelectionList.forEach((balise) => !commit.match(new RegExp(`(?<=\\)\\] - )${quotemeta(balise)}|^${quotemeta(balise)} `, 'i')) && noMatch++)
       noMatch === othersSelectionList.length && othersRaw.push(commit);
     })
 
@@ -525,12 +526,12 @@ async function sortCommits() {
     // pushes commits into others, gives the option to ommit merges or to remove the first word of the commit (in most case, the balise)
     othersRaw.forEach((commit) => {
       if (document.getElementsByName('yesnobalisesothers')[0].checked) {
-        document.getElementsByName('yesnomerges')[1].checked ? (!commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit)) : others.push(commit);
+        document.getElementsByName('yesnomerges')[1].checked ? (!commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]|^[Mm]erge|\\[merge\\]`, 'g')) && others.push(commit)) : others.push(commit);
       } else {
         if (document.getElementsByName('yesnomerges')[1].checked) {
-          !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]`, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
+          !commit.match(new RegExp(`(?<=\\)\\] - )[Mm]erge|\\[merge\\]|^[Mm]erge|\\[merge\\]`, "g")) && others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]?|^\\[?\\w+[:|\\]]? `, 'i'), ''));
         } else {
-          others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]? `, 'i'), ''));
+          others.push(commit.replace(new RegExp(`(?<=\\)\\] - )\\[?\\w+[:|\\]]?|^\\[?\\w+[:|\\]]? `, 'i'), ''));
         }
       }
     });
