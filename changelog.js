@@ -389,15 +389,27 @@ async function getCommits(repoUrl, nbCommits, apiKey, beforeDate, afterDate) {
   }
 
   // searches for the numbers of pages in the repository's API page. needs an API token key (taken from the form).
-  const headersRequest = await fetch(repoUrl + "1" + dateParameters, {
+  let headersRequest = await fetch(repoUrl + "1" + dateParameters, {
     method: "GET"
   })
 
   // if url returns 404, alerts user
   if (headersRequest.status == 404) {
-    document.getElementById("loader").innerHTML = "";
-    alert("URL/Location is not valid.");
-    throw new Error("URL/Location is not valid.");
+    const tokenrep = document.getElementById("apitoken").value == "" ?  null : `token ${apiKey}`;
+    const headersPrivateRequest = await fetch(repoUrl + "1" + dateParameters, {
+      method: "GET",
+      headers: {
+        Authorization: `${tokenrep}`
+      },
+    })
+
+    if (headersPrivateRequest.status == 404) {
+      document.getElementById("loader").innerHTML = "";
+      alert("URL/Location is not valid.");
+      throw new Error("URL/Location is not valid.");
+    }
+
+    headersRequest = headersPrivateRequest;
   }
 
   // if url returns 403, alerts user
